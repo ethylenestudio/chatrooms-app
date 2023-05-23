@@ -8,7 +8,7 @@ type DummyType = {
 type ConversationType = {
   name: string;
   lastMessage: string;
-  read: boolean;
+  chosen: boolean;
 };
 
 const Menu: FC<DummyType> = ({ conversations }) => {
@@ -20,8 +20,8 @@ const Menu: FC<DummyType> = ({ conversations }) => {
             <Conversation
               lastMessage={conversation.lastMessage}
               name={conversation.name}
-              read={conversation.read}
               key={i}
+              chosen={conversation.chosen}
             />
           </>
         );

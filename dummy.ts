@@ -24,6 +24,7 @@ export const DUMMY: DummyType = {
       name: "Arbitrum Room",
       lastMessage: "Great airdrop guys, it was a pleasure to meet all of you!",
       read: true,
+      chosen: true,
     },
     {
       name: "Arbitrum Room",
@@ -162,6 +163,7 @@ type ConversationType = {
   name: string;
   lastMessage: string;
   read: boolean;
+  chosen?: boolean;
 };
 
 type MessageType = {
