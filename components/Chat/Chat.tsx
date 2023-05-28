@@ -15,7 +15,8 @@ type MessageType = {
 const Chat: FC<DummyType> = ({ messages }) => {
   return (
     <div>
-      <div className="sticky top-0 z-50 bg-slate-300">
+      <div className="sticky top-0 z-50 bg-[#090A10]">
+        <p className="text-[#CBA1A4] text-xs pt-2 text-center">Most Upvotes</p>
         {messages.slice(0, 1).map((message, i) => {
           return (
             <>

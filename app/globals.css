@@ -9,4 +9,6 @@ html {
   max-height: 100vh;
   box-sizing: border-box;
   width: 100vw;
+  background: rgb(8, 9, 13);
+  background: linear-gradient(90deg, rgba(8, 9, 13, 1) 0%, rgba(23, 30, 47, 1) 60%);
 }

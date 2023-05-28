@@ -3,53 +3,52 @@ export const DUMMY: DummyType = {
     {
       name: "General Chat",
       lastMessage: "Next talk starts in 5mins, lets meet over there team!",
-      read: false,
+      chosen: false,
     },
     {
       name: "Arbitrum Room",
       lastMessage: "Great airdrop guys, it was a pleasure to meet all of you!",
-      read: false,
+      chosen: false,
     },
     {
       name: "Arbitrum Room",
       lastMessage: "This is sick!",
-      read: true,
+      chosen: false,
     },
     {
       name: "Arbitrum Room",
       lastMessage: "Great airdrop guys, it was a pleasure to meet all of you!",
-      read: true,
+      chosen: false,
     },
     {
       name: "Arbitrum Room",
       lastMessage: "Great airdrop guys, it was a pleasure to meet all of you!",
-      read: true,
       chosen: true,
     },
     {
       name: "Arbitrum Room",
       lastMessage: "Great airdrop guys, it was a pleasure to meet all of you!",
-      read: true,
+      chosen: false,
     },
     {
       name: "Arbitrum Room",
       lastMessage: "Great airdrop guys, it was a pleasure to meet all of you!",
-      read: true,
+      chosen: false,
     },
     {
       name: "Arbitrum Room",
       lastMessage: "Great airdrop guys, it was a pleasure to meet all of you!",
-      read: true,
+      chosen: false,
     },
     {
       name: "Arbitrum Room",
       lastMessage: "Great airdrop guys, it was a pleasure to meet all of you!",
-      read: true,
+      chosen: false,
     },
     {
       name: "Arbitrum Room",
       lastMessage: "Great airdrop guys, it was a pleasure to meet all of you!",
-      read: true,
+      chosen: false,
     },
   ],
   messages: [
@@ -162,8 +161,7 @@ type DummyType = {
 type ConversationType = {
   name: string;
   lastMessage: string;
-  read: boolean;
-  chosen?: boolean;
+  chosen: boolean;
 };
 
 type MessageType = {

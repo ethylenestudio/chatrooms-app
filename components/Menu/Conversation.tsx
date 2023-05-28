@@ -11,16 +11,14 @@ type ConversationType = {
 const Conversation: FC<ConversationType> = ({ lastMessage, name, chosen }) => {
   return (
     <div
-      className={`flex justify-center items-center px-8 py-6 border-b-[1px] ${
-        name == "General Chat" && "bg-slate-300 sticky top-0"
-      } ${chosen && "bg-slate-900 text-slate-100"}`}
+      className={`flex justify-center items-center px-8 py-6 border-b-[1px] border-[rgba(126,144,175,0.1)] text-white`}
     >
       <div className="w-[15%]">
-        <SiHackthebox size={32} color={`${chosen ? "rgb(203 213 225)" : "rgb(15 23 42)"}`} />
+        <SiHackthebox size={32} color={"rgb(203 213 225)"} />
       </div>
       <div className="w-[85%] pl-2 flex flex-col items-start justify-center">
         <p className="font-bold text-sm">{name}</p>
-        <p className="text-xs">
+        <p className="text-[12px] font-extralight">
           {lastMessage.length > lastMessageLimit
             ? lastMessage.slice(0, lastMessageLimit) + "..."
             : lastMessage}
