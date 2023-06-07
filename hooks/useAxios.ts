@@ -1,5 +1,5 @@
 import { APIROOT } from "@/config";
-import { Session } from "@/dummy";
+import { Session } from "@/types/SessionType";
 import Axios, { AxiosResponse } from "axios";
 const axios = Axios.create({
   baseURL: APIROOT,

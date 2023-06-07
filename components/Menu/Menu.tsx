@@ -5,17 +5,7 @@ import useRooms from "@/hooks/useRooms";
 import Conversation from "./Conversation";
 import useHydrated from "@/hooks/useHydrated";
 
-type DummyType = {
-  conversations: ConversationType[];
-};
-
-type ConversationType = {
-  name: string;
-  lastMessage: string;
-  chosen: boolean;
-};
-
-const Menu: FC<DummyType> = ({ conversations }) => {
+const Menu: FC = () => {
   const hasHydrated = useHydrated();
   const rooms = useRooms((state) => state.rooms);
   if (!hasHydrated) return null;

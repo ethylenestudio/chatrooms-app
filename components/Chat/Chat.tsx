@@ -4,11 +4,11 @@ import Message from "./Message";
 import { MessageType } from "@/types/MessageType";
 import { ORBIS } from "@/config";
 
-type DummyType = {
+type ContextType = {
   context: string;
 };
 
-const Chat: FC<DummyType> = ({ context }) => {
+const Chat: FC<ContextType> = ({ context }) => {
   const [orbisMessages, setOrbisMessages] = useState<MessageType[]>();
   const [message, setMessage] = useState<string>("");
 
@@ -28,7 +28,7 @@ const Chat: FC<DummyType> = ({ context }) => {
     if (res.status == 200) {
       setTimeout(fetchMessages, 3000);
     }
-  }, [context, message, fetchMessages, orbisMessages]);
+  }, [context, message, fetchMessages]);
 
   useEffect(() => {
     fetchMessages();

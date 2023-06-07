@@ -29,9 +29,11 @@ const Message: FC<MessageType> = ({ content, sender, upvotes, postId, refetchAll
     const res = await ORBIS.react(postId, "like");
     if (res.status == 200) {
       if (refetchAllMessages) {
-        setTimeout(refetchAllMessages, 2000);
+        setTimeout(() => {
+          refetchAllMessages();
+          setIsReacted(true);
+        }, 3000);
       }
-      setIsReacted(true);
     }
   }, [postId, refetchAllMessages]);
 
