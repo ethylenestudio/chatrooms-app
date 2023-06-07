@@ -58,3 +58,4 @@ type StoreType = {
 };
 
 export default useRooms;
+export type { RoomType };

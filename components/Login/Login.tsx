@@ -1,31 +1,40 @@
 "use client";
-// @ts-expect-error
-import { Orbis } from "@orbisclub/orbis-sdk";
 import React, { FC, useEffect, useMemo } from "react";
+import { useRouter } from "next/navigation";
 import useRooms from "@/hooks/useRooms";
+import useOrbisUser from "@/hooks/useOrbisUser";
+import { ORBIS } from "@/config";
+
 const Login: FC = () => {
+  const router = useRouter();
   const setRooms = useRooms((state) => state.setRooms);
-
-  const orbis = useMemo(() => new Orbis(), []);
-
+  const setUserDid = useOrbisUser((state) => state.setUserDid);
   useEffect(() => {
     async function update() {
-      let res = await orbis.isConnected();
+      let res = await ORBIS.isConnected();
       if (res.status == 200) {
-        const { data: creds } = await orbis.getCredentials(res.did);
+        const { data: creds } = await ORBIS.getCredentials(res.did);
         setRooms(creds);
+        setUserDid(res.did);
+        router.push("/app");
       }
     }
     update();
-  }, [orbis, setRooms]);
+  }, [setRooms, router, setUserDid]);
 
   async function connect() {
-    let res = await orbis.isConnected();
-    if (res.status != 200) {
-      res = await orbis.connect_v2({ lit: false, chain: "ethereum" });
+    try {
+      let res = await ORBIS.isConnected();
+      if (res.status != 200) {
+        res = await ORBIS.connect_v2({ lit: false, chain: "ethereum" });
+      }
+      const { data: creds } = await ORBIS.getCredentials(res.did);
+      setRooms(creds);
+      setUserDid(res.did);
+      router.push("/app");
+    } catch (e) {
+      console.log(e);
     }
-    const { data: creds } = await orbis.getCredentials(res.did);
-    setRooms(creds);
   }
 
   return (

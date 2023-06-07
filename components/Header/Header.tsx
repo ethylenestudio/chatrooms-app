@@ -9,7 +9,7 @@ const Header: FC = () => {
     <div className="text-white h-[10vh] flex justify-center items-center flex-col">
       {pathname == "/chat" ? (
         <p className="absolute top-0 left-0 mt-4 ml-2">
-          <IoArrowBackCircleSharp onClick={() => router.push("/menu")} size={30} />
+          <IoArrowBackCircleSharp onClick={() => router.push("/app")} size={30} />
         </p>
       ) : null}
       <h1 className="font-bold">ETH Barcelona Community</h1>
