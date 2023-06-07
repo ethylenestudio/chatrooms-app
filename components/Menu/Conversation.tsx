@@ -23,9 +23,9 @@ const Conversation: FC<RoomPropType> = (room) => {
   const { session } = useGetSessionById(sessionId, isEthBarcelona);
 
   const fetchLastMessage = useCallback(async () => {
-    const { data, error } = await ORBIS.getPosts({ context: room.room.stream_id }, 1);
+    const { data, error } = await ORBIS.getPosts({ context: room.room.stream_id }, 0, 1);
+
     if (data.length > 0) {
-      console.log(data);
       setLastMessage(data[0].content.body);
     }
   }, [room]);
@@ -49,7 +49,7 @@ const Conversation: FC<RoomPropType> = (room) => {
         }
       }}
       className={`${
-        selectedChat == room.room.stream_id && "bg-slate-600"
+        selectedChat == room.room.stream_id && "bg-black"
       } hover:cursor-pointer flex justify-center items-center px-8 py-6 border-b-[1px] border-[rgba(126,144,175,0.1)] text-white`}
     >
       <div className="w-[15%]">
