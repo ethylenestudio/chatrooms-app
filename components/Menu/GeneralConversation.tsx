@@ -14,7 +14,6 @@ const GeneralConversation: FC = () => {
   const fetchLastMessage = useCallback(async () => {
     const { data, error } = await ORBIS.getPosts({ context: GENERAL_CHAT }, 0, 1);
     if (data.length > 0) {
-      console.log(data);
       setLastMessage(data[0].content.body);
     }
   }, []);

@@ -17,11 +17,13 @@ const Message: FC<MessageType> = ({ content, sender, upvotes, postId, refetchAll
 
   const fetchUserReaction = useCallback(async () => {
     const { data, error } = await ORBIS.getReaction(postId, userDid);
-    if (data) {
+    if (data?.type == "like") {
       setIsReacted(true);
+    } else {
+      setIsReacted(false);
     }
     return data;
-  }, [postId, userDid]);
+  }, [postId, userDid, setIsReacted]);
 
   const reactToPost = useCallback(async () => {
     const res = await ORBIS.react(postId, "like");

@@ -28,7 +28,6 @@ const Chat: FC<DummyType> = ({ context }) => {
     if (res.status == 200) {
       setTimeout(fetchMessages, 3000);
     }
-    console.log(orbisMessages);
   }, [context, message, fetchMessages, orbisMessages]);
 
   useEffect(() => {
