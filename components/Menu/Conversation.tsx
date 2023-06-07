@@ -1,4 +1,3 @@
-"use client";
 import { ORBIS, ORBIS_IDENTIFIER, lastMessageLimit } from "@/config";
 import { useGetSessionById } from "@/hooks/queries/useGetSessionById";
 import useOrbisUser from "@/hooks/useOrbisUser";

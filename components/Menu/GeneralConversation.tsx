@@ -1,4 +1,3 @@
-"use client";
 import { GENERAL_CHAT, ORBIS, lastMessageLimit } from "@/config";
 import useOrbisUser from "@/hooks/useOrbisUser";
 import useWindowSize from "@/hooks/useWindowSize";

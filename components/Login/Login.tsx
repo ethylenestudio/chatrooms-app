@@ -1,5 +1,5 @@
 "use client";
-import React, { FC, useEffect, useMemo } from "react";
+import React, { FC, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import useRooms from "@/hooks/useRooms";
 import useOrbisUser from "@/hooks/useOrbisUser";
