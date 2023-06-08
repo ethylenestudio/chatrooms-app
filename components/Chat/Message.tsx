@@ -1,19 +1,35 @@
 /* eslint-disable @next/next/no-img-element */
-import React, { FC, useCallback, useEffect, useMemo, useState } from "react";
+import React, { FC, useCallback, useEffect, useState } from "react";
 import { BiUpvote } from "react-icons/bi";
 import useOrbisUser from "@/hooks/useOrbisUser";
-import { ORBIS } from "@/config";
+import { ORBIS, replyLimit } from "@/config";
 type MessageType = {
   content: string;
   sender: string;
   upvotes: number;
   postId: string;
+  master: string | null;
   refetchAllMessages?: () => Promise<void>;
+  setThisAsReply: React.Dispatch<
+    React.SetStateAction<{
+      content: string;
+      postId: string;
+    }>
+  >;
 };
 
-const Message: FC<MessageType> = ({ content, sender, upvotes, postId, refetchAllMessages }) => {
+const Message: FC<MessageType> = ({
+  content,
+  sender,
+  upvotes,
+  postId,
+  refetchAllMessages,
+  setThisAsReply,
+  master,
+}) => {
   const userDid = useOrbisUser((state) => state.userDid);
   const [isReacted, setIsReacted] = useState(false);
+  const [masterMessage, setMasterMessage] = useState("");
 
   const fetchUserReaction = useCallback(async () => {
     const { data, error } = await ORBIS.getReaction(postId, userDid);
@@ -37,9 +53,17 @@ const Message: FC<MessageType> = ({ content, sender, upvotes, postId, refetchAll
     }
   }, [postId, refetchAllMessages]);
 
+  const fetchMasterPost = useCallback(async () => {
+    if (master) {
+      const { data, error } = await ORBIS.getPost(master);
+      setMasterMessage(data.content.body);
+    }
+  }, [master]);
+
   useEffect(() => {
     fetchUserReaction();
-  }, [isReacted, fetchUserReaction, reactToPost]);
+    fetchMasterPost();
+  }, [isReacted, fetchUserReaction, reactToPost, fetchMasterPost]);
 
   if (!sender) return null;
   const senderArray = sender.split(":");
@@ -51,7 +75,21 @@ const Message: FC<MessageType> = ({ content, sender, upvotes, postId, refetchAll
           <p className="font-bold mr-4">
             {senderAddress.slice(0, 4) + "..." + senderAddress.slice(39)}
           </p>
-          <p className="text-[10px]">25 min</p>
+          {master ? (
+            <p className="text-[10px]">
+              <span className="font-bold">to: </span>
+              {masterMessage.length > replyLimit
+                ? masterMessage.slice(0, replyLimit - 1) + "..."
+                : masterMessage}
+            </p>
+          ) : (
+            <p
+              className="text-[10px] hover:cursor-pointer"
+              onClick={() => setThisAsReply({ content, postId })}
+            >
+              reply
+            </p>
+          )}
         </div>
         <p className="text-[12px] font-extralight">{content}</p>
       </div>

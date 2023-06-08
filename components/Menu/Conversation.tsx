@@ -1,4 +1,4 @@
-import { ORBIS, ORBIS_IDENTIFIER, lastMessageLimit } from "@/config";
+import { ORBIS, ORBIS_IDENTIFIER, POLLING_RATE, lastMessageLimit } from "@/config";
 import { useGetSessionById } from "@/hooks/queries/useGetSessionById";
 import useOrbisUser from "@/hooks/useOrbisUser";
 import type { RoomType } from "@/hooks/useRooms";
@@ -28,6 +28,13 @@ const Conversation: FC<RoomPropType> = (room) => {
       setLastMessage(data[0].content.body);
     }
   }, [room]);
+
+  useEffect(() => {
+    const polling = setInterval(fetchLastMessage, POLLING_RATE);
+    return () => {
+      clearInterval(polling);
+    };
+  }, []);
 
   useEffect(() => {
     if (room.room.identifier.startsWith(ORBIS_IDENTIFIER)) {

@@ -2,7 +2,7 @@
 import React, { FC, Fragment, useCallback, useEffect, useMemo, useState } from "react";
 import Message from "./Message";
 import { MessageType } from "@/types/MessageType";
-import { ORBIS } from "@/config";
+import { ORBIS, POLLING_RATE } from "@/config";
 
 type ContextType = {
   context: string;
@@ -11,34 +11,50 @@ type ContextType = {
 const Chat: FC<ContextType> = ({ context }) => {
   const [orbisMessages, setOrbisMessages] = useState<MessageType[]>();
   const [message, setMessage] = useState<string>("");
+  const [replyTo, setReplyTo] = useState<{ content: string; postId: string }>({
+    content: "",
+    postId: "",
+  });
 
   const fetchMessages = useCallback(async () => {
     const { data, error } = await ORBIS.getPosts({
       context: context,
     });
+    console.log("rerendered");
     setOrbisMessages(data);
-    setMessage("");
   }, [context]);
 
   const sendMessage = useCallback(async () => {
     const res = await ORBIS.createPost({
       body: message,
       context: context,
+      master: replyTo.content ? replyTo.postId : null,
     });
     if (res.status == 200) {
-      setTimeout(fetchMessages, 3000);
+      setTimeout(() => {
+        setMessage("");
+        setReplyTo({ content: "", postId: "" });
+        fetchMessages();
+      }, 3000);
     }
-  }, [context, message, fetchMessages]);
+  }, [context, message, fetchMessages, replyTo]);
 
   useEffect(() => {
     fetchMessages();
   }, [fetchMessages]);
 
+  useEffect(() => {
+    const polling = setInterval(fetchMessages, POLLING_RATE);
+    return () => {
+      clearInterval(polling);
+    };
+  }, []);
+
   if (!orbisMessages) return null;
 
   return (
     <div className="relative h-[80vh]">
-      <div className="h-[90%] overflow-scroll">
+      <div className="h-[88%] overflow-scroll">
         <div className="sticky top-0 z-50 bg-[#090A10]">
           <p className="text-[#CBA1A4] text-xs pt-2 text-center">Most Upvotes</p>
           {orbisMessages.slice(0, 1).map((message, i) => {
@@ -51,6 +67,8 @@ const Chat: FC<ContextType> = ({ context }) => {
                   upvotes={message.count_likes}
                   key={i}
                   refetchAllMessages={fetchMessages}
+                  setThisAsReply={setReplyTo}
+                  master={message.master}
                 />
               </Fragment>
             );
@@ -68,26 +86,45 @@ const Chat: FC<ContextType> = ({ context }) => {
                   upvotes={message.count_likes}
                   key={i}
                   refetchAllMessages={fetchMessages}
+                  setThisAsReply={setReplyTo}
+                  master={message.master}
                 />
               </Fragment>
             );
           })}
         </div>
       </div>
-      <div className="absolute bottom-0 left-0 w-full flex justify-center items-center mt-2 space-x-2 bg-black py-2">
-        <input
-          placeholder="New message"
-          className="rounded-md text-sm px-2 py-1 w-[70%] bg-slate-400"
-          type="text"
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
-        />
-        <button
-          onClick={async () => await sendMessage()}
-          className="px-2 text-sm py-1 rounded-md w-[20%] text-center bg-slate-500 text-white"
+      <div className="h-[12%] absolute bottom-0 left-0 w-full flex flex-col space-y-2 justify-center bg-black py-1">
+        <div
+          className={`text-white flex items-center pl-4 text-xs ${
+            replyTo.content ? "opacity-100" : "opacity-0"
+          }`}
         >
-          Send
-        </button>
+          <p>
+            <span
+              onClick={() => setReplyTo({ content: "", postId: "" })}
+              className="border-[1px] border-white hover:cursor-pointer font-bold self-start text-xs mr-2 px-1"
+            >
+              X
+            </span>
+            <span className="font-bold">re:</span> {replyTo.content && replyTo.content}
+          </p>
+        </div>
+        <div className="flex justify-center space-x-2 w-full items-center">
+          <input
+            placeholder="New message"
+            className="rounded-md text-sm px-2 py-1 w-[70%] bg-slate-400"
+            type="text"
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+          />
+          <button
+            onClick={async () => await sendMessage()}
+            className="px-2 text-sm py-1 rounded-md w-[20%] text-center bg-slate-500 text-white"
+          >
+            Send
+          </button>
+        </div>
       </div>
     </div>
   );
