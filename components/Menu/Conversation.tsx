@@ -2,6 +2,7 @@ import { ORBIS, ORBIS_IDENTIFIER, POLLING_RATE, lastMessageLimit } from "@/confi
 import { useGetSessionById } from "@/hooks/queries/useGetSessionById";
 import useOrbisUser from "@/hooks/useOrbisUser";
 import type { RoomType } from "@/hooks/useRooms";
+import useSelectRoom from "@/hooks/useSelectRoom";
 import useWindowSize from "@/hooks/useWindowSize";
 import { useRouter } from "next/navigation";
 import React, { FC, useCallback, useEffect, useState } from "react";
@@ -14,8 +15,8 @@ type RoomPropType = {
 const Conversation: FC<RoomPropType> = (room) => {
   const router = useRouter();
   const windowSize = useWindowSize();
-  const selectThisChat = useOrbisUser((state) => state.setSelectedChat);
-  const selectedChat = useOrbisUser((state) => state.selectedChat);
+  const selectThisChat = useSelectRoom((state) => state.setSelectedRoom);
+  const selectedChat = useSelectRoom((state) => state.selectedRoom);
   const [lastMessage, setLastMessage] = useState("");
   const [isEthBarcelona, setIsEthBarcelona] = useState(false);
   const [sessionId, setSessionId] = useState<string>("");
@@ -34,10 +35,10 @@ const Conversation: FC<RoomPropType> = (room) => {
     return () => {
       clearInterval(polling);
     };
-  }, []);
+  }, [fetchLastMessage]);
 
   useEffect(() => {
-    if (room.room.identifier.startsWith(ORBIS_IDENTIFIER)) {
+    if (!isNaN(Number(room.room.identifier.split(ORBIS_IDENTIFIER + "-")[1]))) {
       setIsEthBarcelona(true);
       setSessionId((prev) => room.room.identifier.split(`${ORBIS_IDENTIFIER}-`)[1]);
     }
@@ -55,7 +56,7 @@ const Conversation: FC<RoomPropType> = (room) => {
         }
       }}
       className={`${
-        selectedChat == room.room.stream_id && "bg-black"
+        selectedChat == room.room.stream_id && "bg-slate-800"
       } hover:cursor-pointer flex justify-center items-center px-8 py-6 border-b-[1px] border-[rgba(126,144,175,0.1)] text-white`}
     >
       <div className="w-[15%]">

@@ -3,6 +3,8 @@ import React, { FC, Fragment, useCallback, useEffect, useMemo, useState } from "
 import Message from "./Message";
 import { MessageType } from "@/types/MessageType";
 import { ORBIS, POLLING_RATE } from "@/config";
+import useSelectRoom from "@/hooks/useSelectRoom";
+import { ColorRing } from "react-loader-spinner";
 
 type ContextType = {
   context: string;
@@ -15,16 +17,21 @@ const Chat: FC<ContextType> = ({ context }) => {
     content: "",
     postId: "",
   });
+  const [loading, setLoading] = useState(false);
 
   const fetchMessages = useCallback(async () => {
+    setLoading(true);
     const { data, error } = await ORBIS.getPosts({
       context: context,
     });
-    console.log("rerendered");
+    console.log("fetched");
+
     setOrbisMessages(data);
+    setLoading(false);
   }, [context]);
 
   const sendMessage = useCallback(async () => {
+    setLoading(true);
     const res = await ORBIS.createPost({
       body: message,
       context: context,
@@ -35,7 +42,8 @@ const Chat: FC<ContextType> = ({ context }) => {
         setMessage("");
         setReplyTo({ content: "", postId: "" });
         fetchMessages();
-      }, 3000);
+        setLoading(false);
+      }, 1000);
     }
   }, [context, message, fetchMessages, replyTo]);
 
@@ -48,7 +56,7 @@ const Chat: FC<ContextType> = ({ context }) => {
     return () => {
       clearInterval(polling);
     };
-  }, []);
+  }, [fetchMessages]);
 
   if (!orbisMessages) return null;
 
@@ -56,7 +64,18 @@ const Chat: FC<ContextType> = ({ context }) => {
     <div className="relative h-[80vh]">
       <div className="h-[88%] overflow-scroll">
         <div className="sticky top-0 z-50 bg-[#090A10]">
-          <p className="text-[#CBA1A4] text-xs pt-2 text-center">Most Upvotes</p>
+          <p className="text-[#CBA1A4] text-xs pt-2 text-center flex items-center justify-center space-x-2">
+            Latest
+            <span className={`${loading ? "opacity-100" : "opacity-0"}`}>
+              <ColorRing
+                visible={true}
+                height="20"
+                width="20"
+                ariaLabel="blocks-loading"
+                colors={["#e15b64", "#f47e60", "#f8b26a", "#abbd81", "#849b87"]}
+              />
+            </span>
+          </p>
           {orbisMessages.slice(0, 1).map((message, i) => {
             return (
               <Fragment key={i}>

@@ -1,7 +1,7 @@
 "use client";
 import { Chat, Menu } from "@/components";
 import { ORBIS } from "@/config";
-import useOrbisUser from "@/hooks/useOrbisUser";
+import useSelectRoom from "@/hooks/useSelectRoom";
 import { useRouter } from "next/navigation";
 import React, { useCallback, useEffect } from "react";
 
@@ -13,10 +13,11 @@ const App = () => {
       router.push("/");
     }
   }, [router]);
-  const selectedChat = useOrbisUser((state) => state.selectedChat);
+  const selectedChat = useSelectRoom((state) => state.selectedRoom);
   useEffect(() => {
     checkConnection();
-  }, [checkConnection]);
+    console.log(selectedChat, "ssadasd");
+  }, [checkConnection, selectedChat]);
 
   return (
     <div>

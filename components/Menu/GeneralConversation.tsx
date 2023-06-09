@@ -1,5 +1,6 @@
-import { GENERAL_CHAT, ORBIS, lastMessageLimit } from "@/config";
+import { GENERAL_CHAT, ORBIS, POLLING_RATE, lastMessageLimit } from "@/config";
 import useOrbisUser from "@/hooks/useOrbisUser";
+import useSelectRoom from "@/hooks/useSelectRoom";
 import useWindowSize from "@/hooks/useWindowSize";
 import { useRouter } from "next/navigation";
 import React, { FC, useCallback, useEffect, useState } from "react";
@@ -8,7 +9,7 @@ import { SiHackthebox } from "react-icons/si";
 const GeneralConversation: FC = () => {
   const router = useRouter();
   const windowSize = useWindowSize();
-  const selectThisChat = useOrbisUser((state) => state.setSelectedChat);
+  const selectThisChat = useSelectRoom((state) => state.setSelectedRoom);
   const [lastMessage, setLastMessage] = useState("");
   const fetchLastMessage = useCallback(async () => {
     const { data, error } = await ORBIS.getPosts({ context: GENERAL_CHAT }, 0, 1);
@@ -20,7 +21,12 @@ const GeneralConversation: FC = () => {
   useEffect(() => {
     fetchLastMessage();
   }, [fetchLastMessage]);
-
+  useEffect(() => {
+    const polling = setInterval(fetchLastMessage, POLLING_RATE);
+    return () => {
+      clearInterval(polling);
+    };
+  }, []);
   return (
     <div
       onClick={() => {
