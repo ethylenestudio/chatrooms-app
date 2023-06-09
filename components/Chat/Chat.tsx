@@ -3,9 +3,8 @@ import React, { FC, Fragment, useCallback, useEffect, useMemo, useState } from "
 import Message from "./Message";
 import { MessageType } from "@/types/MessageType";
 import { ORBIS, POLLING_RATE } from "@/config";
-import useSelectRoom from "@/hooks/useSelectRoom";
 import { ColorRing } from "react-loader-spinner";
-
+import { AiOutlineCloseCircle } from "react-icons/ai";
 type ContextType = {
   context: string;
 };
@@ -22,10 +21,8 @@ const Chat: FC<ContextType> = ({ context }) => {
   const fetchMessages = useCallback(async () => {
     setLoading(true);
     const { data, error } = await ORBIS.getPosts({
-      context: context,
+      context,
     });
-    console.log("fetched");
-
     setOrbisMessages(data);
     setLoading(false);
   }, [context]);
@@ -119,20 +116,19 @@ const Chat: FC<ContextType> = ({ context }) => {
             replyTo.content ? "opacity-100" : "opacity-0"
           }`}
         >
-          <p>
-            <span
+          <p className="flex items-center space-x-4">
+            <AiOutlineCloseCircle
+              size={18}
+              className="hover:cursor-pointer"
               onClick={() => setReplyTo({ content: "", postId: "" })}
-              className="border-[1px] border-white hover:cursor-pointer font-bold self-start text-xs mr-2 px-1"
-            >
-              X
-            </span>
+            />
             <span className="font-bold">re:</span> {replyTo.content && replyTo.content}
           </p>
         </div>
         <div className="flex justify-center space-x-2 w-full items-center">
           <input
             placeholder="New message"
-            className="rounded-md text-sm px-2 py-1 w-[70%] bg-slate-400"
+            className="outline-1 outline-black rounded-md text-sm px-2 py-1 w-[70%] bg-slate-400"
             type="text"
             value={message}
             onChange={(e) => setMessage(e.target.value)}

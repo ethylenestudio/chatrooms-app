@@ -30,7 +30,7 @@ const Message: FC<MessageType> = ({
   const userDid = useOrbisUser((state) => state.userDid);
   const [isReacted, setIsReacted] = useState(false);
   const [masterMessage, setMasterMessage] = useState("");
-
+  const [username, setUsername] = useState("");
   const fetchUserReaction = useCallback(async () => {
     const { data, error } = await ORBIS.getReaction(postId, userDid);
     if (data?.type == "like") {
@@ -52,7 +52,12 @@ const Message: FC<MessageType> = ({
       }
     }
   }, [postId, refetchAllMessages]);
-
+  const fetchUsername = useCallback(async () => {
+    if (sender) {
+      const { data } = await ORBIS.getProfile(sender);
+      setUsername(data.username);
+    }
+  }, [sender]);
   const fetchMasterPost = useCallback(async () => {
     if (master) {
       const { data, error } = await ORBIS.getPost(master);
@@ -63,7 +68,8 @@ const Message: FC<MessageType> = ({
   useEffect(() => {
     fetchUserReaction();
     fetchMasterPost();
-  }, [isReacted, fetchUserReaction, reactToPost, fetchMasterPost]);
+    fetchUsername();
+  }, [isReacted, fetchUserReaction, reactToPost, fetchMasterPost, fetchUsername]);
 
   if (!sender) return null;
   const senderArray = sender.split(":");
@@ -72,8 +78,8 @@ const Message: FC<MessageType> = ({
     <div className="flex items-center px-4 border-b-[1px] py-4 border-[rgba(126,144,175,0.1)] space-x-2 text-white">
       <div className="w-[85%] flex flex-col justify-center">
         <div className="flex mb-1 items-center">
-          <p className="font-bold mr-4">
-            {senderAddress.slice(0, 4) + "..." + senderAddress.slice(39)}
+          <p className="font-bold text-sm mr-4">
+            {username ? username : senderAddress.slice(0, 4) + "..." + senderAddress.slice(39)}
           </p>
           {master ? (
             <p className="text-[10px]">
