@@ -2,7 +2,6 @@
 import { usePathname, useRouter } from "next/navigation";
 import React, { useState } from "react";
 import MetaMaskSDK from "@metamask/sdk";
-import { ethers } from "ethers";
 import { APIROOT, MESSAGE } from "@/config";
 import axios from "axios";
 

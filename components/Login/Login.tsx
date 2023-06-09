@@ -1,9 +1,9 @@
 "use client";
 import React, { FC, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import useRooms from "@/hooks/useRooms";
+import useRooms, { RoomType } from "@/hooks/useRooms";
 import useOrbisUser from "@/hooks/useOrbisUser";
-import { ORBIS } from "@/config";
+import { ORBIS, ORBIS_IDENTIFIER } from "@/config";
 import { ColorRing } from "react-loader-spinner";
 
 const Login: FC = () => {
@@ -17,7 +17,12 @@ const Login: FC = () => {
       let res = await ORBIS.isConnected();
       if (res.status == 200) {
         const { data: creds } = await ORBIS.getCredentials(res.did);
-        setRooms(creds);
+
+        setRooms(
+          creds.filter(
+            (room: RoomType) => !isNaN(Number(room.identifier.split(ORBIS_IDENTIFIER + "-")[1]))
+          )
+        );
         setUserDid(res.did);
         setLoading(false);
         router.push("/app");
@@ -35,14 +40,16 @@ const Login: FC = () => {
         res = await ORBIS.connect_v2({ lit: false, chain: "ethereum" });
       }
       const { data: creds } = await ORBIS.getCredentials(res.did);
-      setRooms(creds);
+      setRooms(
+        creds.filter(
+          (room: RoomType) => !isNaN(Number(room.identifier.split(ORBIS_IDENTIFIER + "-")[1]))
+        )
+      );
       setUserDid(res.did);
       setLoading(false);
       router.push("/app");
     } catch (e) {
       setLoading(false);
-
-      console.log(e);
     }
   }
 

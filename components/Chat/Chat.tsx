@@ -85,6 +85,7 @@ const Chat: FC<ContextType> = ({ context }) => {
                   refetchAllMessages={fetchMessages}
                   setThisAsReply={setReplyTo}
                   master={message.master}
+                  username={message.creator_details.profile.username}
                 />
               </Fragment>
             );
@@ -104,6 +105,7 @@ const Chat: FC<ContextType> = ({ context }) => {
                   refetchAllMessages={fetchMessages}
                   setThisAsReply={setReplyTo}
                   master={message.master}
+                  username={message.creator_details.profile.username}
                 />
               </Fragment>
             );

@@ -1,4 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
+"use client";
 import React, { FC, useCallback, useEffect, useState } from "react";
 import { BiUpvote } from "react-icons/bi";
 import useOrbisUser from "@/hooks/useOrbisUser";
@@ -16,6 +17,7 @@ type MessageType = {
       postId: string;
     }>
   >;
+  username: string;
 };
 
 const Message: FC<MessageType> = ({
@@ -26,13 +28,13 @@ const Message: FC<MessageType> = ({
   refetchAllMessages,
   setThisAsReply,
   master,
+  username,
 }) => {
   const userDid = useOrbisUser((state) => state.userDid);
   const [isReacted, setIsReacted] = useState(false);
   const [masterMessage, setMasterMessage] = useState("");
-  const [username, setUsername] = useState("");
   const fetchUserReaction = useCallback(async () => {
-    const { data, error } = await ORBIS.getReaction(postId, userDid);
+    const { data } = await ORBIS.getReaction(postId, userDid);
     if (data?.type == "like") {
       setIsReacted(true);
     } else {
@@ -40,7 +42,6 @@ const Message: FC<MessageType> = ({
     }
     return data;
   }, [postId, userDid, setIsReacted]);
-
   const reactToPost = useCallback(async () => {
     const res = await ORBIS.react(postId, "like");
     if (res.status == 200) {
@@ -52,12 +53,6 @@ const Message: FC<MessageType> = ({
       }
     }
   }, [postId, refetchAllMessages]);
-  const fetchUsername = useCallback(async () => {
-    if (sender) {
-      const { data } = await ORBIS.getProfile(sender);
-      setUsername(data.username);
-    }
-  }, [sender]);
   const fetchMasterPost = useCallback(async () => {
     if (master) {
       const { data, error } = await ORBIS.getPost(master);
@@ -68,8 +63,7 @@ const Message: FC<MessageType> = ({
   useEffect(() => {
     fetchUserReaction();
     fetchMasterPost();
-    fetchUsername();
-  }, [isReacted, fetchUserReaction, reactToPost, fetchMasterPost, fetchUsername]);
+  }, [isReacted, fetchUserReaction, reactToPost, fetchMasterPost]);
 
   if (!sender) return null;
   const senderArray = sender.split(":");
