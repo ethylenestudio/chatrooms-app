@@ -9,7 +9,7 @@ import React, { FC, useCallback, useEffect, useMemo, useState } from "react";
 import { SiHackthebox } from "react-icons/si";
 
 type RoomPropType = {
-  room: RoomType;
+  room: any;
   lastMessage: string;
 };
 
@@ -18,9 +18,6 @@ const Conversation: FC<RoomPropType> = ({ room, lastMessage }) => {
   const windowSize = useWindowSize();
   const selectThisChat = useSelectRoom((state) => state.setSelectedRoom);
   const selectedChat = useSelectRoom((state) => state.selectedRoom);
-  const [isEthBarcelona, setIsEthBarcelona] = useState(false);
-  const [sessionId, setSessionId] = useState<string>("");
-  const { session } = useGetSessionById(sessionId, isEthBarcelona);
   const displayedMessage = useMemo(() => {
     if (lastMessage) {
       return lastMessage;
@@ -28,14 +25,6 @@ const Conversation: FC<RoomPropType> = ({ room, lastMessage }) => {
       return "";
     }
   }, [lastMessage]);
-  useEffect(() => {
-    if (!isNaN(Number(room.identifier.split(ORBIS_IDENTIFIER + "-")[1]))) {
-      setIsEthBarcelona(true);
-      setSessionId((prev) => room.identifier.split(`${ORBIS_IDENTIFIER}-`)[1]);
-    }
-  }, [room, sessionId, session?.data]);
-
-  if (!isEthBarcelona) return null;
 
   return (
     <div
@@ -53,7 +42,7 @@ const Conversation: FC<RoomPropType> = ({ room, lastMessage }) => {
         <SiHackthebox size={32} color={"rgb(203 213 225)"} />
       </div>
       <div className="w-[85%] pl-2 flex flex-col items-start justify-center">
-        <p className="font-bold text-sm">{session?.data.name}</p>
+        <p className="font-bold text-sm">{room.content.name}</p>
         <p className="text-[12px] font-extralight">
           {displayedMessage.length > lastMessageLimit
             ? displayedMessage.slice(0, lastMessageLimit) + "..."

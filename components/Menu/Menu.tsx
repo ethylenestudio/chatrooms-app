@@ -10,7 +10,7 @@ const Menu: FC = () => {
   const hasHydrated = useHydrated();
   const rooms = useRooms((state) => state.rooms);
   const [lastMessages, setLastMessages] = useState<string[]>([]);
-  const fetchLastMessage = async (room: RoomType) => {
+  const fetchLastMessage = async (room: any) => {
     const { data } = await ORBIS.getPosts({ context: room.stream_id }, 0, 1);
     return data;
   };
@@ -18,8 +18,14 @@ const Menu: FC = () => {
   useEffect(() => {
     if (rooms == null) return;
     const polling = async () => {
-      const result = await Promise.all(rooms.map((room) => fetchLastMessage(room)));
-      const lastMessages = result.map((i) => i[0].content.body);
+      const result = await Promise.all(rooms.map((room: any) => fetchLastMessage(room)));
+      let lastMessages = [];
+      lastMessages = result.map((i) => {
+        if (i.length > 0) {
+          return i[0].content.body;
+        }
+      });
+
       setLastMessages(lastMessages);
     };
     polling();
@@ -36,7 +42,7 @@ const Menu: FC = () => {
         <GeneralConversation />
       </div>
 
-      {rooms?.map((room, i) => {
+      {rooms?.map((room: any, i: number) => {
         return (
           <Fragment key={i}>
             <Conversation room={room} lastMessage={lastMessages[i]} />

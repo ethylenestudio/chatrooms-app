@@ -1,11 +1,14 @@
 import { create } from "zustand";
 import { devtools, persist } from "zustand/middleware";
+import { ORBIS_IDENTIFIER } from "@/config";
+
 const useRooms = create(
   persist(
-    devtools<StoreType>((set) => ({
+    devtools<any>((set) => ({
       rooms: [],
-      setRooms: (rooms) => set({ rooms }, false, "setRooms"),
-      pushRoom: (room) => set((prev) => ({ rooms: [...prev.rooms, room] }), false, "pushRoom"),
+      setRooms: (rooms: any) => set({ rooms }, false, "setRooms"),
+      pushRoom: (room: any) =>
+        set((prev: any) => ({ rooms: [...prev.rooms, room] }), false, "pushRoom"),
       clearRooms: () => set({ rooms: [] }, false, "clearRooms"),
     })),
     {
@@ -45,7 +48,7 @@ type RoomType = {
   family: string;
   hash: null;
   weight: number;
-  identifier: `eth-barcelona-chatrooms-access-${string}`;
+  identifier: `${typeof ORBIS_IDENTIFIER}-${string}`;
 };
 type SetRoomsType = (rooms: RoomType[]) => void;
 type PushRoomType = (room: RoomType) => void;

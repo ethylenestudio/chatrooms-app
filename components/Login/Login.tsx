@@ -3,12 +3,13 @@ import React, { FC, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import useRooms, { RoomType } from "@/hooks/useRooms";
 import useOrbisUser from "@/hooks/useOrbisUser";
-import { ORBIS, ORBIS_IDENTIFIER } from "@/config";
+import { ORBIS, ORBIS_IDENTIFIER, ORBIS_PROJECT_ID } from "@/config";
 import { ColorRing } from "react-loader-spinner";
 
 const Login: FC = () => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+
   const setRooms = useRooms((state) => state.setRooms);
   const setUserDid = useOrbisUser((state) => state.setUserDid);
   useEffect(() => {
@@ -17,12 +18,18 @@ const Login: FC = () => {
       let res = await ORBIS.isConnected();
       if (res.status == 200) {
         const { data: creds } = await ORBIS.getCredentials(res.did);
-
-        setRooms(
-          creds.filter(
-            (room: RoomType) => !isNaN(Number(room.identifier.split(ORBIS_IDENTIFIER + "-")[1]))
-          )
-        );
+        const { data: contexts } = await ORBIS.getContexts(ORBIS_PROJECT_ID);
+        const userContexts: any = [];
+        for (const context of contexts) {
+          for (const cred of creds) {
+            if (
+              cred.identifier == context.content.accessRules[0].requiredCredentials[0].identifier
+            ) {
+              userContexts.push(context);
+            }
+          }
+        }
+        setRooms(userContexts);
         setUserDid(res.did);
         setLoading(false);
         router.push("/app");
@@ -40,11 +47,16 @@ const Login: FC = () => {
         res = await ORBIS.connect_v2({ lit: false, chain: "ethereum" });
       }
       const { data: creds } = await ORBIS.getCredentials(res.did);
-      setRooms(
-        creds.filter(
-          (room: RoomType) => !isNaN(Number(room.identifier.split(ORBIS_IDENTIFIER + "-")[1]))
-        )
-      );
+      const { data: contexts } = await ORBIS.getContexts(ORBIS_PROJECT_ID);
+      for (const context of contexts) {
+        const userContexts: any = [];
+        for (const cred of creds) {
+          if (cred.identifier == context.accessRules[0].requiredCredentials[0].identifier) {
+            userContexts.push(context);
+          }
+        }
+        setRooms(userContexts);
+      }
       setUserDid(res.did);
       setLoading(false);
       router.push("/app");
