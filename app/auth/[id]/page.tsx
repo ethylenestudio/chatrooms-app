@@ -1,18 +1,23 @@
 "use client";
+import "@rainbow-me/rainbowkit/styles.css";
 import { usePathname, useRouter } from "next/navigation";
 import React, { useState } from "react";
 import MetaMaskSDK from "@metamask/sdk";
 import { APIROOT, MESSAGE } from "@/config";
 import axios from "axios";
+import { ConnectButton } from "@rainbow-me/rainbowkit";
+import { useAccount, useSignMessage } from "wagmi";
 
 const Auth = () => {
   const pathname = usePathname();
+  const { isConnected } = useAccount();
   const router = useRouter();
   const key = pathname.slice(6);
   const [account, setAccount] = useState<any>();
   const [signature, setSignature] = useState<any>("");
   const MMSDK = new MetaMaskSDK({ dappMetadata: { name: "Chatrooms" } });
   const ethereum = MMSDK.getProvider(); // You can also access via window.ethereum
+  const { signMessageAsync } = useSignMessage({ message: MESSAGE });
 
   async function connect() {
     if (ethereum) {
@@ -26,54 +31,47 @@ const Auth = () => {
     }
   }
 
-  async function signAndSend(savedSignature?: string) {
-    if (account?.accounts && ethereum) {
-      const from = account.accounts[0];
-      // For historical reasons, you must submit the message to sign in hex-encoded UTF-8.
-      // This uses a Node.js-style buffer shim in the browser.
-      const msg = `0x${Buffer.from(MESSAGE, "utf8").toString("hex")}`;
-      let sign: any = "";
-      if (savedSignature) {
-        sign = savedSignature;
-      } else {
-        sign = await ethereum.request({
-          method: "personal_sign",
-          params: [msg, from],
-        });
-      }
+  async function sign(savedSignature?: string) {
+    let sign;
+    if (savedSignature) {
+      sign = savedSignature;
+    } else {
+      sign = await signMessageAsync();
+    }
 
-      setSignature(sign);
-      const req = await axios.post(
-        APIROOT + "/key/access",
-        { key },
-        { headers: { Authorization: sign as string } }
-      );
-      if (req.data) {
-        localStorage.setItem("signature", sign as string);
-        router.push("/");
-      }
+    setSignature(sign);
+    const req = await axios.post(
+      APIROOT + "/key/access",
+      { key },
+      { headers: { Authorization: sign as string } }
+    );
+    if (req.data) {
+      localStorage.setItem("signature", sign as string);
+      router.push("/");
     }
   }
 
   return (
     <div className="h-[80vh] flex justify-center items-center text-white">
-      <button
-        className="border-2 border-white p-4 rounded-md"
-        onClick={async () => {
-          const storedSignature = localStorage.getItem("signature");
-          if (storedSignature) {
-            await signAndSend(storedSignature);
-          } else {
-            if (!account) {
-              await connect();
+      {isConnected ? (
+        <button
+          className="border-2 border-white p-4 rounded-md"
+          onClick={async () => {
+            const storedSignature = localStorage.getItem("signature");
+            if (storedSignature) {
+              await sign(storedSignature);
             } else {
-              await signAndSend();
+              await sign();
             }
-          }
-        }}
-      >
-        {!account ? "Connect" : "Authenticate"}
-      </button>
+          }}
+        >
+          Sign and Submit
+        </button>
+      ) : (
+        <div>
+          <ConnectButton showBalance={false} />
+        </div>
+      )}
     </div>
   );
 };

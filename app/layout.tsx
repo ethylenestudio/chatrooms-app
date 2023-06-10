@@ -9,15 +9,15 @@ const queryClient = new QueryClient();
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <QueryClientProvider client={queryClient}>
-        <RainbowProvider>
-          <body>
+      <body>
+        <QueryClientProvider client={queryClient}>
+          <RainbowProvider>
             <Header />
             <main id="main-content">{children}</main>
             <Footer />
-          </body>
-        </RainbowProvider>
-      </QueryClientProvider>
+          </RainbowProvider>
+        </QueryClientProvider>
+      </body>
     </html>
   );
 }
