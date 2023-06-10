@@ -5,6 +5,8 @@ import useRooms, { RoomType } from "@/hooks/useRooms";
 import Conversation from "./Conversation";
 import useHydrated from "@/hooks/useHydrated";
 import { ORBIS, POLLING_RATE } from "@/config";
+import { usePathname } from "next/navigation";
+import useWindowSize from "@/hooks/useWindowSize";
 
 const Menu: FC = () => {
   const hasHydrated = useHydrated();
@@ -14,6 +16,7 @@ const Menu: FC = () => {
     const { data } = await ORBIS.getPosts({ context: room.stream_id }, 0, 1);
     return data;
   };
+  const [width, height] = useWindowSize();
 
   useEffect(() => {
     if (rooms == null) return;
@@ -36,8 +39,12 @@ const Menu: FC = () => {
   }, [rooms]);
   if (!hasHydrated) return null;
   return (
-    <div>
-      <div className="bg-black sticky top-0 ">
+    <div className="relative">
+      <div
+        className={`${
+          width <= 760 ? "w-[100%]" : "w-[25%]"
+        } bg-[#090A10] border-r-2 border-slate-900 fixed top-[100px] left-0`}
+      >
         <p className="text-[#CBA1A4] text-xs pt-2 text-center">Rooms</p>
         <GeneralConversation />
       </div>

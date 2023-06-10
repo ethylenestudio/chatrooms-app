@@ -5,11 +5,13 @@ import { MessageType } from "@/types/MessageType";
 import { ORBIS, POLLING_RATE, renderMessageLimit, replyLimit } from "@/config";
 import { ColorRing } from "react-loader-spinner";
 import { AiOutlineCloseCircle } from "react-icons/ai";
+import { usePathname } from "next/navigation";
 type ContextType = {
   context: string;
 };
 
 const Chat: FC<ContextType> = ({ context }) => {
+  const pathname = usePathname();
   const [orbisMessages, setOrbisMessages] = useState<MessageType[]>();
   const [message, setMessage] = useState<string>("");
   const [replyTo, setReplyTo] = useState<{ content: string; postId: string }>({
@@ -58,9 +60,13 @@ const Chat: FC<ContextType> = ({ context }) => {
   if (!orbisMessages) return null;
 
   return (
-    <div className="relative h-[82vh]">
-      <div className="h-[88%] overflow-scroll">
-        <div className="sticky top-0 z-50 bg-[#090A10]">
+    <div className="relative">
+      <div className="overflow-scroll pb-[90px]">
+        <div
+          className={`fixed right-0 top-[100px] ${
+            pathname == "/chat" ? "w-[100%]" : "w-[75%]"
+          } z-30 bg-[#090A10]`}
+        >
           <p className="text-[#CBA1A4] text-xs pt-2 text-center flex items-center justify-center space-x-2">
             Latest
             <span className={`${loading ? "opacity-100" : "opacity-0"}`}>
@@ -94,7 +100,7 @@ const Chat: FC<ContextType> = ({ context }) => {
           })}
         </div>
 
-        <div className="overflow-y-auto z-10">
+        <div className="overflow-y-auto z-10 pt-[120px]">
           {orbisMessages.slice(1).map((message, i) => {
             return (
               <Fragment key={i}>
@@ -116,9 +122,9 @@ const Chat: FC<ContextType> = ({ context }) => {
           })}
         </div>
       </div>
-      <div className="h-[12%] absolute bottom-0 left-0 w-full flex flex-col space-y-2 justify-center bg-black py-1">
+      <div className="h-[75px] fixed bottom-[20px] left-0 w-full flex flex-col space-y-2 justify-center bg-black">
         <div
-          className={`text-white flex items-center pl-4 text-xs ${
+          className={`text-white flex items-center pl-2 text-xs ${
             replyTo.content ? "opacity-100" : "opacity-0"
           }`}
         >
