@@ -7,12 +7,12 @@ import { ORBIS, ORBIS_PROJECT_ID } from "@/config";
 import { ColorRing } from "react-loader-spinner";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useAccount } from "wagmi";
+import { publicProvider } from "wagmi/providers/public";
 
 const Login: FC = () => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const { isConnected } = useAccount();
-
   const setRooms = useRooms((state) => state.setRooms);
   const setUserDid = useOrbisUser((state) => state.setUserDid);
   useEffect(() => {
@@ -47,7 +47,7 @@ const Login: FC = () => {
       setLoading(true);
       let res = await ORBIS.isConnected();
       if (res.status != 200) {
-        res = await ORBIS.connect_v2({ lit: false, chain: "ethereum" });
+        res = await ORBIS.connect_v2({ lit: false, chain: "ethereum", provider: window.ethereum });
       }
       const { data: creds } = await ORBIS.getCredentials(res.did);
       const { data: contexts } = await ORBIS.getContexts(ORBIS_PROJECT_ID);
@@ -74,7 +74,7 @@ const Login: FC = () => {
         <ColorRing width={40} height={40} />
       ) : isConnected ? (
         <button className="rounded-md border-2 border-white py-3 px-4" onClick={connectToOrbis}>
-          Authenticate
+          Login to Orbis
         </button>
       ) : (
         <ConnectButton showBalance={false} />
