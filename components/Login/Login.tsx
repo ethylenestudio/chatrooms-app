@@ -12,10 +12,9 @@ import { getWebSocketProvider } from "@wagmi/core";
 const Login: FC = () => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
-  const { isConnected } = useAccount();
+  const account = useAccount();
   const setRooms = useRooms((state) => state.setRooms);
   const setUserDid = useOrbisUser((state) => state.setUserDid);
-  const provider = getWebSocketProvider();
   useEffect(() => {
     async function update() {
       setLoading(true);
@@ -45,6 +44,11 @@ const Login: FC = () => {
 
   async function connectToOrbis() {
     try {
+      const provider = await account?.connector.getProvider()
+      if(!provider){
+        console.log("Cannot fetch a provider", { provider })
+        throw "Cannot fetch a provider"
+      }
       setLoading(true);
       let res = await ORBIS.isConnected();
       if (res.status != 200) {
@@ -73,7 +77,7 @@ const Login: FC = () => {
     <div className="text-white flex justify-center items-center h-[80vh]">
       {loading ? (
         <ColorRing width={40} height={40} />
-      ) : isConnected ? (
+      ) : account.isConnected ? (
         <button className="rounded-md border-2 border-white py-3 px-4" onClick={connectToOrbis}>
           Login to Orbis
         </button>
