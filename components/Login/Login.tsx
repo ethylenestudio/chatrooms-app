@@ -7,7 +7,6 @@ import { ORBIS, ORBIS_PROJECT_ID } from "@/config";
 import { ColorRing } from "react-loader-spinner";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useAccount } from "wagmi";
-import { publicProvider } from "wagmi/providers/public";
 
 const Login: FC = () => {
   const router = useRouter();
