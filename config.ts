@@ -2,6 +2,7 @@
 import { Orbis } from "@orbisclub/orbis-sdk";
 export const lastMessageLimit = 34;
 export const replyLimit = 30;
+export const renderMessageLimit = 100;
 export const APIROOT = "https://chatrooms-api.ethylene.io";
 export const ORBIS_IDENTIFIER = "eth-barcelona-chatrooms-beta";
 export const ORBIS = new Orbis();

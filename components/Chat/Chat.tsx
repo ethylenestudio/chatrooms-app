@@ -2,7 +2,7 @@
 import React, { FC, Fragment, useCallback, useEffect, useMemo, useState } from "react";
 import Message from "./Message";
 import { MessageType } from "@/types/MessageType";
-import { ORBIS, POLLING_RATE } from "@/config";
+import { ORBIS, POLLING_RATE, renderMessageLimit, replyLimit } from "@/config";
 import { ColorRing } from "react-loader-spinner";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 type ContextType = {
@@ -40,7 +40,7 @@ const Chat: FC<ContextType> = ({ context }) => {
         setReplyTo({ content: "", postId: "" });
         fetchMessages();
         setLoading(false);
-      }, 1000);
+      }, 1500);
     }
   }, [context, message, fetchMessages, replyTo]);
 
@@ -58,7 +58,7 @@ const Chat: FC<ContextType> = ({ context }) => {
   if (!orbisMessages) return null;
 
   return (
-    <div className="relative h-[80vh]">
+    <div className="relative h-[82vh]">
       <div className="h-[88%] overflow-scroll">
         <div className="sticky top-0 z-50 bg-[#090A10]">
           <p className="text-[#CBA1A4] text-xs pt-2 text-center flex items-center justify-center space-x-2">
@@ -128,7 +128,11 @@ const Chat: FC<ContextType> = ({ context }) => {
               className="hover:cursor-pointer"
               onClick={() => setReplyTo({ content: "", postId: "" })}
             />
-            <span className="font-bold">re:</span> {replyTo.content && replyTo.content}
+            <span className="font-bold">re:</span>{" "}
+            {replyTo.content &&
+              (replyTo.content.length > replyLimit
+                ? replyTo.content.slice(0, replyLimit - 1) + "..."
+                : replyTo.content)}
           </p>
         </div>
         <div className="flex justify-center space-x-2 w-full items-center">
@@ -137,7 +141,17 @@ const Chat: FC<ContextType> = ({ context }) => {
             className="outline-1 outline-black rounded-md text-sm px-2 py-1 w-[70%] bg-slate-400"
             type="text"
             value={message}
-            onChange={(e) => setMessage(e.target.value)}
+            onChange={(e) =>
+              setMessage((prev) => {
+                if (
+                  prev.length < renderMessageLimit ||
+                  e.target.value.length <= renderMessageLimit
+                ) {
+                  return e.target.value;
+                }
+                return prev;
+              })
+            }
           />
           <button
             onClick={async () => await sendMessage()}
