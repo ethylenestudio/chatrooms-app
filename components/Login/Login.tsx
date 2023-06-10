@@ -44,10 +44,10 @@ const Login: FC = () => {
 
   async function connectToOrbis() {
     try {
-      const provider = await account?.connector.getProvider()
-      if(!provider){
-        console.log("Cannot fetch a provider", { provider })
-        throw "Cannot fetch a provider"
+      const provider = await account?.connector?.getProvider();
+      if (!provider) {
+        console.log("Cannot fetch a provider", { provider });
+        throw "Cannot fetch a provider";
       }
       setLoading(true);
       let res = await ORBIS.isConnected();
@@ -74,7 +74,7 @@ const Login: FC = () => {
   }
 
   return (
-    <div className="text-white flex justify-center items-center h-[80vh]">
+    <div className="text-white flex justify-center items-center">
       {loading ? (
         <ColorRing width={40} height={40} />
       ) : account.isConnected ? (

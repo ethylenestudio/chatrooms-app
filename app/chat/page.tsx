@@ -6,7 +6,7 @@ import useSelectRoom from "@/hooks/useSelectRoom";
 export default function ChatPage() {
   const selectedChat = useSelectRoom((state) => state.selectedRoom);
   return (
-    <div className="overflow-scroll h-[80vh]">
+    <div className="overflow-scroll">
       <Chat context={selectedChat} />
     </div>
   );

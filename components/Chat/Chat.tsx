@@ -2,14 +2,16 @@
 import React, { FC, Fragment, useCallback, useEffect, useMemo, useState } from "react";
 import Message from "./Message";
 import { MessageType } from "@/types/MessageType";
-import { ORBIS, POLLING_RATE } from "@/config";
+import { ORBIS, POLLING_RATE, renderMessageLimit, replyLimit } from "@/config";
 import { ColorRing } from "react-loader-spinner";
 import { AiOutlineCloseCircle } from "react-icons/ai";
+import { usePathname } from "next/navigation";
 type ContextType = {
   context: string;
 };
 
 const Chat: FC<ContextType> = ({ context }) => {
+  const pathname = usePathname();
   const [orbisMessages, setOrbisMessages] = useState<MessageType[]>();
   const [message, setMessage] = useState<string>("");
   const [replyTo, setReplyTo] = useState<{ content: string; postId: string }>({
@@ -40,7 +42,7 @@ const Chat: FC<ContextType> = ({ context }) => {
         setReplyTo({ content: "", postId: "" });
         fetchMessages();
         setLoading(false);
-      }, 1000);
+      }, 1500);
     }
   }, [context, message, fetchMessages, replyTo]);
 
@@ -58,9 +60,13 @@ const Chat: FC<ContextType> = ({ context }) => {
   if (!orbisMessages) return null;
 
   return (
-    <div className="relative h-[80vh]">
-      <div className="h-[88%] overflow-scroll">
-        <div className="sticky top-0 z-50 bg-[#090A10]">
+    <div className="relative">
+      <div className="overflow-scroll pb-[90px]">
+        <div
+          className={`fixed right-0 top-[100px] ${
+            pathname == "/chat" ? "w-[100%]" : "w-[75%]"
+          } z-30 bg-[#090A10]`}
+        >
           <p className="text-[#CBA1A4] text-xs pt-2 text-center flex items-center justify-center space-x-2">
             Latest
             <span className={`${loading ? "opacity-100" : "opacity-0"}`}>
@@ -94,7 +100,7 @@ const Chat: FC<ContextType> = ({ context }) => {
           })}
         </div>
 
-        <div className="overflow-y-auto z-10">
+        <div className="overflow-y-auto z-10 pt-[120px]">
           {orbisMessages.slice(1).map((message, i) => {
             return (
               <Fragment key={i}>
@@ -116,9 +122,9 @@ const Chat: FC<ContextType> = ({ context }) => {
           })}
         </div>
       </div>
-      <div className="h-[12%] absolute bottom-0 left-0 w-full flex flex-col space-y-2 justify-center bg-black py-1">
+      <div className="h-[75px] fixed bottom-[20px] left-0 w-full flex flex-col space-y-2 justify-center bg-black">
         <div
-          className={`text-white flex items-center pl-4 text-xs ${
+          className={`text-white flex items-center pl-2 text-xs ${
             replyTo.content ? "opacity-100" : "opacity-0"
           }`}
         >
@@ -128,7 +134,11 @@ const Chat: FC<ContextType> = ({ context }) => {
               className="hover:cursor-pointer"
               onClick={() => setReplyTo({ content: "", postId: "" })}
             />
-            <span className="font-bold">re:</span> {replyTo.content && replyTo.content}
+            <span className="font-bold">re:</span>{" "}
+            {replyTo.content &&
+              (replyTo.content.length > replyLimit
+                ? replyTo.content.slice(0, replyLimit - 1) + "..."
+                : replyTo.content)}
           </p>
         </div>
         <div className="flex justify-center space-x-2 w-full items-center">
@@ -137,7 +147,17 @@ const Chat: FC<ContextType> = ({ context }) => {
             className="outline-1 outline-black rounded-md text-sm px-2 py-1 w-[70%] bg-slate-400"
             type="text"
             value={message}
-            onChange={(e) => setMessage(e.target.value)}
+            onChange={(e) =>
+              setMessage((prev) => {
+                if (
+                  prev.length < renderMessageLimit ||
+                  e.target.value.length <= renderMessageLimit
+                ) {
+                  return e.target.value;
+                }
+                return prev;
+              })
+            }
           />
           <button
             onClick={async () => await sendMessage()}

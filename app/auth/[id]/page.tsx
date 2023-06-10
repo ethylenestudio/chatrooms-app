@@ -52,7 +52,7 @@ const Auth = () => {
   }
 
   return (
-    <div className="h-[80vh] flex justify-center items-center text-white">
+    <div className="flex justify-center items-center text-white">
       {isConnected ? (
         <button
           className="border-2 border-white p-4 rounded-md"
