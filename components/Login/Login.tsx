@@ -3,12 +3,15 @@ import React, { FC, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import useRooms, { RoomType } from "@/hooks/useRooms";
 import useOrbisUser from "@/hooks/useOrbisUser";
-import { ORBIS, ORBIS_IDENTIFIER, ORBIS_PROJECT_ID } from "@/config";
+import { ORBIS, ORBIS_PROJECT_ID } from "@/config";
 import { ColorRing } from "react-loader-spinner";
+import { ConnectButton } from "@rainbow-me/rainbowkit";
+import { useAccount } from "wagmi";
 
 const Login: FC = () => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const { isConnected } = useAccount();
 
   const setRooms = useRooms((state) => state.setRooms);
   const setUserDid = useOrbisUser((state) => state.setUserDid);
@@ -39,7 +42,7 @@ const Login: FC = () => {
     update();
   }, [setRooms, router, setUserDid]);
 
-  async function connect() {
+  async function connectToOrbis() {
     try {
       setLoading(true);
       let res = await ORBIS.isConnected();
@@ -48,15 +51,15 @@ const Login: FC = () => {
       }
       const { data: creds } = await ORBIS.getCredentials(res.did);
       const { data: contexts } = await ORBIS.getContexts(ORBIS_PROJECT_ID);
+      const userContexts: any = [];
       for (const context of contexts) {
-        const userContexts: any = [];
         for (const cred of creds) {
-          if (cred.identifier == context.accessRules[0].requiredCredentials[0].identifier) {
+          if (cred.identifier == context.content.accessRules[0].requiredCredentials[0].identifier) {
             userContexts.push(context);
           }
         }
-        setRooms(userContexts);
       }
+      setRooms(userContexts);
       setUserDid(res.did);
       setLoading(false);
       router.push("/app");
@@ -67,19 +70,15 @@ const Login: FC = () => {
 
   return (
     <div className="text-white flex justify-center items-center h-[80vh]">
-      <button className="rounded-md border-2 border-white py-3 px-4" onClick={connect}>
-        {!loading ? (
-          "Connect"
-        ) : (
-          <ColorRing
-            visible={true}
-            height="30"
-            width="30"
-            ariaLabel="blocks-loading"
-            colors={["#e15b64", "#f47e60", "#f8b26a", "#abbd81", "#849b87"]}
-          />
-        )}
-      </button>
+      {loading ? (
+        <ColorRing width={40} height={40} />
+      ) : isConnected ? (
+        <button className="rounded-md border-2 border-white py-3 px-4" onClick={connectToOrbis}>
+          Authenticate
+        </button>
+      ) : (
+        <ConnectButton showBalance={false} />
+      )}
     </div>
   );
 };

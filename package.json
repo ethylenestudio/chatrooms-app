@@ -11,6 +11,7 @@
   "dependencies": {
     "@metamask/sdk": "^0.3.2",
     "@orbisclub/orbis-sdk": "^0.4.66",
+    "@rainbow-me/rainbowkit": "^0.12.12",
     "@types/node": "20.2.3",
     "@types/react": "18.2.6",
     "@types/react-dom": "18.2.4",
@@ -18,7 +19,7 @@
     "axios": "^1.4.0",
     "eslint": "8.41.0",
     "eslint-config-next": "13.4.3",
-    "ethers": "^6.5.1",
+    "ethers": "5.7",
     "next": "13.4.3",
     "postcss": "8.4.23",
     "react": "18.2.0",
@@ -28,6 +29,8 @@
     "react-query": "^3.39.3",
     "tailwindcss": "3.3.2",
     "typescript": "5.0.4",
+    "viem": "^0.3.50",
+    "wagmi": "^0.12.13",
     "zustand": "^4.3.8"
   },
   "devDependencies": {
