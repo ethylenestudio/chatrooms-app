@@ -7,6 +7,7 @@ import { ORBIS, ORBIS_PROJECT_ID } from "@/config";
 import { ColorRing } from "react-loader-spinner";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useAccount } from "wagmi";
+import { getWebSocketProvider } from "@wagmi/core";
 
 const Login: FC = () => {
   const router = useRouter();
@@ -14,6 +15,7 @@ const Login: FC = () => {
   const { isConnected } = useAccount();
   const setRooms = useRooms((state) => state.setRooms);
   const setUserDid = useOrbisUser((state) => state.setUserDid);
+  const provider = getWebSocketProvider();
   useEffect(() => {
     async function update() {
       setLoading(true);
@@ -46,7 +48,7 @@ const Login: FC = () => {
       setLoading(true);
       let res = await ORBIS.isConnected();
       if (res.status != 200) {
-        res = await ORBIS.connect_v2({ lit: false, chain: "ethereum", provider: window.ethereum });
+        res = await ORBIS.connect_v2({ lit: false, chain: "ethereum", provider: provider });
       }
       const { data: creds } = await ORBIS.getCredentials(res.did);
       const { data: contexts } = await ORBIS.getContexts(ORBIS_PROJECT_ID);
