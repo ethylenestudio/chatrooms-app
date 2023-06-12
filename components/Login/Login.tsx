@@ -74,7 +74,7 @@ const Login: FC = () => {
   }
 
   return (
-    <div className="text-white flex justify-center items-center">
+    <div className="text-white h-[100%] flex justify-center items-center">
       {loading ? (
         <ColorRing width={40} height={40} />
       ) : account.isConnected ? (

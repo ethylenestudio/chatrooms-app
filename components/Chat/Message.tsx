@@ -4,6 +4,7 @@ import React, { FC, useCallback, useEffect, useState } from "react";
 import { BiUpvote } from "react-icons/bi";
 import useOrbisUser from "@/hooks/useOrbisUser";
 import { ORBIS, replyLimit } from "@/config";
+import { ColorRing } from "react-loader-spinner";
 type MessageType = {
   content: string;
   sender: string;
@@ -33,6 +34,7 @@ const Message: FC<MessageType> = ({
   const userDid = useOrbisUser((state) => state.userDid);
   const [isReacted, setIsReacted] = useState(false);
   const [masterMessage, setMasterMessage] = useState("");
+  const [loading, setLoading] = useState(false);
   const fetchUserReaction = useCallback(async () => {
     const { data } = await ORBIS.getReaction(postId, userDid);
     if (data?.type == "like") {
@@ -43,13 +45,15 @@ const Message: FC<MessageType> = ({
     return data;
   }, [postId, userDid, setIsReacted]);
   const reactToPost = useCallback(async () => {
+    setLoading(true);
     const res = await ORBIS.react(postId, "like");
     if (res.status == 200) {
       if (refetchAllMessages) {
-        setTimeout(() => {
-          refetchAllMessages();
+        setTimeout(async () => {
+          await refetchAllMessages();
           setIsReacted(true);
-        }, 3000);
+          setLoading(false);
+        }, 1000);
       }
     }
   }, [postId, refetchAllMessages]);
@@ -97,7 +101,11 @@ const Message: FC<MessageType> = ({
         onClick={reactToPost}
         className={`w-[15%] rounded-md flex items-center justify-center space-x-1 py-1 bg-black hover:cursor-pointer hover:opacity-80`}
       >
-        <BiUpvote color={isReacted ? "#CBA1A4" : "#4A5875"} />
+        {loading ? (
+          <ColorRing height="18" width="18" />
+        ) : (
+          <BiUpvote color={isReacted ? "#CBA1A4" : "#4A5875"} />
+        )}
         <p className={`${isReacted ? "text-[#CBA1A4]" : "text-[#4A5875]"} text-sm`}>{upvotes}</p>
       </div>
     </div>

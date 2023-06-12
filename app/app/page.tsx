@@ -18,7 +18,7 @@ const App = () => {
   const selectedChat = useSelectRoom((state) => state.selectedRoom);
   useEffect(() => {
     checkConnection();
-  }, [checkConnection, selectedChat]);
+  }, [checkConnection]);
 
   if (width <= 760) {
     return (

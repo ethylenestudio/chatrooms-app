@@ -19,6 +19,7 @@ const Chat: FC<ContextType> = ({ context }) => {
     postId: "",
   });
   const [loading, setLoading] = useState(false);
+  const [sending, setSending] = useState(false);
 
   const fetchMessages = useCallback(async () => {
     setLoading(true);
@@ -31,6 +32,7 @@ const Chat: FC<ContextType> = ({ context }) => {
 
   const sendMessage = useCallback(async () => {
     setLoading(true);
+    setSending(true);
     const res = await ORBIS.createPost({
       body: message,
       context: context,
@@ -42,6 +44,7 @@ const Chat: FC<ContextType> = ({ context }) => {
         setReplyTo({ content: "", postId: "" });
         fetchMessages();
         setLoading(false);
+        setSending(false);
       }, 1500);
     }
   }, [context, message, fetchMessages, replyTo]);
@@ -60,7 +63,7 @@ const Chat: FC<ContextType> = ({ context }) => {
   if (!orbisMessages) return null;
 
   return (
-    <div className="relative">
+    <div className="">
       <div className="overflow-scroll pb-[90px]">
         <div
           className={`fixed right-0 top-[100px] ${
@@ -161,9 +164,9 @@ const Chat: FC<ContextType> = ({ context }) => {
           />
           <button
             onClick={async () => await sendMessage()}
-            className="px-2 text-sm py-1 rounded-md w-[20%] text-center bg-slate-500 text-white"
+            className="px-2 text-sm py-1 rounded-md w-[20%] flex justify-center text-center bg-slate-500 text-white"
           >
-            Send
+            {sending ? <ColorRing height="20" width="20" /> : "Send"}
           </button>
         </div>
       </div>
