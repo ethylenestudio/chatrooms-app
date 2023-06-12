@@ -31,23 +31,25 @@ const Chat: FC<ContextType> = ({ context }) => {
   }, [context]);
 
   const sendMessage = useCallback(async () => {
-    setLoading(true);
-    setSending(true);
-    const res = await ORBIS.createPost({
-      body: message,
-      context: context,
-      master: replyTo.content ? replyTo.postId : null,
-    });
-    if (res.status == 200) {
-      setTimeout(() => {
-        setMessage("");
-        setReplyTo({ content: "", postId: "" });
-        fetchMessages();
-        setLoading(false);
-        setSending(false);
-      }, 1500);
+    if (!sending) {
+      setLoading(true);
+      setSending(true);
+      const res = await ORBIS.createPost({
+        body: message,
+        context: context,
+        master: replyTo.content ? replyTo.postId : null,
+      });
+      if (res.status == 200) {
+        setTimeout(() => {
+          setMessage("");
+          setReplyTo({ content: "", postId: "" });
+          fetchMessages();
+          setLoading(false);
+          setSending(false);
+        }, 1500);
+      }
     }
-  }, [context, message, fetchMessages, replyTo]);
+  }, [context, message, fetchMessages, replyTo, sending]);
 
   useEffect(() => {
     fetchMessages();
