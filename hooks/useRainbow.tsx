@@ -1,6 +1,10 @@
 "use client";
 import "@rainbow-me/rainbowkit/styles.css";
-import { injectedWallet, metaMaskWallet } from "@rainbow-me/rainbowkit/wallets";
+import {
+  injectedWallet,
+  metaMaskWallet,
+  walletConnectWallet,
+} from "@rainbow-me/rainbowkit/wallets";
 import { connectorsForWallets, RainbowKitProvider } from "@rainbow-me/rainbowkit";
 import { configureChains, createClient, WagmiConfig } from "wagmi";
 import { mainnet } from "wagmi/chains";
@@ -12,7 +16,11 @@ const { chains, provider } = configureChains([mainnet], [publicProvider()]);
 const connectors = connectorsForWallets([
   {
     groupName: "Recommended",
-    wallets: [injectedWallet({ chains }), metaMaskWallet({ chains })],
+    wallets: [
+      injectedWallet({ chains }),
+      metaMaskWallet({ chains }),
+      walletConnectWallet({ chains }),
+    ],
   },
 ]);
 
