@@ -1,7 +1,7 @@
 "use client";
 import React, { FC, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
-import { IoArrowBackCircleSharp } from "react-icons/io5";
+import { AiOutlineArrowLeft } from "react-icons/ai";
 import { IoSettingsOutline } from "react-icons/io5";
 import { ORBIS, userNameLimit } from "@/config";
 const Header: FC = () => {
@@ -21,14 +21,22 @@ const Header: FC = () => {
     <div className="text-white sticky top-0 left-0 right-0 z-50 mimic-bg h-[100px] w-full flex justify-center items-center flex-col">
       {pathname == "/chat" ? (
         <p className="absolute top-0 left-0 mt-4 ml-2">
-          <IoArrowBackCircleSharp onClick={() => router.push("/app")} size={30} />
+          <AiOutlineArrowLeft
+            color="rgb(148,163,184)"
+            onClick={() => router.push("/app")}
+            size={26}
+          />
         </p>
       ) : null}
       <h1 className="font-bold">ETH Barcelona Community</h1>
       <p className="text-sm">July 4 - July 9</p>
       {pathname == "/chat" || pathname == "/app" ? (
         <div className="self-end flex justify-start items-center px-4">
-          <IoSettingsOutline onClick={() => setIsOpen((prev) => !prev)} size={20} />
+          <IoSettingsOutline
+            color="rgb(148,163,184)"
+            onClick={() => setIsOpen((prev) => !prev)}
+            size={20}
+          />
           {isOpen && (
             <div
               onClick={(e) => {

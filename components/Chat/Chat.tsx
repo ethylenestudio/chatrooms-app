@@ -180,7 +180,7 @@ const Chat: FC<ContextType> = ({ context }) => {
         <div className="flex justify-center space-x-2 w-full items-center">
           <input
             placeholder="Ask a question"
-            className="outline-1 text-slate-400 outline-black rounded-2xl text-sm px-2 py-1 w-[70%] bg-[rgba(0,0,0,0.2)]"
+            className="outline-1 border-[1px] border-slate-400 text-slate-400 outline-black rounded-2xl text-sm px-4 py-1 w-[70%] bg-[rgba(0,0,0,0.2)]"
             type="text"
             value={message}
             onChange={(e) =>
