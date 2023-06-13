@@ -5,7 +5,7 @@ import { MessageType } from "@/types/MessageType";
 import { ORBIS, POLLING_RATE, renderMessageLimit, replyLimit } from "@/config";
 import { ColorRing } from "react-loader-spinner";
 import { AiOutlineCloseCircle } from "react-icons/ai";
-import { BsFillSendFill } from "react-icons/bs";
+import { BsFillArrowUpCircleFill } from "react-icons/bs";
 import { usePathname } from "next/navigation";
 type ContextType = {
   context: string;
@@ -183,10 +183,10 @@ const Chat: FC<ContextType> = ({ context }) => {
           </p>
           <p>Chars: {renderMessageLimit - message.length}</p>
         </div>
-        <div className="flex justify-center space-x-2 w-full items-center">
+        <div className="flex justify-center space-x-2 px-4 w-full items-center">
           <input
             placeholder="Ask a question"
-            className="outline-1 border-[1px] border-slate-400 text-slate-400 outline-black rounded-2xl text-sm px-4 py-1 w-[70%] bg-[rgba(0,0,0,0.2)]"
+            className="outline-1 border-[1px] border-slate-400 text-slate-400 outline-black rounded-2xl text-sm px-4 py-1 w-[90%] bg-[rgba(0,0,0,0.2)]"
             type="text"
             value={message}
             onChange={(e) =>
@@ -203,7 +203,7 @@ const Chat: FC<ContextType> = ({ context }) => {
           />
           <button
             onClick={async () => await sendMessage()}
-            className="px-2 text-sm py-[6px] rounded-2xl w-[20%] flex justify-center text-center bg-slate-500 text-white"
+            className="text-sm flex justify-center text-center text-white"
           >
             {sending ? (
               <ColorRing
@@ -218,7 +218,7 @@ const Chat: FC<ContextType> = ({ context }) => {
                 ]}
               />
             ) : (
-              <BsFillSendFill size={18} />
+              <BsFillArrowUpCircleFill color="rgb(100,116,139)" size={28} />
             )}
           </button>
         </div>

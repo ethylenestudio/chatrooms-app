@@ -102,7 +102,17 @@ const Message: FC<MessageType> = ({
         className={`w-[15%] rounded-md flex items-center justify-center space-x-1 py-1 bg-black hover:cursor-pointer hover:opacity-80`}
       >
         {loading ? (
-          <ColorRing height="18" width="18" />
+          <ColorRing
+            height="18"
+            width="18"
+            colors={[
+              "rgb(100,116,139)",
+              "#CBA1A4",
+              "rgb(100,116,139)",
+              "#CBA1A4",
+              "rgb(100,116,139)",
+            ]}
+          />
         ) : (
           <BiUpvote color={isReacted ? "#CBA1A4" : "#4A5875"} />
         )}
