@@ -61,9 +61,9 @@ const Chat: FC<ContextType> = ({ context }) => {
           setMessage("");
           setReplyTo({ content: "", postId: "" });
           fetchMessages();
-          setSending(false);
           window.scrollTo(0, 0);
-        }, 1500);
+          setSending(false);
+        }, 1800);
       }
     }
   }, [context, message, fetchMessages, replyTo, sending]);
