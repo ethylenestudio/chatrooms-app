@@ -53,6 +53,7 @@ const Chat: FC<ContextType> = ({ context }) => {
         body: message,
         context: context,
         master: replyTo.content ? replyTo.postId : null,
+        reploy_to: replyTo.content ? replyTo.postId : null,
       });
       if (res.status == 200) {
         setTimeout(() => {
