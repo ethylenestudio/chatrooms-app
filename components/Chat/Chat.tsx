@@ -86,7 +86,7 @@ const Chat: FC<ContextType> = ({ context }) => {
 
   return (
     <div>
-      <div className="pb-[90px] overflow-auto">
+      <div className="pb-[120px] overflow-auto">
         <div
           className={`fixed right-0 top-[100px] ${
             pathname == "/chat" ? "w-[100%]" : "w-[75%]"
@@ -153,7 +153,7 @@ const Chat: FC<ContextType> = ({ context }) => {
         </div>
       </div>
       <div
-        className={` h-[75px] fixed bottom-[20px] left-0 flex flex-col space-y-2 justify-center bg-black ${
+        className={` h-[75px] fixed bottom-[50px] left-0 flex flex-col space-y-2 justify-center bg-black ${
           pathname == "/chat" ? "w-[100%]" : "w-[75%] left-auto right-0"
         }`}
       >
