@@ -19,7 +19,7 @@ export default function ChatPage() {
     checkConnection();
   }, [checkConnection]);
   return (
-    <div className="overflow-auto">
+    <div className="overflow-y-auto">
       <Chat context={selectedChat} />
     </div>
   );
