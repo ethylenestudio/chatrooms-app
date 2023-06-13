@@ -13,7 +13,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <QueryClientProvider client={queryClient}>
           <RainbowProvider>
             <Header />
-            <main className="h-[100%]" id="main-content">
+            <main className="h-[100%] max-w-[100vw]" id="main-content">
               {children}
             </main>
             <Footer />
