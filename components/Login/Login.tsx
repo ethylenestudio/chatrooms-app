@@ -33,6 +33,7 @@ const Login: FC = () => {
             }
           }
         }
+        console.log(userContexts);
         setRooms(userContexts);
         setUserDid(res.did);
         setLoading(false);

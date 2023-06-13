@@ -17,7 +17,6 @@ const Menu: FC = () => {
     return data;
   };
   const [width, height] = useWindowSize();
-
   useEffect(() => {
     if (rooms == null) return;
     const polling = async () => {
@@ -39,7 +38,7 @@ const Menu: FC = () => {
   }, [rooms]);
   if (!hasHydrated) return null;
   return (
-    <div className="relative">
+    <div className="relative pt-[110px]">
       <div
         className={`${
           width <= 760 ? "w-[100%]" : "w-[25%]"
