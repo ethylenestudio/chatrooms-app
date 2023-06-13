@@ -35,8 +35,8 @@ const Login: FC = () => {
         }
         setRooms(userContexts);
         setUserDid(res.did);
-        setLoading(false);
         router.push("/app");
+        setLoading(false);
       }
       setLoading(false);
     }
@@ -66,8 +66,8 @@ const Login: FC = () => {
       }
       setRooms(userContexts);
       setUserDid(res.did);
-      setLoading(false);
       router.push("/app");
+      setLoading(false);
     } catch (e) {
       setLoading(false);
     }
@@ -93,7 +93,7 @@ const Login: FC = () => {
         />
       ) : account.isConnected ? (
         <button
-          className="rounded-xl bg-[#CBA1A4] border-white py-2 text-sm px-4"
+          className="rounded-3xl bg-[#CBA1A4] border-white py-2 text-sm px-4"
           onClick={connectToOrbis}
         >
           Login to Orbis

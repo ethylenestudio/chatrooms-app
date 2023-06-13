@@ -4,11 +4,13 @@ import { usePathname, useRouter } from "next/navigation";
 import { IoIosArrowBack } from "react-icons/io";
 import { IoSettingsOutline } from "react-icons/io5";
 import { ORBIS, userNameLimit } from "@/config";
+import useHydrated from "@/hooks/useHydrated";
 const Header: FC = () => {
   const pathname = usePathname();
   const router = useRouter();
   const [username, setUsername] = useState("");
   const [isOpen, setIsOpen] = useState(false);
+  const hasHydrated = useHydrated();
   async function updateUsername() {
     if (username) {
       const res = await ORBIS.updateProfile({ username });
@@ -16,7 +18,7 @@ const Header: FC = () => {
     setUsername("");
     setIsOpen(false);
   }
-
+  if (!hasHydrated) return null;
   return (
     <div className="text-white sticky top-0 left-0 right-0 z-50 mimic-bg h-[100px] w-full flex justify-center items-center flex-col">
       {pathname == "/chat" ? (
