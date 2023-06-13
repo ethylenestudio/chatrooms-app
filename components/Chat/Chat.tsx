@@ -90,7 +90,7 @@ const Chat: FC<ContextType> = ({ context }) => {
       <div className="pb-[120px] overflow-y-auto">
         <div
           className={`fixed right-[env(safe-area-inset-right)] top-[100px] ${
-            pathname == "/chat" ? "w-[100%]" : "w-[75%]"
+            pathname == "/chat" ? "w-[100%]" : "w-[75%] 2xl:2-[74%] 2xl:right-[1%]"
           } z-30 bg-[#090A10]`}
         >
           <p className="text-[#CBA1A4] text-xs pt-2 text-center flex items-center justify-center space-x-2">

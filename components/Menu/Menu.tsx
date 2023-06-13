@@ -40,7 +40,7 @@ const Menu: FC = () => {
     <div className="relative overflow-y-auto pt-[114px]">
       <div
         className={`${
-          width <= 760 ? "w-[100%]" : "w-[25%]"
+          width <= 760 ? "w-[100%]" : "w-[25%] 2xl:w-[24%]"
         } bg-[#090A10] border-r-2 border-slate-900 fixed top-[100px] left-0`}
       >
         <p className="text-[#CBA1A4] text-xs pt-2 text-center">Rooms</p>
