@@ -29,7 +29,7 @@ const App = () => {
   } else {
     return (
       <div className="hidden md:flex">
-        <div className="w-[25%] max-w-[400px] border-r-2 border-slate-900">
+        <div className="w-[25%] border-r-2 border-slate-900">
           <Menu />
         </div>
         <div className="w-[75%]">
