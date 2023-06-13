@@ -197,7 +197,7 @@ const Chat: FC<ContextType> = ({ context }) => {
           />
           <button
             onClick={async () => await sendMessage()}
-            className="px-2 text-sm py-[5px] rounded-2xl w-[20%] flex justify-center text-center bg-slate-500 text-white"
+            className="px-2 text-sm py-[6px] rounded-2xl w-[20%] flex justify-center text-center bg-slate-500 text-white"
           >
             {sending ? <ColorRing height="20" width="20" /> : <BsFillSendFill size={18} />}
           </button>
