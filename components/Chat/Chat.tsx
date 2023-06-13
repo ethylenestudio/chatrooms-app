@@ -20,10 +20,20 @@ const Chat: FC<ContextType> = ({ context }) => {
   });
   const [loading, setLoading] = useState(false);
   const [sending, setSending] = useState(false);
+  const [popularMessage, setPopularMessage] = useState<MessageType>();
 
   const fetchMessages = useCallback(async () => {
     setLoading(true);
-    const { data, error } = await ORBIS.getPosts({
+    const { data } = await ORBIS.getPosts({
+      context,
+    });
+    setOrbisMessages(data);
+    setLoading(false);
+  }, [context]);
+
+  const fetchPopularMessage = useCallback(async () => {
+    setLoading(true);
+    const { data } = await ORBIS.getPosts({
       context,
     });
     setOrbisMessages(data);
@@ -127,7 +137,11 @@ const Chat: FC<ContextType> = ({ context }) => {
           })}
         </div>
       </div>
-      <div className="h-[75px] fixed bottom-[20px] left-0 w-full flex flex-col space-y-2 justify-center bg-black">
+      <div
+        className={` h-[75px] fixed bottom-[20px] left-0 flex flex-col space-y-2 justify-center bg-black ${
+          pathname == "/chat" ? "w-[100%]" : "w-[75%] left-auto right-0"
+        }`}
+      >
         <div
           className={`text-white flex items-center pl-2 text-xs ${
             replyTo.content ? "opacity-100" : "opacity-0"
