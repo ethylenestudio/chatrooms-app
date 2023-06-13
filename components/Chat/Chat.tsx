@@ -33,10 +33,16 @@ const Chat: FC<ContextType> = ({ context }) => {
 
   const fetchPopularMessage = useCallback(async () => {
     setLoading(true);
-    const { data } = await ORBIS.getPosts({
-      context,
-    });
-    setOrbisMessages(data);
+    const { data } = await ORBIS.getPosts(
+      {
+        context,
+        only_master: true,
+        order_by: "count_likes",
+      },
+      0,
+      1
+    );
+    setPopularMessage(data[0]);
     setLoading(false);
   }, [context]);
 
@@ -62,28 +68,32 @@ const Chat: FC<ContextType> = ({ context }) => {
   }, [context, message, fetchMessages, replyTo, sending]);
 
   useEffect(() => {
+    fetchPopularMessage();
     fetchMessages();
-  }, [fetchMessages]);
+  }, [fetchMessages, fetchPopularMessage]);
 
   useEffect(() => {
-    const polling = setInterval(fetchMessages, POLLING_RATE);
+    const polling = setInterval(async () => {
+      await fetchPopularMessage();
+      await fetchMessages();
+    }, POLLING_RATE);
     return () => {
       clearInterval(polling);
     };
-  }, [fetchMessages]);
+  }, [fetchMessages, fetchPopularMessage]);
 
   if (!orbisMessages) return null;
 
   return (
-    <div className="">
-      <div className="overflow-scroll pb-[90px]">
+    <div className="overflow-y-auto">
+      <div className="pb-[90px]">
         <div
           className={`fixed right-0 top-[100px] ${
             pathname == "/chat" ? "w-[100%]" : "w-[75%]"
           } z-30 bg-[#090A10]`}
         >
           <p className="text-[#CBA1A4] text-xs pt-2 text-center flex items-center justify-center space-x-2">
-            Latest
+            Popular Message
             <span className={`${loading ? "opacity-100" : "opacity-0"}`}>
               <ColorRing
                 visible={true}
@@ -94,46 +104,51 @@ const Chat: FC<ContextType> = ({ context }) => {
               />
             </span>
           </p>
-          {orbisMessages.slice(0, 1).map((message, i) => {
-            return (
-              <Fragment key={i}>
-                <Message
-                  postId={message.stream_id}
-                  content={message.content.body}
-                  sender={message.creator}
-                  upvotes={message.count_likes}
-                  key={i}
-                  refetchAllMessages={fetchMessages}
-                  setThisAsReply={setReplyTo}
-                  master={message.master}
-                  username={
-                    message.creator_details.profile ? message.creator_details.profile.username : ""
-                  }
-                />
-              </Fragment>
-            );
-          })}
+          {popularMessage?.stream_id && (
+            <Message
+              postId={popularMessage.stream_id}
+              content={
+                popularMessage.content.body.length > renderMessageLimit
+                  ? popularMessage.content.body.slice(0, renderMessageLimit - 3) + "..."
+                  : popularMessage.content.body
+              }
+              sender={popularMessage.creator}
+              upvotes={popularMessage.count_likes}
+              refetchAllMessages={fetchMessages}
+              setThisAsReply={setReplyTo}
+              master={popularMessage.master}
+              username={
+                popularMessage.creator_details.profile
+                  ? popularMessage.creator_details.profile.username
+                  : ""
+              }
+            />
+          )}
         </div>
 
-        <div className="overflow-y-auto z-10 pt-[120px]">
-          {orbisMessages.slice(1).map((message, i) => {
-            return (
-              <Fragment key={i}>
-                <Message
-                  postId={message.stream_id}
-                  content={message.content.body}
-                  sender={message.creator}
-                  upvotes={message.count_likes}
-                  key={i}
-                  refetchAllMessages={fetchMessages}
-                  setThisAsReply={setReplyTo}
-                  master={message.master}
-                  username={
-                    message.creator_details.profile ? message.creator_details.profile.username : ""
-                  }
-                />
-              </Fragment>
-            );
+        <div className="overflow-y-auto z-10 pt-[150px] md:pt-[100px]">
+          {orbisMessages.map((message, i) => {
+            if (message.stream_id != popularMessage?.stream_id) {
+              return (
+                <Fragment key={i}>
+                  <Message
+                    postId={message.stream_id}
+                    content={message.content.body}
+                    sender={message.creator}
+                    upvotes={message.count_likes}
+                    key={i}
+                    refetchAllMessages={fetchMessages}
+                    setThisAsReply={setReplyTo}
+                    master={message.master}
+                    username={
+                      message.creator_details.profile
+                        ? message.creator_details.profile.username
+                        : ""
+                    }
+                  />
+                </Fragment>
+              );
+            }
           })}
         </div>
       </div>
@@ -142,12 +157,12 @@ const Chat: FC<ContextType> = ({ context }) => {
           pathname == "/chat" ? "w-[100%]" : "w-[75%] left-auto right-0"
         }`}
       >
-        <div
-          className={`text-white flex items-center pl-2 text-xs ${
-            replyTo.content ? "opacity-100" : "opacity-0"
-          }`}
-        >
-          <p className="flex items-center space-x-4">
+        <div className={`text-white flex justify-between items-center pl-2 text-xs px-4`}>
+          <p
+            className={`flex items-center space-x-4 ${
+              replyTo.content ? "opacity-100" : "opacity-0"
+            }`}
+          >
             <AiOutlineCloseCircle
               size={18}
               className="hover:cursor-pointer"
@@ -159,6 +174,7 @@ const Chat: FC<ContextType> = ({ context }) => {
                 ? replyTo.content.slice(0, replyLimit - 1) + "..."
                 : replyTo.content)}
           </p>
+          <p>Chars: {renderMessageLimit - message.length}</p>
         </div>
         <div className="flex justify-center space-x-2 w-full items-center">
           <input

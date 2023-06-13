@@ -95,7 +95,7 @@ const Message: FC<MessageType> = ({
             </p>
           )}
         </div>
-        <p className="text-[12px] font-extralight">{content}</p>
+        <p className="text-[12px] break-all font-extralight">{content}</p>
       </div>
       <div
         onClick={reactToPost}

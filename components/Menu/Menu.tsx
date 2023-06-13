@@ -1,11 +1,10 @@
 "use client";
 import React, { FC, Fragment, useCallback, useEffect, useState } from "react";
 import GeneralConversation from "./GeneralConversation";
-import useRooms, { RoomType } from "@/hooks/useRooms";
+import useRooms from "@/hooks/useRooms";
 import Conversation from "./Conversation";
 import useHydrated from "@/hooks/useHydrated";
 import { ORBIS, POLLING_RATE } from "@/config";
-import { usePathname } from "next/navigation";
 import useWindowSize from "@/hooks/useWindowSize";
 
 const Menu: FC = () => {
@@ -38,7 +37,7 @@ const Menu: FC = () => {
   }, [rooms]);
   if (!hasHydrated) return null;
   return (
-    <div className="relative pt-[110px]">
+    <div className="relative overflow-y-scroll pt-[114px]">
       <div
         className={`${
           width <= 760 ? "w-[100%]" : "w-[25%]"

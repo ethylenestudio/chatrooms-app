@@ -22,17 +22,17 @@ const App = () => {
 
   if (width <= 760) {
     return (
-      <div className="overflow-scroll md:hidden">
+      <div className="md:hidden">
         <Menu />
       </div>
     );
   } else {
     return (
-      <div className="hidden md:flex">
-        <div className="overflow-scroll w-[25%] max-w-[400px] border-r-2 border-slate-900">
+      <div className="hidden md:flex max-h-[100%]">
+        <div className="overflow-y-scroll w-[25%] h-[100%] max-w-[400px] border-r-2 border-slate-900">
           <Menu />
         </div>
-        <div className="overflow-scroll w-[75%]">
+        <div className="overflow-y-scroll w-[75%] h-[100%]">
           <Chat context={selectedChat} />
         </div>
       </div>
