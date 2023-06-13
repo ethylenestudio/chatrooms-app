@@ -80,7 +80,17 @@ const Login: FC = () => {
         Welcome, start sharing your thoughts now!
       </p>
       {loading ? (
-        <ColorRing width={40} height={40} />
+        <ColorRing
+          width={40}
+          height={40}
+          colors={[
+            "rgb(100,116,139)",
+            "#CBA1A4",
+            "rgb(100,116,139)",
+            "#CBA1A4",
+            "rgb(100,116,139)",
+          ]}
+        />
       ) : account.isConnected ? (
         <button
           className="rounded-xl bg-[#CBA1A4] border-white py-2 text-sm px-4"

@@ -101,7 +101,13 @@ const Chat: FC<ContextType> = ({ context }) => {
                 height="20"
                 width="20"
                 ariaLabel="blocks-loading"
-                colors={["#e15b64", "#f47e60", "#f8b26a", "#abbd81", "#849b87"]}
+                colors={[
+                  "rgb(100,116,139)",
+                  "#CBA1A4",
+                  "rgb(100,116,139)",
+                  "#CBA1A4",
+                  "rgb(100,116,139)",
+                ]}
               />
             </span>
           </p>
@@ -199,7 +205,21 @@ const Chat: FC<ContextType> = ({ context }) => {
             onClick={async () => await sendMessage()}
             className="px-2 text-sm py-[6px] rounded-2xl w-[20%] flex justify-center text-center bg-slate-500 text-white"
           >
-            {sending ? <ColorRing height="20" width="20" /> : <BsFillSendFill size={18} />}
+            {sending ? (
+              <ColorRing
+                height="20"
+                width="20"
+                colors={[
+                  "rgb(100,116,139)",
+                  "#CBA1A4",
+                  "rgb(100,116,139)",
+                  "#CBA1A4",
+                  "rgb(100,116,139)",
+                ]}
+              />
+            ) : (
+              <BsFillSendFill size={18} />
+            )}
           </button>
         </div>
       </div>
