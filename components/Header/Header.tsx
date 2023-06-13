@@ -18,7 +18,7 @@ const Header: FC = () => {
   }
 
   return (
-    <div className="text-white sticky top-0 left-0 right-0 z-50 bg-black h-[100px] w-full flex justify-center items-center flex-col">
+    <div className="text-white sticky top-0 left-0 right-0 z-50 mimic-bg h-[100px] w-full flex justify-center items-center flex-col">
       {pathname == "/chat" ? (
         <p className="absolute top-0 left-0 mt-4 ml-2">
           <IoArrowBackCircleSharp onClick={() => router.push("/app")} size={30} />

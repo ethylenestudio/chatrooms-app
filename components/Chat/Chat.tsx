@@ -5,6 +5,7 @@ import { MessageType } from "@/types/MessageType";
 import { ORBIS, POLLING_RATE, renderMessageLimit, replyLimit } from "@/config";
 import { ColorRing } from "react-loader-spinner";
 import { AiOutlineCloseCircle } from "react-icons/ai";
+import { BsFillSendFill } from "react-icons/bs";
 import { usePathname } from "next/navigation";
 type ContextType = {
   context: string;
@@ -126,7 +127,7 @@ const Chat: FC<ContextType> = ({ context }) => {
           )}
         </div>
 
-        <div className="overflow-y-auto z-10 pt-[150px] md:pt-[100px]">
+        <div className="overflow-y-auto z-10 pt-[120px] md:pt-[100px]">
           {orbisMessages.map((message, i) => {
             if (message.stream_id != popularMessage?.stream_id) {
               return (
@@ -153,7 +154,7 @@ const Chat: FC<ContextType> = ({ context }) => {
         </div>
       </div>
       <div
-        className={` h-[75px] fixed bottom-[50px] left-0 flex flex-col space-y-2 justify-center bg-black ${
+        className={` h-[75px] fixed bottom-[50px] left-0 flex flex-col space-y-2 justify-center bg-[rgba(8,9,13,1)] ${
           pathname == "/chat" ? "w-[100%]" : "w-[75%] left-auto right-0"
         }`}
       >
@@ -178,8 +179,8 @@ const Chat: FC<ContextType> = ({ context }) => {
         </div>
         <div className="flex justify-center space-x-2 w-full items-center">
           <input
-            placeholder="New message"
-            className="outline-1 outline-black rounded-md text-sm px-2 py-1 w-[70%] bg-slate-400"
+            placeholder="Ask a question"
+            className="outline-1 text-slate-400 outline-black rounded-2xl text-sm px-2 py-1 w-[70%] bg-[rgba(0,0,0,0.2)]"
             type="text"
             value={message}
             onChange={(e) =>
@@ -196,9 +197,9 @@ const Chat: FC<ContextType> = ({ context }) => {
           />
           <button
             onClick={async () => await sendMessage()}
-            className="px-2 text-sm py-1 rounded-md w-[20%] flex justify-center text-center bg-slate-500 text-white"
+            className="px-2 text-sm py-[5px] rounded-2xl w-[20%] flex justify-center text-center bg-slate-500 text-white"
           >
-            {sending ? <ColorRing height="20" width="20" /> : "Send"}
+            {sending ? <ColorRing height="20" width="20" /> : <BsFillSendFill size={18} />}
           </button>
         </div>
       </div>
