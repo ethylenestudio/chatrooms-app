@@ -10,6 +10,7 @@ body,
 html {
   margin: 0;
   font-family: var(--font-poppins);
+  max-width: 100vw;
   height: 100%;
   box-sizing: border-box;
   width: 100vw;
