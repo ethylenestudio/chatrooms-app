@@ -1,7 +1,7 @@
 "use client";
 import React, { FC, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
-import { AiOutlineArrowLeft } from "react-icons/ai";
+import { IoIosArrowBack } from "react-icons/io";
 import { IoSettingsOutline } from "react-icons/io5";
 import { ORBIS, userNameLimit } from "@/config";
 const Header: FC = () => {
@@ -21,11 +21,7 @@ const Header: FC = () => {
     <div className="text-white sticky top-0 left-0 right-0 z-50 mimic-bg h-[100px] w-full flex justify-center items-center flex-col">
       {pathname == "/chat" ? (
         <p className="absolute top-0 left-0 mt-4 ml-2">
-          <AiOutlineArrowLeft
-            color="rgb(148,163,184)"
-            onClick={() => router.push("/app")}
-            size={26}
-          />
+          <IoIosArrowBack color="rgb(148,163,184)" onClick={() => router.push("/app")} size={26} />
         </p>
       ) : null}
       <h1 className="font-bold">ETH Barcelona Community</h1>
