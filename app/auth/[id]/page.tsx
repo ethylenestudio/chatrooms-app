@@ -19,18 +19,6 @@ const Auth = () => {
   const ethereum = MMSDK.getProvider(); // You can also access via window.ethereum
   const { signMessageAsync } = useSignMessage({ message: MESSAGE });
 
-  async function connect() {
-    if (ethereum) {
-      const accounts = await ethereum.request({
-        method: "eth_requestAccounts",
-        params: [],
-      });
-      setAccount({ accounts });
-    } else {
-      alert("You dont have Metamask");
-    }
-  }
-
   async function sign(savedSignature?: string) {
     let sign;
     if (savedSignature) {

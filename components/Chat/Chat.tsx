@@ -139,7 +139,7 @@ const Chat: FC<ContextType> = ({ context }) => {
               className="hover:cursor-pointer"
               onClick={() => setReplyTo({ content: "", postId: "" })}
             />
-            <span className="font-bold">re:</span>{" "}
+            <span className="font-bold">re: </span>
             {replyTo.content &&
               (replyTo.content.length > replyLimit
                 ? replyTo.content.slice(0, replyLimit - 1) + "..."

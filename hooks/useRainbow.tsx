@@ -5,7 +5,7 @@ import {
   metaMaskWallet,
   walletConnectWallet,
 } from "@rainbow-me/rainbowkit/wallets";
-import { connectorsForWallets, RainbowKitProvider } from "@rainbow-me/rainbowkit";
+import { connectorsForWallets, darkTheme, RainbowKitProvider } from "@rainbow-me/rainbowkit";
 import { configureChains, createClient, WagmiConfig } from "wagmi";
 import { mainnet } from "wagmi/chains";
 import { publicProvider } from "wagmi/providers/public";
@@ -33,7 +33,17 @@ const wagmiClient = createClient({
 export const RainbowProvider = ({ children }: PropsWithChildren) => {
   return (
     <WagmiConfig client={wagmiClient}>
-      <RainbowKitProvider chains={chains}>{children}</RainbowKitProvider>
+      <RainbowKitProvider
+        theme={darkTheme({
+          accentColor: "#CBA1A4",
+          accentColorForeground: "white",
+          borderRadius: "large",
+          overlayBlur: "small",
+        })}
+        chains={chains}
+      >
+        {children}
+      </RainbowKitProvider>
     </WagmiConfig>
   );
 };
