@@ -37,7 +37,7 @@ const Menu: FC = () => {
   }, [rooms]);
   if (!hasHydrated) return null;
   return (
-    <div className="relative overflow-y-scroll pt-[114px]">
+    <div className="relative overflow-y-auto pt-[114px]">
       <div
         className={`${
           width <= 760 ? "w-[100%]" : "w-[25%]"

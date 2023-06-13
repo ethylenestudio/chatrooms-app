@@ -48,7 +48,6 @@ const Chat: FC<ContextType> = ({ context }) => {
 
   const sendMessage = useCallback(async () => {
     if (!sending) {
-      setLoading(true);
       setSending(true);
       const res = await ORBIS.createPost({
         body: message,
@@ -60,8 +59,8 @@ const Chat: FC<ContextType> = ({ context }) => {
           setMessage("");
           setReplyTo({ content: "", postId: "" });
           fetchMessages();
-          setLoading(false);
           setSending(false);
+          window.scrollTo(0, 0);
         }, 1500);
       }
     }
@@ -85,8 +84,8 @@ const Chat: FC<ContextType> = ({ context }) => {
   if (!orbisMessages) return null;
 
   return (
-    <div className="overflow-y-auto">
-      <div className="pb-[90px]">
+    <div>
+      <div className="pb-[90px] overflow-auto">
         <div
           className={`fixed right-0 top-[100px] ${
             pathname == "/chat" ? "w-[100%]" : "w-[75%]"

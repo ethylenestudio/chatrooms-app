@@ -14,7 +14,6 @@ type RoomPropType = {
 };
 
 const Conversation: FC<RoomPropType> = ({ room, lastMessage }) => {
-  console.log(room.content.name);
   const router = useRouter();
   const windowSize = useWindowSize();
   const selectThisChat = useSelectRoom((state) => state.setSelectedRoom);

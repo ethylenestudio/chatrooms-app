@@ -33,7 +33,6 @@ const Login: FC = () => {
             }
           }
         }
-        console.log(userContexts);
         setRooms(userContexts);
         setUserDid(res.did);
         setLoading(false);
@@ -48,7 +47,6 @@ const Login: FC = () => {
     try {
       const provider = await account?.connector?.getProvider();
       if (!provider) {
-        console.log("Cannot fetch a provider", { provider });
         throw "Cannot fetch a provider";
       }
       setLoading(true);
