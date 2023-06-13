@@ -5,6 +5,7 @@ import {
   metaMaskWallet,
   walletConnectWallet,
 } from "@rainbow-me/rainbowkit/wallets";
+import merge from "lodash.merge";
 import { connectorsForWallets, darkTheme, RainbowKitProvider } from "@rainbow-me/rainbowkit";
 import { configureChains, createClient, WagmiConfig } from "wagmi";
 import { mainnet } from "wagmi/chains";
@@ -34,12 +35,15 @@ export const RainbowProvider = ({ children }: PropsWithChildren) => {
   return (
     <WagmiConfig client={wagmiClient}>
       <RainbowKitProvider
-        theme={darkTheme({
-          accentColor: "#CBA1A4",
-          accentColorForeground: "white",
-          borderRadius: "large",
-          overlayBlur: "small",
-        })}
+        theme={merge(
+          darkTheme({
+            accentColor: "#CBA1A4",
+            accentColorForeground: "white",
+            borderRadius: "large",
+            overlayBlur: "small",
+          }),
+          { radii: { connectButton: "50px" } }
+        )}
         chains={chains}
       >
         {children}

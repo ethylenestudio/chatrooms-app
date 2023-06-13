@@ -99,7 +99,7 @@ const Login: FC = () => {
           Login to Orbis
         </button>
       ) : (
-        <div className="flex flex-col justify-center items-center space-y-1">
+        <div className="flex flex-col justify-center items-center space-y-2">
           <p className="text-center text-xs">To participate</p>
           <ConnectButton showBalance={false} />
         </div>
