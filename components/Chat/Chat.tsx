@@ -90,7 +90,7 @@ const Chat: FC<ContextType> = ({ context }) => {
       <div className="pb-[120px] overflow-y-auto">
         <div
           className={`fixed right-[env(safe-area-inset-right)] top-[100px] ${
-            pathname == "/chat" ? "w-[100%]" : "w-[75%] 2xl:right-[1%]"
+            pathname == "/chat" ? "w-[100%]" : "w-[75%] 2xl:w-[74%] 2xl:right-[1%]"
           } z-30 bg-[#090A10]`}
         >
           <p className="text-[#CBA1A4] text-xs pt-2 text-center flex items-center justify-center space-x-2">
@@ -161,7 +161,7 @@ const Chat: FC<ContextType> = ({ context }) => {
       </div>
       <div
         className={` h-[75px] fixed bottom-[50px] left-0 flex flex-col space-y-2 justify-center bg-[rgba(8,9,13,1)] ${
-          pathname == "/chat" ? "w-[100%]" : "w-[75%] 2xl:right-[1%] left-auto right-0"
+          pathname == "/chat" ? "w-[100%]" : "w-[75%] 2xl:w-[74%] 2xl:right-[1%] left-auto right-0"
         }`}
       >
         <div className={`text-white flex justify-between items-center pl-2 text-xs px-4`}>
