@@ -3,10 +3,10 @@ import React, { FC, Fragment, useCallback, useEffect, useMemo, useState } from "
 import Message from "./Message";
 import { MessageType } from "@/types/MessageType";
 import { ORBIS, POLLING_RATE, renderMessageLimit, replyLimit } from "@/config";
-import { ColorRing } from "react-loader-spinner";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import { BsFillArrowUpCircleFill } from "react-icons/bs";
 import { usePathname } from "next/navigation";
+import Loader from "../ui/Loader";
 type ContextType = {
   context: string;
 };
@@ -86,29 +86,17 @@ const Chat: FC<ContextType> = ({ context }) => {
   if (!orbisMessages) return null;
 
   return (
-    <div>
+    <>
       <div className="pb-[120px] overflow-y-auto">
         <div
-          className={`fixed right-[env(safe-area-inset-right)] top-[100px] ${
+          className={`fixed right-0 top-[100px] ${
             pathname == "/chat" ? "w-[100%]" : "w-[75%] 2xl:w-[74%] 2xl:right-[1%]"
           } z-30 bg-[#090A10]`}
         >
           <p className="text-[#CBA1A4] text-xs pt-2 text-center flex items-center justify-center space-x-2">
             Popular Message
             <span className={`${loading ? "opacity-100" : "opacity-0"}`}>
-              <ColorRing
-                visible={true}
-                height="20"
-                width="20"
-                ariaLabel="blocks-loading"
-                colors={[
-                  "rgb(100,116,139)",
-                  "#CBA1A4",
-                  "rgb(100,116,139)",
-                  "#CBA1A4",
-                  "rgb(100,116,139)",
-                ]}
-              />
+              <Loader height="20" width="20" />
             </span>
           </p>
           {popularMessage?.stream_id && (
@@ -210,24 +198,14 @@ const Chat: FC<ContextType> = ({ context }) => {
             className="text-sm flex justify-center text-center text-white"
           >
             {sending ? (
-              <ColorRing
-                height="20"
-                width="20"
-                colors={[
-                  "rgb(100,116,139)",
-                  "#CBA1A4",
-                  "rgb(100,116,139)",
-                  "#CBA1A4",
-                  "rgb(100,116,139)",
-                ]}
-              />
+              <Loader height="30" width="30" />
             ) : (
               <BsFillArrowUpCircleFill color="rgb(100,116,139)" size={28} />
             )}
           </button>
         </form>
       </div>
-    </div>
+    </>
   );
 };
 

@@ -4,7 +4,7 @@ import React, { FC, useCallback, useEffect, useState } from "react";
 import { BiUpvote } from "react-icons/bi";
 import useOrbisUser from "@/hooks/useOrbisUser";
 import { ORBIS, replyLimit } from "@/config";
-import { ColorRing } from "react-loader-spinner";
+import Loader from "../ui/Loader";
 type MessageType = {
   content: string;
   sender: string;
@@ -102,17 +102,7 @@ const Message: FC<MessageType> = ({
         className={`w-[15%] rounded-md flex items-center justify-center space-x-1 py-1 bg-black hover:cursor-pointer hover:opacity-80`}
       >
         {loading ? (
-          <ColorRing
-            height="18"
-            width="18"
-            colors={[
-              "rgb(100,116,139)",
-              "#CBA1A4",
-              "rgb(100,116,139)",
-              "#CBA1A4",
-              "rgb(100,116,139)",
-            ]}
-          />
+          <Loader height="18" width="18" />
         ) : (
           <BiUpvote color={isReacted ? "#CBA1A4" : "#4A5875"} />
         )}

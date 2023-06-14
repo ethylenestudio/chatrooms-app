@@ -22,7 +22,7 @@ const App = () => {
 
   if (width <= 760) {
     return (
-      <div className="md:hidden">
+      <div className="md:hidden w-[100%]">
         <Menu />
       </div>
     );

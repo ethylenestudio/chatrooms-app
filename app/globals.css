@@ -9,6 +9,9 @@
 * {
   box-sizing: border-box;
 }
+html {
+  height: 100%;
+}
 
 body {
   margin: 0;
@@ -23,7 +26,6 @@ body {
 }
 .mimic-bg {
   background: rgb(8, 9, 13);
-
   background: linear-gradient(90deg, rgba(8, 9, 13, 1) 0%, rgba(23, 30, 47, 1) 60%);
 }
 input[type="color"],
@@ -42,5 +44,5 @@ input[type="url"],
 input[type="week"],
 select:focus,
 textarea {
-  font-size: 16px;
+  font-size: 16px !important;
 }

@@ -46,7 +46,6 @@ const Menu: FC = () => {
         <p className="text-[#CBA1A4] text-xs pt-2 text-center">Rooms</p>
         <GeneralConversation />
       </div>
-
       {rooms?.map((room: any, i: number) => {
         return (
           <Fragment key={i}>

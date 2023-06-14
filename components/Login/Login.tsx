@@ -2,13 +2,13 @@
 "use client";
 import React, { FC, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import useRooms, { RoomType } from "@/hooks/useRooms";
+import useRooms from "@/hooks/useRooms";
 import useOrbisUser from "@/hooks/useOrbisUser";
 import { ORBIS, ORBIS_PROJECT_ID } from "@/config";
-import { ColorRing } from "react-loader-spinner";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useAccount } from "wagmi";
 import logo from "@/public/assets/logo.png";
+import Loader from "../ui/Loader";
 
 const Login: FC = () => {
   const router = useRouter();
@@ -80,17 +80,7 @@ const Login: FC = () => {
         Welcome, start sharing your thoughts now!
       </p>
       {loading ? (
-        <ColorRing
-          width={40}
-          height={40}
-          colors={[
-            "rgb(100,116,139)",
-            "#CBA1A4",
-            "rgb(100,116,139)",
-            "#CBA1A4",
-            "rgb(100,116,139)",
-          ]}
-        />
+        <Loader width="40" height="40" />
       ) : account.isConnected ? (
         <button
           className="rounded-3xl bg-[#CBA1A4] border-white py-2 text-sm px-4"
