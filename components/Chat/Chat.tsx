@@ -183,7 +183,7 @@ const Chat: FC<ContextType> = ({ context }) => {
           </p>
           <p>Chars: {renderMessageLimit - message.length}</p>
         </div>
-        <div className="flex justify-center space-x-2 px-4 w-full items-center">
+        <form className="flex justify-center space-x-2 px-4 w-full items-center" action="submit">
           <input
             placeholder="Ask a question"
             className="outline-1 border-[1px] border-slate-400 text-slate-400 outline-black rounded-2xl text-sm px-4 py-1 w-[90%] bg-[rgba(0,0,0,0.2)]"
@@ -202,7 +202,11 @@ const Chat: FC<ContextType> = ({ context }) => {
             }
           />
           <button
-            onClick={async () => await sendMessage()}
+            type="submit"
+            onClick={async (e) => {
+              e.preventDefault();
+              await sendMessage();
+            }}
             className="text-sm flex justify-center text-center text-white"
           >
             {sending ? (
@@ -221,7 +225,7 @@ const Chat: FC<ContextType> = ({ context }) => {
               <BsFillArrowUpCircleFill color="rgb(100,116,139)" size={28} />
             )}
           </button>
-        </div>
+        </form>
       </div>
     </div>
   );
