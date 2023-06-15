@@ -15,7 +15,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <div style={{
               display: "grid",
               gridTemplateColumns: "clamp(300px, 25%, 400px) auto",
-              gridTemplateRows: "100px calc(100% - 150px) 50px",
+              gridTemplateRows: "100px 1fr 50px",
               height: "100%"
             }}>
               <Header />
