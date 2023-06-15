@@ -24,13 +24,14 @@ const ReplyModal: FC<{
       onClick={(e) => {
         close();
       }}
-      className="fixed z-50 bottom-[20px] top-0 left-0 right-0 flex flex-col justify-center items-center w-full bg-[rgba(10,15,22,0.4)]"
+      className="fixed z-50 top-0 left-0 right-0 w-full h-full bg-[rgba(10,15,22,0.4)] backdrop-blur-md"
+      style={{ margin: "0" }}
     >
       <div
         onClick={(e) => {
           e.stopPropagation();
         }}
-        className="px-10 h-[80%] border-[1px] border-[#292F3F] rounded-3xl w-[90%] bg-[rgb(10,15,22)] py-4 flex flex-col space-y-2"
+        className="px-10 border-[1px] border-[#292F3F] bg-[rgb(10,15,22)] py-4 flex flex-col space-y-2 fixed z-55 right-0 w-[950px] max-w-[100%] h-full"
       >
         <div className="flex z-20 justify-between w-[100%] items-center">
           <p>{loading && <Loader width="20" height="20" />}</p>

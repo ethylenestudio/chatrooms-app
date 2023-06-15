@@ -25,7 +25,7 @@ const Header: FC = () => {
     <>
       <div className="text-white col-span-2 mimic-bg h-[100px] w-full flex justify-center items-center flex-col">
         {pathname == "/chat" ? (
-          <p className="absolute top-0 left-0 mt-4 ml-2">
+          <p className="absolute top-0 left-0 mt-4 ml-2 hover:cursor-pointer">
             <IoIosArrowBack
               color="rgb(148,163,184)"
               onClick={() => router.push("/app")}

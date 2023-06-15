@@ -41,7 +41,7 @@ const ReplyMessage: FC<MessageType> = ({
   return (
     <div className="flex items-center px-4 border-b-[1px] py-4 border-[rgba(126,144,175,0.1)] space-x-2 text-white">
       <div
-        className={`${upvotes == undefined ? "w-[90%]" : "w-[60%]"}  flex flex-col justify-center`}
+        className={`flex-1 flex flex-col justify-center`}
       >
         <div className="flex mb-1 items-center">
           <p className="font-bold text-sm mr-4">
@@ -51,10 +51,10 @@ const ReplyMessage: FC<MessageType> = ({
         <p className="text-[12px] break-words font-extralight">{content}</p>
       </div>
       {upvotes != undefined && (
-        <div className="flex space-x-3 justify-end w-[40%] items-center">
+        <div className="flex space-x-3 justify-end items-center">
           <div
             onClick={reactToPost}
-            className={`w-[60%] rounded-md flex items-center justify-center space-x-1 py-1 bg-black ${
+            className={`w-[70px] rounded-md flex items-center justify-center space-x-1 py-1 bg-black ${
               !isReacted && "hover:cursor-pointer hover:opacity-80"
             }`}
           >
@@ -64,7 +64,7 @@ const ReplyMessage: FC<MessageType> = ({
               <BiUpvote color={isReacted ? "#CBA1A4" : "#4A5875"} />
             )}
             <p className={`${isReacted ? "text-[#CBA1A4]" : "text-[#4A5875]"} text-sm`}>
-              {upvotes}
+              {upvotes > 999 ? (Math.round(upvotes / 100) / 10).toFixed(1) + "k" : upvotes}
             </p>
           </div>
         </div>
