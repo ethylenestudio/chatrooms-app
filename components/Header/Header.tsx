@@ -73,7 +73,7 @@ const Header: FC = () => {
               <input
                 type="text"
                 placeholder="Username"
-                className="rounded-3xl pr-2 outline-0 text-white w-[100%] bg-[rgba(77,77,77,0.2)] px-4 py-2 opacity-100"
+                className="rounded-3xl pr-2 outline-0 focus:border-0 active:border-0 text-white w-[100%] bg-[rgba(77,77,77,0.2)] px-4 py-2 opacity-100"
                 value={username}
                 onChange={(e) =>
                   setUsername((prev) => {
