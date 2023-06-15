@@ -64,7 +64,7 @@ const Header: FC = () => {
                 <div className="relative flex items-center w-[100%]">
                   <input
                     type="text"
-                    placeholder="Nickname"
+                    placeholder="Username"
                     className="rounded-xl pr-2 outline-1 outline-[#292F3F] text-white w-[100%] bg-[rgba(77,77,77,0.2)] px-4 py-2 opacity-100"
                     value={username}
                     onChange={(e) =>
