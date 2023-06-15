@@ -82,6 +82,6 @@ body {
   scrollbar-width: thin;
 }
 
-body > [data-rk] {
+body > div:first-child {
   height: 100%
 }
