@@ -21,7 +21,7 @@ const PopularMessage: FC<{
   return (
     <div
       className={`fixed right-0 top-[100px] ${
-        pathname == "/chat" ? "w-[100%]" : "w-[75%] 2xl:w-[74%] 2xl:right-[1%]"
+        pathname == "/chat" ? "w-[100%]" : "w-[75%]"
       } z-30 bg-[#090A10]`}
     >
       <p className="text-[#CBA1A4] text-xs pt-2 text-center flex items-center justify-center space-x-2">
