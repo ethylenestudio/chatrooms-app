@@ -58,7 +58,7 @@ const Header: FC = () => {
             onClick={(e) => {
               e.stopPropagation();
             }}
-            className="px-6 border-[1px] w-[90%] border-[#292F3F] rounded-3xl lg:w-[30%] bg-[rgb(10,15,22)] py-4 flex flex-col items-center justify-center space-y-6"
+            className="px-8 border-[1px] w-[80%] border-[#292F3F] rounded-3xl lg:w-[30%] bg-[rgb(10,15,22)] py-4 flex flex-col items-center justify-center space-y-4"
           >
             <div className="flex justify-between w-[100%] items-center mb-2">
               <p className="self-start ml-2 text-lg text-white">Settings</p>
@@ -69,7 +69,7 @@ const Header: FC = () => {
                 size={24}
               />
             </div>
-            <div className="relative flex items-center w-[90%]">
+            <div className="relative flex items-center w-[100%]">
               <input
                 type="text"
                 placeholder="Username"
