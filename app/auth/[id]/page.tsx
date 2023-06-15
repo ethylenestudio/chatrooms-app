@@ -19,18 +19,6 @@ const Auth = () => {
   const ethereum = MMSDK.getProvider(); // You can also access via window.ethereum
   const { signMessageAsync } = useSignMessage({ message: MESSAGE });
 
-  async function connect() {
-    if (ethereum) {
-      const accounts = await ethereum.request({
-        method: "eth_requestAccounts",
-        params: [],
-      });
-      setAccount({ accounts });
-    } else {
-      alert("You dont have Metamask");
-    }
-  }
-
   async function sign(savedSignature?: string) {
     let sign;
     if (savedSignature) {
@@ -52,7 +40,7 @@ const Auth = () => {
   }
 
   return (
-    <div className="flex justify-center items-center text-white">
+    <div className="flex h-[70vh] justify-center items-center text-white">
       {isConnected ? (
         <button
           className="border-2 border-white p-4 rounded-md"

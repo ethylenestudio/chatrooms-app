@@ -1,11 +1,10 @@
 "use client";
 import React, { FC, Fragment, useCallback, useEffect, useState } from "react";
 import GeneralConversation from "./GeneralConversation";
-import useRooms, { RoomType } from "@/hooks/useRooms";
+import useRooms from "@/hooks/store/useRooms";
 import Conversation from "./Conversation";
 import useHydrated from "@/hooks/useHydrated";
 import { ORBIS, POLLING_RATE } from "@/config";
-import { usePathname } from "next/navigation";
 import useWindowSize from "@/hooks/useWindowSize";
 
 const Menu: FC = () => {
@@ -17,7 +16,6 @@ const Menu: FC = () => {
     return data;
   };
   const [width, height] = useWindowSize();
-
   useEffect(() => {
     if (rooms == null) return;
     const polling = async () => {
@@ -39,7 +37,7 @@ const Menu: FC = () => {
   }, [rooms]);
   if (!hasHydrated) return null;
   return (
-    <div className="relative">
+    <div className="relative pt-[114px]">
       <div
         className={`${
           width <= 760 ? "w-[100%]" : "w-[25%]"
@@ -48,7 +46,6 @@ const Menu: FC = () => {
         <p className="text-[#CBA1A4] text-xs pt-2 text-center">Rooms</p>
         <GeneralConversation />
       </div>
-
       {rooms?.map((room: any, i: number) => {
         return (
           <Fragment key={i}>

@@ -1,7 +1,12 @@
 "use client";
 import "@rainbow-me/rainbowkit/styles.css";
-import { injectedWallet, metaMaskWallet } from "@rainbow-me/rainbowkit/wallets";
-import { connectorsForWallets, RainbowKitProvider } from "@rainbow-me/rainbowkit";
+import {
+  injectedWallet,
+  metaMaskWallet,
+  walletConnectWallet,
+} from "@rainbow-me/rainbowkit/wallets";
+import merge from "lodash.merge";
+import { connectorsForWallets, darkTheme, RainbowKitProvider } from "@rainbow-me/rainbowkit";
 import { configureChains, createClient, WagmiConfig } from "wagmi";
 import { mainnet } from "wagmi/chains";
 import { publicProvider } from "wagmi/providers/public";
@@ -12,7 +17,11 @@ const { chains, provider } = configureChains([mainnet], [publicProvider()]);
 const connectors = connectorsForWallets([
   {
     groupName: "Recommended",
-    wallets: [injectedWallet({ chains }), metaMaskWallet({ chains })],
+    wallets: [
+      injectedWallet({ chains }),
+      metaMaskWallet({ chains }),
+      walletConnectWallet({ chains }),
+    ],
   },
 ]);
 
@@ -25,7 +34,20 @@ const wagmiClient = createClient({
 export const RainbowProvider = ({ children }: PropsWithChildren) => {
   return (
     <WagmiConfig client={wagmiClient}>
-      <RainbowKitProvider chains={chains}>{children}</RainbowKitProvider>
+      <RainbowKitProvider
+        theme={merge(
+          darkTheme({
+            accentColor: "#CBA1A4",
+            accentColorForeground: "white",
+            borderRadius: "large",
+            overlayBlur: "small",
+          }),
+          { radii: { connectButton: "50px" } }
+        )}
+        chains={chains}
+      >
+        {children}
+      </RainbowKitProvider>
     </WagmiConfig>
   );
 };

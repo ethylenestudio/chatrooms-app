@@ -13,7 +13,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <QueryClientProvider client={queryClient}>
           <RainbowProvider>
             <Header />
-            <main id="main-content">{children}</main>
+            <main className="max-w-[100vw]" id="main-content">
+              {children}
+            </main>
             <Footer />
           </RainbowProvider>
         </QueryClientProvider>

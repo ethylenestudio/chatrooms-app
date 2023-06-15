@@ -1,12 +1,14 @@
 "use client";
 import { Chat } from "@/components";
-import useOrbisUser from "@/hooks/useOrbisUser";
-import useSelectRoom from "@/hooks/useSelectRoom";
+import useSelectRoom from "@/hooks/store/useSelectRoom";
+import useCheckConnection from "@/hooks/useCheckConnection";
 
 export default function ChatPage() {
   const selectedChat = useSelectRoom((state) => state.selectedRoom);
+  useCheckConnection();
+
   return (
-    <div className="overflow-scroll">
+    <div className="overflow-y-auto w-[100%]">
       <Chat context={selectedChat} />
     </div>
   );

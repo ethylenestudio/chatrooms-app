@@ -1,13 +1,14 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 import React, { FC, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import useRooms, { RoomType } from "@/hooks/useRooms";
-import useOrbisUser from "@/hooks/useOrbisUser";
+import useRooms from "@/hooks/store/useRooms";
+import useOrbisUser from "@/hooks/store/useOrbisUser";
 import { ORBIS, ORBIS_PROJECT_ID } from "@/config";
-import { ColorRing } from "react-loader-spinner";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useAccount } from "wagmi";
-import { getWebSocketProvider } from "@wagmi/core";
+import logo from "@/public/assets/logo.png";
+import Loader from "../ui/Loader";
 
 const Login: FC = () => {
   const router = useRouter();
@@ -18,7 +19,12 @@ const Login: FC = () => {
   useEffect(() => {
     async function update() {
       setLoading(true);
+      console.log("im here");
+
       let res = await ORBIS.isConnected();
+      console.log("im here 2");
+      console.log(res);
+
       if (res.status == 200) {
         const { data: creds } = await ORBIS.getCredentials(res.did);
         const { data: contexts } = await ORBIS.getContexts(ORBIS_PROJECT_ID);
@@ -34,8 +40,8 @@ const Login: FC = () => {
         }
         setRooms(userContexts);
         setUserDid(res.did);
-        setLoading(false);
         router.push("/app");
+        setLoading(false);
       }
       setLoading(false);
     }
@@ -46,7 +52,6 @@ const Login: FC = () => {
     try {
       const provider = await account?.connector?.getProvider();
       if (!provider) {
-        console.log("Cannot fetch a provider", { provider });
         throw "Cannot fetch a provider";
       }
       setLoading(true);
@@ -66,23 +71,33 @@ const Login: FC = () => {
       }
       setRooms(userContexts);
       setUserDid(res.did);
-      setLoading(false);
       router.push("/app");
+      setLoading(false);
     } catch (e) {
       setLoading(false);
     }
   }
 
   return (
-    <div className="text-white flex justify-center items-center">
+    <div className="text-white h-[100%] flex justify-center items-center flex-col space-y-6">
+      <img src={logo.src} alt="logo" className="w-[120px]" />
+      <p className="text-2xl text-center md:max-w-[400px] px-2">
+        Welcome, start sharing your thoughts now!
+      </p>
       {loading ? (
-        <ColorRing width={40} height={40} />
+        <Loader width="40" height="40" />
       ) : account.isConnected ? (
-        <button className="rounded-md border-2 border-white py-3 px-4" onClick={connectToOrbis}>
+        <button
+          className="rounded-3xl bg-[#CBA1A4] border-white py-2 text-sm px-4"
+          onClick={connectToOrbis}
+        >
           Login to Orbis
         </button>
       ) : (
-        <ConnectButton showBalance={false} />
+        <div className="flex flex-col justify-center items-center space-y-2">
+          <p className="text-center text-xs">To participate</p>
+          <ConnectButton showBalance={false} />
+        </div>
       )}
     </div>
   );

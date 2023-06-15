@@ -6,14 +6,43 @@
 :root {
   --font-poppins: "Poppins", sans-serif;
 }
-body,
+* {
+  box-sizing: border-box;
+}
 html {
+  height: 100%;
+}
+
+body {
   margin: 0;
   font-family: var(--font-poppins);
-  height: 100%;
-
+  max-width: 100vw;
   box-sizing: border-box;
+  height: 100%;
   width: 100vw;
   background: rgb(8, 9, 13);
   background: linear-gradient(90deg, rgba(8, 9, 13, 1) 0%, rgba(23, 30, 47, 1) 60%);
+  overflow-x: hidden !important;
+}
+.mimic-bg {
+  background: rgb(8, 9, 13);
+  background: linear-gradient(90deg, rgba(8, 9, 13, 1) 0%, rgba(23, 30, 47, 1) 60%);
+}
+input[type="color"],
+input[type="date"],
+input[type="datetime"],
+input[type="datetime-local"],
+input[type="email"],
+input[type="month"],
+input[type="number"],
+input[type="password"],
+input[type="search"],
+input[type="tel"],
+input[type="text"],
+input[type="time"],
+input[type="url"],
+input[type="week"],
+select:focus,
+textarea {
+  font-size: 16px !important;
 }
