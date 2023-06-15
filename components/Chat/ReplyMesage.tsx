@@ -1,13 +1,10 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
-import React, { FC, useCallback, useEffect, useState } from "react";
-import { BiCommentDetail, BiUpvote } from "react-icons/bi";
+import React, { FC } from "react";
+import { BiUpvote } from "react-icons/bi";
 import useOrbisUser from "@/hooks/store/useOrbisUser";
-import { ORBIS, replyLimit } from "@/config";
 import Loader from "../ui/Loader";
 import useMessageReaction from "@/hooks/useMessageReaction";
-import useModal from "@/hooks/useModal";
-import ReplyModal from "./ReplyModal";
 type MessageType = {
   content: string;
   sender: string;
@@ -43,7 +40,9 @@ const ReplyMessage: FC<MessageType> = ({
   const senderAddress = senderArray[senderArray.length - 1];
   return (
     <div className="flex items-center px-4 border-b-[1px] py-4 border-[rgba(126,144,175,0.1)] space-x-2 text-white">
-      <div className="w-[60%] flex flex-col justify-center">
+      <div
+        className={`${upvotes == undefined ? "w-[90%]" : "w-[60%]"}  flex flex-col justify-center`}
+      >
         <div className="flex mb-1 items-center">
           <p className="font-bold text-sm mr-4">
             {username ? username : senderAddress.slice(0, 4) + "..." + senderAddress.slice(39)}
