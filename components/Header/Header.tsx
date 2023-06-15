@@ -75,27 +75,29 @@ const Header: FC = () => {
                     })
                   }
                 />
-                <button
-                  type="submit"
-                  className="text-white bg-[#CBA1A4] rounded-3xl w-[100%] px-2 py-2"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    updateUsername();
-                  }}
-                >
-                  Save
-                </button>
-                <button
-                  className="text-white bg-[#CBA1A4] rounded-3xl w-[100%] px-2 py-2"
-                  type="button"
-                  onClick={async (e) => {
-                    e.preventDefault();
-                    await ORBIS.logout();
-                    router.push("/");
-                  }}
-                >
-                  Logout
-                </button>
+                <div className="space-y-1 w-[100%]">
+                  <button
+                    type="submit"
+                    className="text-white bg-[#CBA1A4] rounded-3xl w-[100%] px-2 py-2"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      updateUsername();
+                    }}
+                  >
+                    Save
+                  </button>
+                  <button
+                    className="text-white bg-red-500 rounded-3xl w-[100%] px-2 py-2"
+                    type="button"
+                    onClick={async (e) => {
+                      e.preventDefault();
+                      await ORBIS.logout();
+                      router.push("/");
+                    }}
+                  >
+                    Logout
+                  </button>
+                </div>
               </div>
             </form>
           )}

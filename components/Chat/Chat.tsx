@@ -18,7 +18,7 @@ const Chat: FC<ContextType> = ({ context }) => {
 
   return (
     <>
-      <div className="pb-[120px] overflow-y-auto">
+      <div className="pb-[120px] overflow-y-auto z-10">
         <PopularMessage
           fetchMessages={fetchMessages}
           loading={loading}
