@@ -1,9 +1,6 @@
 import { renderMessageLimit, replyLimit } from "@/config";
-import { usePathname } from "next/navigation";
-import React, { FC, useState } from "react";
-import { AiOutlineCloseCircle } from "react-icons/ai";
-import Loader from "../ui/Loader";
-import { BsFillArrowUpCircleFill } from "react-icons/bs";
+import React, { FC } from "react";
+import MessageForm from "./MessageForm";
 
 const SendMessage: FC<{
   replyTo: {
@@ -21,48 +18,21 @@ const SendMessage: FC<{
   sending: boolean;
   message: string;
 }> = ({ replyTo, setReplyTo, message, setMessage, sendMessage, sending }) => {
-  const pathname = usePathname();
-  const [focused, setFocused] = useState<boolean>(false)
+  const onChange: React.ChangeEventHandler<HTMLInputElement> = e =>
+   setMessage((prev) => {
+    if (prev.length < renderMessageLimit || e.target.value.length <= renderMessageLimit) {
+      return e.target.value;
+    }
+    return prev;
+  })
+
+  const onSend: React.MouseEventHandler<HTMLButtonElement> = async (e) => { e.preventDefault(); await sendMessage(); }
 
   return (
     <div
       className={`sticky bottom-0 left-0 flex flex-col p-3 justify-center bg-[rgba(8,9,13,1)] w-full`}
     >
-      <form className={`w-full items-center flex outline-1 pr-1 border-[1px] ${focused && "border-white" || "border-slate-400"} rounded-[100px]`} action="submit">
-        <input
-            placeholder="Ask a question"
-            className="flex-1 rounded-2xl text-white py-2 mr-2 outline-black outline-0 text-sm px-4 bg-[rgba(0,0,0,0.2)]"
-            type="text"
-            value={message}
-            onFocus={() => setFocused(true)}
-            onBlur={() => setFocused(false)}
-            onChange={(e) =>
-              setMessage((prev) => {
-                if (prev.length < renderMessageLimit || e.target.value.length <= renderMessageLimit) {
-                  return e.target.value;
-                }
-                return prev;
-              })
-            }
-          />
-        <div className="text-white text-xs mr-2">
-          <span className={message.length > renderMessageLimit && "text-rose-600 font-semibold" || ""}>{message.length}</span> / {renderMessageLimit}
-        </div>
-        <button
-          type="submit"
-          onClick={async (e) => {
-            e.preventDefault();
-            await sendMessage();
-          }}
-          className="text-sm flex justify-center text-center text-white"
-        >
-          {sending ? (
-            <Loader height="30" width="30" />
-          ) : (
-            <BsFillArrowUpCircleFill color="rgb(100,116,139)" size={28} />
-          )}
-        </button>
-      </form>
+      <MessageForm label="Ask" placeholder="Ask a question" onChange={onChange} onSend={onSend} message={message} sending={sending} />
     </div>
   );
 };
