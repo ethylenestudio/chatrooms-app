@@ -9,7 +9,7 @@ type ContextType = {
   context: string;
 };
 
-const Chat: FC<ContextType> = ({ context }) => {
+const Chat: FC<ContextType & { className?: string }> = ({ context, className }) => {
   const { loading, orbisMessages, popularMessage, fetchMessages } = useGetMessages(context);
   const { sendMessage, message, setMessage, replyTo, setReplyTo, sending } =
     useSendMessage(context);
@@ -18,7 +18,7 @@ const Chat: FC<ContextType> = ({ context }) => {
 
   return (
     <>
-      <div className="overflow-auto">
+      <div className={`${className || ""} overflow-auto`}>
         <PopularMessage
           fetchMessages={fetchMessages}
           loading={loading}
