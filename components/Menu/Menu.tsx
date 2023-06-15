@@ -12,7 +12,7 @@ const Menu: FC = () => {
   const rooms = useRooms((state) => state.rooms);
   const [lastMessages, setLastMessages] = useState<string[]>([]);
   const fetchLastMessage = async (room: any) => {
-    const { data } = await ORBIS.getPosts({ context: room.stream_id }, 0, 1);
+    const { data } = await ORBIS.getPosts({ context: room.stream_id, only_master: true }, 0, 1);
     return data;
   };
   const [width, height] = useWindowSize();

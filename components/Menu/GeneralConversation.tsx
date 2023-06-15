@@ -12,7 +12,7 @@ const GeneralConversation: FC = () => {
   const selectThisChat = useSelectRoom((state) => state.setSelectedRoom);
   const [lastMessage, setLastMessage] = useState("");
   const fetchLastMessage = useCallback(async () => {
-    const { data, error } = await ORBIS.getPosts({ context: GENERAL_CHAT }, 0, 1);
+    const { data, error } = await ORBIS.getPosts({ context: GENERAL_CHAT, only_master: true }, 0, 1);
     if (data.length > 0) {
       setLastMessage(data[0].content.body);
     }

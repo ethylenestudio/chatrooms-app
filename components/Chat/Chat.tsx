@@ -36,6 +36,7 @@ const Chat: FC<ContextType> = ({ context }) => {
                     sender={message.creator}
                     upvotes={message.count_likes}
                     key={i}
+                    replyCount={message.count_replies}
                     refetchAllMessages={fetchMessages}
                     setThisAsReply={setReplyTo}
                     master={message.master}
