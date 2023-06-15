@@ -12,11 +12,16 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         <QueryClientProvider client={queryClient}>
           <RainbowProvider>
-            <Header />
-            <main className="max-w-[100vw]" id="main-content">
+            <div style={{
+              display: "grid",
+              gridTemplateColumns: "clamp(300px, 25%, 400px) auto",
+              gridTemplateRows: "100px auto 50px",
+              height: "100vh"
+            }}>
+              <Header />
               {children}
-            </main>
-            <Footer />
+              <Footer />
+            </div>
           </RainbowProvider>
         </QueryClientProvider>
       </body>

@@ -48,7 +48,7 @@ const Message: FC<MessageType> = ({
   const senderAddress = senderArray[senderArray.length - 1];
   return (
     <div className="flex items-center px-4 border-b-[1px] py-4 border-[rgba(126,144,175,0.1)] space-x-2 text-white">
-      <div className="w-[70%] flex flex-col justify-center">
+      <div className="flex-1 flex flex-col justify-center">
         <div className="flex mb-1 items-center">
           <p className="font-bold text-sm mr-4">
             {username ? username : senderAddress.slice(0, 4) + "..." + senderAddress.slice(39)}
@@ -56,8 +56,8 @@ const Message: FC<MessageType> = ({
         </div>
         <p className="text-[12px] break-words font-extralight">{content}</p>
       </div>
-      <div className="flex space-x-3 justify-end w-[30%] items-center hover:cursor-pointer">
-        <div onClick={open} className="relative flex items-center">
+      <div className="flex space-x-3 justify-end items-center hover:cursor-pointer">
+        <div onClick={open} className="flex items-center">
           <BiCommentDetail color={Boolean(replyCount) ? "#EEE" : "#4A5875"} size={22} />
           <div
             style={{
@@ -72,7 +72,7 @@ const Message: FC<MessageType> = ({
         </div>
         <div
           onClick={reactToPost}
-          className={`w-[60%] rounded-md flex items-center justify-center space-x-1 py-1 bg-black ${
+          className={`rounded-md flex items-center justify-center space-x-1 w-[60px] py-1 bg-black ${
             !isReacted && "hover:cursor-pointer hover:opacity-80"
           }`}
         >
@@ -81,7 +81,9 @@ const Message: FC<MessageType> = ({
           ) : (
             <BiUpvote color={isReacted ? "#CBA1A4" : "#4A5875"} />
           )}
-          <p className={`${isReacted ? "text-[#CBA1A4]" : "text-[#4A5875]"} text-sm`}>{upvotes}</p>
+          <p className={`${isReacted ? "text-[#CBA1A4]" : "text-[#4A5875]"} text-sm`}>
+            {upvotes > 999 ? (Math.round(upvotes / 100) / 10).toFixed(1) + "k" : upvotes}
+          </p>
         </div>
       </div>
       {isOpen && (

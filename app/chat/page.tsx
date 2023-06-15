@@ -8,8 +8,6 @@ export default function ChatPage() {
   useCheckConnection();
 
   return (
-    <div className="overflow-y-auto w-[100%]">
-      <Chat context={selectedChat} />
-    </div>
+      <Chat context={selectedChat} className="col-span-2" />
   );
 }

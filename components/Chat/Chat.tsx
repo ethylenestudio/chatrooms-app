@@ -9,7 +9,7 @@ type ContextType = {
   context: string;
 };
 
-const Chat: FC<ContextType> = ({ context }) => {
+const Chat: FC<ContextType & { className?: string }> = ({ context, className }) => {
   const { loading, orbisMessages, popularMessage, fetchMessages } = useGetMessages(context);
   const { sendMessage, message, setMessage, replyTo, setReplyTo, sending } =
     useSendMessage(context);
@@ -18,14 +18,14 @@ const Chat: FC<ContextType> = ({ context }) => {
 
   return (
     <>
-      <div className="pb-[120px] overflow-y-auto z-10">
+      <div className={`${className || ""} overflow-auto`}>
         <PopularMessage
           fetchMessages={fetchMessages}
           loading={loading}
           popularMessage={popularMessage}
           setReplyTo={setReplyTo}
         />
-        <div className="overflow-y-auto z-10 pt-[120px] md:pt-[100px]">
+        <div>
           {orbisMessages.map((message, i) => {
             if (message.stream_id != popularMessage?.stream_id) {
               return (
@@ -51,15 +51,15 @@ const Chat: FC<ContextType> = ({ context }) => {
             }
           })}
         </div>
+        <SendMessage
+          message={message}
+          replyTo={replyTo}
+          sendMessage={sendMessage}
+          sending={sending}
+          setMessage={setMessage}
+          setReplyTo={setReplyTo}
+        />
       </div>
-      <SendMessage
-        message={message}
-        replyTo={replyTo}
-        sendMessage={sendMessage}
-        sending={sending}
-        setMessage={setMessage}
-        setReplyTo={setReplyTo}
-      />
     </>
   );
 };
