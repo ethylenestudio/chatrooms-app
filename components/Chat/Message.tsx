@@ -5,6 +5,7 @@ import { BiUpvote } from "react-icons/bi";
 import useOrbisUser from "@/hooks/store/useOrbisUser";
 import { ORBIS, replyLimit } from "@/config";
 import Loader from "../ui/Loader";
+import useMessageReaction from "@/hooks/useMessageReaction";
 type MessageType = {
   content: string;
   sender: string;
@@ -32,31 +33,14 @@ const Message: FC<MessageType> = ({
   username,
 }) => {
   const userDid = useOrbisUser((state) => state.userDid);
-  const [isReacted, setIsReacted] = useState(false);
+
+  const { reactToPost, isReacted, loading } = useMessageReaction(
+    postId,
+    userDid,
+    refetchAllMessages
+  );
   const [masterMessage, setMasterMessage] = useState("");
-  const [loading, setLoading] = useState(false);
-  const fetchUserReaction = useCallback(async () => {
-    const { data } = await ORBIS.getReaction(postId, userDid);
-    if (data?.type == "like") {
-      setIsReacted(true);
-    } else {
-      setIsReacted(false);
-    }
-    return data;
-  }, [postId, userDid, setIsReacted]);
-  const reactToPost = useCallback(async () => {
-    setLoading(true);
-    const res = await ORBIS.react(postId, "like");
-    if (res.status == 200) {
-      if (refetchAllMessages) {
-        setTimeout(async () => {
-          await refetchAllMessages();
-          setIsReacted(true);
-          setLoading(false);
-        }, 1000);
-      }
-    }
-  }, [postId, refetchAllMessages]);
+
   const fetchMasterPost = useCallback(async () => {
     if (master) {
       const { data, error } = await ORBIS.getPost(master);
@@ -65,9 +49,8 @@ const Message: FC<MessageType> = ({
   }, [master]);
 
   useEffect(() => {
-    fetchUserReaction();
     fetchMasterPost();
-  }, [isReacted, fetchUserReaction, reactToPost, fetchMasterPost]);
+  }, [fetchMasterPost]);
 
   if (!sender) return null;
   const senderArray = sender.split(":");
