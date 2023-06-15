@@ -54,7 +54,9 @@ const ReplyMessage: FC<MessageType> = ({
         <div className="flex space-x-3 justify-end w-[40%] items-center">
           <div
             onClick={reactToPost}
-            className={`w-[60%] rounded-md flex items-center justify-center space-x-1 py-1 bg-black hover:cursor-pointer hover:opacity-80`}
+            className={`w-[60%] rounded-md flex items-center justify-center space-x-1 py-1 bg-black ${
+              !isReacted && "hover:cursor-pointer hover:opacity-80"
+            }`}
           >
             {loading ? (
               <Loader height="18" width="18" />

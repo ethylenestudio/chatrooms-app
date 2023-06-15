@@ -19,6 +19,7 @@ const useMessageReaction = (
     return data;
   }, [postId, userDid, setIsReacted]);
   const reactToPost = useCallback(async () => {
+    if (isReacted) return;
     setLoading(true);
     const res = await ORBIS.react(postId, "like");
     if (res.status == 200) {
@@ -30,7 +31,7 @@ const useMessageReaction = (
         }, 1000);
       }
     }
-  }, [postId, refetchAllMessages]);
+  }, [postId, refetchAllMessages, isReacted]);
 
   useEffect(() => {
     fetchUserReaction();

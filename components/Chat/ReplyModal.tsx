@@ -32,7 +32,7 @@ const ReplyModal: FC<{
         }}
         className="px-10 h-[80%] border-[1px] border-[#292F3F] rounded-3xl w-[90%] bg-[rgb(10,15,22)] py-4 flex flex-col space-y-2"
       >
-        <div className="flex justify-between w-[100%] items-center">
+        <div className="flex z-20 justify-between w-[100%] items-center">
           <p>{loading && <Loader width="20" height="20" />}</p>
           <AiOutlineClose
             onClick={() => close()}
@@ -72,11 +72,11 @@ const ReplyModal: FC<{
           })}
         </div>
 
-        <div className="space-y-1">
+        <div className="space-y-2">
           <input
             type="text"
             placeholder="Reply to this message"
-            className="rounded-xl outline-1 outline-[#292F3F] text-white w-[100%] bg-[rgba(77,77,77,0.2)] px-4 py-2 opacity-100"
+            className="rounded-xl outline-0 outline-[#292F3F] text-white w-[100%] bg-[rgba(77,77,77,0.2)] px-4 py-2 opacity-100"
             value={message}
             onChange={(e) =>
               setMessage((prev) => {

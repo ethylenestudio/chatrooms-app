@@ -56,20 +56,25 @@ const Message: FC<MessageType> = ({
         </div>
         <p className="text-[12px] break-words font-extralight">{content}</p>
       </div>
-      <div className="flex space-x-3 justify-end w-[30%] items-center">
+      <div className="flex space-x-3 justify-end w-[30%] items-center hover:cursor-pointer">
         <div onClick={open} className="flex items-center">
-          <BiCommentDetail
-            className="hover:cursor-pointer"
-            color={Boolean(replyCount) ? "#EEE" : "#4A5875"}
-            size={22}
-          />
-          <div style={{ fontSize: "12px", fontWeight: "600", marginLeft: ".25rem", color: Boolean(replyCount) ? "#EEE" : "#4A5875" }}>
+          <BiCommentDetail color={Boolean(replyCount) ? "#EEE" : "#4A5875"} size={22} />
+          <div
+            style={{
+              fontSize: "12px",
+              fontWeight: "600",
+              marginLeft: ".25rem",
+              color: Boolean(replyCount) ? "#EEE" : "#4A5875",
+            }}
+          >
             {replyCount}
           </div>
         </div>
         <div
           onClick={reactToPost}
-          className={`w-[60%] rounded-md flex items-center justify-center space-x-1 py-1 bg-black hover:cursor-pointer hover:opacity-80`}
+          className={`w-[60%] rounded-md flex items-center justify-center space-x-1 py-1 bg-black ${
+            !isReacted && "hover:cursor-pointer hover:opacity-80"
+          }`}
         >
           {loading ? (
             <Loader height="18" width="18" />
