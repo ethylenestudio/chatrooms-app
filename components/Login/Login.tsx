@@ -19,11 +19,7 @@ const Login: FC = () => {
   useEffect(() => {
     async function update() {
       setLoading(true);
-      console.log("im here");
-
       let res = await ORBIS.isConnected();
-      console.log("im here 2");
-      console.log(res);
 
       if (res.status == 200) {
         const { data: creds } = await ORBIS.getCredentials(res.did);

@@ -85,6 +85,17 @@ const Header: FC = () => {
                 >
                   Save
                 </button>
+                <button
+                  className="text-white bg-[#CBA1A4] rounded-3xl w-[100%] px-2 py-4"
+                  type="button"
+                  onClick={async (e) => {
+                    e.preventDefault();
+                    await ORBIS.logout();
+                    router.push("/");
+                  }}
+                >
+                  Logout
+                </button>
               </div>
             </form>
           )}

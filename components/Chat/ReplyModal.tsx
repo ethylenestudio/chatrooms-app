@@ -32,7 +32,7 @@ const ReplyModal: FC<{
         }}
         className="px-10 h-[80%] border-[1px] border-[#292F3F] rounded-3xl w-[90%] bg-[rgb(10,15,22)] py-4 flex flex-col space-y-2"
       >
-        <div className="flex justify-between w-[100%] items-center">
+        <div className="flex z-20 justify-between w-[100%] items-center">
           <p>{loading && <Loader width="20" height="20" />}</p>
           <AiOutlineClose
             onClick={() => close()}
