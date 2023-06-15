@@ -1,7 +1,7 @@
 "use client";
 import React, { FC, Fragment, useCallback, useEffect, useState } from "react";
 import GeneralConversation from "./GeneralConversation";
-import useRooms from "@/hooks/useRooms";
+import useRooms from "@/hooks/store/useRooms";
 import Conversation from "./Conversation";
 import useHydrated from "@/hooks/useHydrated";
 import { ORBIS, POLLING_RATE } from "@/config";

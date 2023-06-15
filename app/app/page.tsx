@@ -1,7 +1,7 @@
 "use client";
 import { Chat, Menu } from "@/components";
 import { ORBIS } from "@/config";
-import useSelectRoom from "@/hooks/useSelectRoom";
+import useSelectRoom from "@/hooks/store/useSelectRoom";
 import useWindowSize from "@/hooks/useWindowSize";
 import { useRouter } from "next/navigation";
 import React, { useCallback, useEffect } from "react";

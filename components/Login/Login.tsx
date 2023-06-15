@@ -2,8 +2,8 @@
 "use client";
 import React, { FC, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import useRooms from "@/hooks/useRooms";
-import useOrbisUser from "@/hooks/useOrbisUser";
+import useRooms from "@/hooks/store/useRooms";
+import useOrbisUser from "@/hooks/store/useOrbisUser";
 import { ORBIS, ORBIS_PROJECT_ID } from "@/config";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useAccount } from "wagmi";

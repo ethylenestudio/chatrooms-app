@@ -2,7 +2,7 @@
 "use client";
 import React, { FC, useCallback, useEffect, useState } from "react";
 import { BiUpvote } from "react-icons/bi";
-import useOrbisUser from "@/hooks/useOrbisUser";
+import useOrbisUser from "@/hooks/store/useOrbisUser";
 import { ORBIS, replyLimit } from "@/config";
 import Loader from "../ui/Loader";
 type MessageType = {

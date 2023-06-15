@@ -1,8 +1,5 @@
-import { ORBIS, ORBIS_IDENTIFIER, POLLING_RATE, lastMessageLimit } from "@/config";
-import { useGetSessionById } from "@/hooks/queries/useGetSessionById";
-import useOrbisUser from "@/hooks/useOrbisUser";
-import type { RoomType } from "@/hooks/useRooms";
-import useSelectRoom from "@/hooks/useSelectRoom";
+import { lastMessageLimit } from "@/config";
+import useSelectRoom from "@/hooks/store/useSelectRoom";
 import useWindowSize from "@/hooks/useWindowSize";
 import { useRouter } from "next/navigation";
 import React, { FC, useCallback, useEffect, useMemo, useState } from "react";

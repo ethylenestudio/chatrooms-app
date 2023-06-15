@@ -7,9 +7,6 @@ const useOrbisUser = create(
     devtools<any>((set) => ({
       userDid: "",
       setUserDid: (userDid: string) => set({ userDid }, false, "setUserDid"),
-      selectedChat: GENERAL_CHAT,
-      setSelectedChat: (context: string) =>
-        set({ selectedChat: context }, false, "setSelectedChat"),
     })),
     {
       name: "userData",
