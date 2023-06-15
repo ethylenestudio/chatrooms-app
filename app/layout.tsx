@@ -14,7 +14,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <RainbowProvider>
             <div style={{
               display: "grid",
-              gridTemplateColumns: "min(400px, 25%) auto",
+              gridTemplateColumns: "clamp(300px, 25%, 400px) auto",
               gridTemplateRows: "100px auto 50px",
               height: "100vh"
             }}>
