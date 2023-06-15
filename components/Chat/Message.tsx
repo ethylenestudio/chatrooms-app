@@ -11,6 +11,7 @@ type MessageType = {
   content: string;
   sender: string;
   upvotes: number;
+  replyCount: number;
   postId: string;
   master: string | null;
   refetchAllMessages?: () => Promise<void>;
@@ -27,6 +28,7 @@ const Message: FC<MessageType> = ({
   content,
   sender,
   upvotes,
+  replyCount,
   postId,
   refetchAllMessages,
   setThisAsReply,
@@ -55,13 +57,15 @@ const Message: FC<MessageType> = ({
         <p className="text-[12px] break-words font-extralight">{content}</p>
       </div>
       <div className="flex space-x-3 justify-end w-[30%] items-center">
-        <div className="relative">
+        <div onClick={open} className="relative flex items-center">
           <BiCommentDetail
-            onClick={open}
             className="hover:cursor-pointer"
-            color="#4A5875"
+            color={Boolean(replyCount) ? "#EEE" : "#4A5875"}
             size={22}
           />
+          <div style={{ fontSize: "12px", fontWeight: "600", marginLeft: ".25rem", color: Boolean(replyCount) ? "#EEE" : "#4A5875" }}>
+            {replyCount}
+          </div>
         </div>
         <div
           onClick={reactToPost}

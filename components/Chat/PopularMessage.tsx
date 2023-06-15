@@ -40,6 +40,7 @@ const PopularMessage: FC<{
           }
           sender={popularMessage.creator}
           upvotes={popularMessage.count_likes}
+          replyCount={popularMessage.count_replies}
           refetchAllMessages={fetchMessages}
           setThisAsReply={setReplyTo}
           master={popularMessage.master}
