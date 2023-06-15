@@ -41,7 +41,7 @@ const ReplyModal: FC<{
         onClick={(e) => {
           e.stopPropagation();
         }}
-        className="px-10 border-[1px] border-[#292F3F] bg-[rgb(10,15,22)] py-4 flex flex-col space-y-2 fixed z-55 right-0 w-[950px] max-w-[100%] h-full"
+        className="px-4 md:px-10 border-[1px] border-[#292F3F] bg-[rgb(10,15,22)] py-4 flex flex-col space-y-2 fixed z-55 right-0 w-[950px] max-w-[100%] h-full"
       >
         <div className="flex z-20 justify-between w-[100%] items-center">
           <p>{loading && <Loader width="20" height="20" />}</p>

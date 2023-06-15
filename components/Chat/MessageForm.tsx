@@ -20,7 +20,7 @@ const MessageForm: FC<MessageForm> = ({ label, placeholder, message, sending, on
     <form className={`w-full items-center flex outline-1 pr-1 border-[1px] ${focused && "border-white" || "border-slate-400"} rounded-[100px]`} action="submit" onSubmit={onSubmit}>
         <input
             placeholder={placeholder}
-            className="flex-1 rounded-2xl text-white py-2 mr-2 outline-black outline-0 text-sm px-4 bg-[rgba(0,0,0,0.2)]"
+            className="flex-1 w-full rounded-2xl text-white py-2 mr-2 outline-black outline-0 text-sm px-4 bg-[rgba(0,0,0,0.2)]"
             type="text"
             value={message}
             onFocus={() => setFocused(true)}
@@ -31,10 +31,10 @@ const MessageForm: FC<MessageForm> = ({ label, placeholder, message, sending, on
         <span className={message.length > renderMessageLimit && "text-rose-600 font-semibold" || ""}>{message.length}</span> / {renderMessageLimit}
         </div>
         <button
-        type="submit"
-        disabled={message.replace(/\s{1,}/g, "").length === 0}
-        onClick={onSend}
-        className="text-[12px] flex self-stretch items-center text-center text-white my-1"
+            type="submit"
+            disabled={message.replace(/\s{1,}/g, "").length === 0}
+            onClick={onSend}
+            className="text-[12px] flex self-stretch items-center text-center text-white my-1"
         >
         {sending ? (
             <Loader height="30" width="30" />

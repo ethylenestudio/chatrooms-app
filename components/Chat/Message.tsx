@@ -7,6 +7,7 @@ import Loader from "../ui/Loader";
 import useMessageReaction from "@/hooks/useMessageReaction";
 import useModal from "@/hooks/useModal";
 import ReplyModal from "./ReplyModal";
+import { createPortal } from "react-dom";
 type MessageType = {
   content: string;
   sender: string;
@@ -87,19 +88,22 @@ const Message: FC<MessageType> = ({
         </div>
       </div>
       {isOpen && (
-        <ReplyModal
-          close={close}
-          master={{
-            content,
-            sender,
-            upvotes,
-            postId,
-            refetchAllMessages,
-            setThisAsReply,
-            master,
-            username,
-          }}
-        />
+        createPortal(
+          <ReplyModal
+            close={close}
+            master={{
+              content,
+              sender,
+              upvotes,
+              postId,
+              refetchAllMessages,
+              setThisAsReply,
+              master,
+              username
+            }}
+          />,
+          document.body
+        ) 
       )}
     </div>
   );

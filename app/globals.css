@@ -81,3 +81,7 @@ body {
   scrollbar-color: rgba(255, 255, 255, .75) transparent;
   scrollbar-width: thin;
 }
+
+body > div:first-child {
+  height: 100%
+}
