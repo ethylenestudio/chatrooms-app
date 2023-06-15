@@ -29,21 +29,7 @@ const SendMessage: FC<{
         pathname == "/chat" ? "w-[100%]" : "w-[75%] 2xl:w-[74%] 2xl:right-[1%] left-auto right-0"
       }`}
     >
-      <div className={`text-white flex justify-between items-center pl-2 text-xs px-4`}>
-        <p
-          className={`flex items-center space-x-4 ${replyTo.content ? "opacity-100" : "opacity-0"}`}
-        >
-          <AiOutlineCloseCircle
-            size={18}
-            className="hover:cursor-pointer"
-            onClick={() => setReplyTo({ content: "", postId: "" })}
-          />
-          <span className="font-bold">re: </span>
-          {replyTo.content &&
-            (replyTo.content.length > replyLimit
-              ? replyTo.content.slice(0, replyLimit - 1) + "..."
-              : replyTo.content)}
-        </p>
+      <div className={`text-white flex justify-end items-center pl-2 text-xs px-4`}>
         <p>Chars: {renderMessageLimit - message.length}</p>
       </div>
       <form className="flex justify-center space-x-2 px-4 w-full items-center" action="submit">

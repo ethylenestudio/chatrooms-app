@@ -21,7 +21,7 @@ const Header: FC = () => {
   }
   if (!hasHydrated) return null;
   return (
-    <div className="text-white sticky top-0 left-0 right-0 z-50 mimic-bg h-[100px] w-full flex justify-center items-center flex-col">
+    <div className="text-white sticky top-0 left-0 right-0 z-30 mimic-bg h-[100px] w-full flex justify-center items-center flex-col">
       {pathname == "/chat" ? (
         <p className="absolute top-0 left-0 mt-4 ml-2">
           <IoIosArrowBack color="rgb(148,163,184)" onClick={() => router.push("/app")} size={26} />

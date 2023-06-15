@@ -1,7 +1,6 @@
 "use client";
 import React, { FC, Fragment } from "react";
 import Message from "./Message";
-import { usePathname } from "next/navigation";
 import useGetMessages from "@/hooks/useGetMessages";
 import useSendMessage from "@/hooks/useSendMessage";
 import PopularMessage from "./PopularMessage";
@@ -12,10 +11,8 @@ type ContextType = {
 
 const Chat: FC<ContextType> = ({ context }) => {
   const { loading, orbisMessages, popularMessage, fetchMessages } = useGetMessages(context);
-  const { sendMessage, message, setMessage, replyTo, setReplyTo, sending } = useSendMessage(
-    context,
-    fetchMessages
-  );
+  const { sendMessage, message, setMessage, replyTo, setReplyTo, sending } =
+    useSendMessage(context);
 
   if (!orbisMessages) return null;
 

@@ -1,7 +1,7 @@
 import { ORBIS } from "@/config";
-import React, { useCallback, useState } from "react";
+import { useCallback, useState } from "react";
 
-const useSendMessage = (context: string, fetchMessages: () => Promise<void>) => {
+const useSendMessage = (context: string) => {
   const [message, setMessage] = useState<string>("");
   const [replyTo, setReplyTo] = useState<{ content: string; postId: string }>({
     content: "",
@@ -20,8 +20,8 @@ const useSendMessage = (context: string, fetchMessages: () => Promise<void>) => 
       const res = await ORBIS.createPost({
         body: message,
         context: context,
-        master: replyTo.content ? replyTo.postId : null,
-        reploy_to: replyTo.content ? replyTo.postId : null,
+        master: replyTo.postId ? replyTo.postId : null,
+        reploy_to: replyTo.postId ? replyTo.postId : null,
       });
       if (res.status == 200) {
         setTimeout(async () => {

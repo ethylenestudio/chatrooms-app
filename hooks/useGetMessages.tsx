@@ -2,7 +2,7 @@ import { ORBIS, POLLING_RATE } from "@/config";
 import { MessageType } from "@/types/MessageType";
 import { useCallback, useEffect, useState } from "react";
 
-const useGetMessages = (context: string) => {
+const useGetMessages = (context: string, master?: string) => {
   const [loading, setLoading] = useState(false);
   const [orbisMessages, setOrbisMessages] = useState<MessageType[]>();
   const [popularMessage, setPopularMessage] = useState<MessageType>();
@@ -11,12 +11,15 @@ const useGetMessages = (context: string) => {
     setLoading(true);
     const { data } = await ORBIS.getPosts({
       context,
+      only_master: master ? false : true,
+      master: master ? master : null,
     });
     setOrbisMessages(data);
     setLoading(false);
-  }, [context]);
+  }, [context, master]);
 
   const fetchPopularMessage = useCallback(async () => {
+    if (master) return;
     setLoading(true);
     const { data } = await ORBIS.getPosts(
       {
@@ -29,7 +32,7 @@ const useGetMessages = (context: string) => {
     );
     setPopularMessage(data[0]);
     setLoading(false);
-  }, [context]);
+  }, [context, master]);
 
   useEffect(() => {
     fetchPopularMessage();
