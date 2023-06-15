@@ -6,6 +6,7 @@ import { AiOutlineClose } from "react-icons/ai";
 import ReplyMessage from "./ReplyMesage";
 import Loader from "../ui/Loader";
 import useGetMessages from "@/hooks/useGetMessages";
+import MessageForm from "./MessageForm";
 
 const ReplyModal: FC<{
   master: MessageType;
@@ -18,19 +19,29 @@ const ReplyModal: FC<{
   }, [master, setReplyTo]);
   const { loading, orbisMessages, fetchMessages } = useGetMessages(selectedChat, master.postId);
 
+  const onChange: React.ChangeEventHandler<HTMLInputElement> = e =>
+   setMessage((prev) => {
+    if (prev.length < renderMessageLimit || e.target.value.length <= renderMessageLimit) {
+      return e.target.value;
+    }
+    return prev;
+  })
+
+  const onSend: React.MouseEventHandler<HTMLButtonElement> = async (e) => { e.preventDefault(); await sendMessage(); }
+
   return (
-    <form
-      action="submit"
+    <div
       onClick={(e) => {
         close();
       }}
-      className="fixed z-50 bottom-[20px] top-0 left-0 right-0 flex flex-col justify-center items-center w-full bg-[rgba(10,15,22,0.4)]"
+      className="fixed z-50 top-0 left-0 right-0 w-full h-full bg-[rgba(10,15,22,0.4)] backdrop-blur-md"
+      style={{ margin: "0" }}
     >
       <div
         onClick={(e) => {
           e.stopPropagation();
         }}
-        className="px-10 h-[80%] border-[1px] border-[#292F3F] rounded-3xl w-[90%] bg-[rgb(10,15,22)] py-4 flex flex-col space-y-2"
+        className="px-10 border-[1px] border-[#292F3F] bg-[rgb(10,15,22)] py-4 flex flex-col space-y-2 fixed z-55 right-0 w-[950px] max-w-[100%] h-full"
       >
         <div className="flex z-20 justify-between w-[100%] items-center">
           <p>{loading && <Loader width="20" height="20" />}</p>
@@ -52,7 +63,7 @@ const ReplyModal: FC<{
             refetchAllMessages={master.refetchAllMessages}
           />
         </div>
-        <div className="h-[80%] overflow-y-auto">
+        <div className="flex-1 overflow-y-auto">
           {orbisMessages?.map((message, i) => {
             return (
               <Fragment key={i}>
@@ -72,35 +83,9 @@ const ReplyModal: FC<{
           })}
         </div>
 
-        <div className="space-y-2">
-          <input
-            type="text"
-            placeholder="Reply to this message"
-            className="rounded-xl outline-0 outline-[#292F3F] text-white w-[100%] bg-[rgba(77,77,77,0.2)] px-4 py-2 opacity-100"
-            value={message}
-            onChange={(e) =>
-              setMessage((prev) => {
-                if (e.target.value.length <= renderMessageLimit) {
-                  return e.target.value;
-                } else {
-                  return prev;
-                }
-              })
-            }
-          />
-          <button
-            type="submit"
-            className="text-white flex justify-center text-center bg-[#CBA1A4] rounded-3xl w-[100%] px-2 py-2"
-            onClick={async (e) => {
-              e.preventDefault();
-              await sendMessage();
-            }}
-          >
-            {sending ? <Loader height="26" width="26" /> : "Reply"}
-          </button>
-        </div>
+        <MessageForm label="Reply" placeholder="Reply in this thread" onChange={onChange} onSend={onSend} message={message} sending={sending} />
       </div>
-    </form>
+    </div>
   );
 };
 

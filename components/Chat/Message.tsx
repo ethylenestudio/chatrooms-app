@@ -72,7 +72,7 @@ const Message: FC<MessageType> = ({
         </div>
         <div
           onClick={reactToPost}
-          className={`rounded-md flex items-center justify-center space-x-1 w-[60px] py-1 bg-black ${
+          className={`rounded-md flex items-center justify-center space-x-1 w-[70px] py-1 bg-black ${
             !isReacted && "hover:cursor-pointer hover:opacity-80"
           }`}
         >
