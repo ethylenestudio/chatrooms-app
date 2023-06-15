@@ -58,10 +58,10 @@ const Header: FC = () => {
             onClick={(e) => {
               e.stopPropagation();
             }}
-            className="px-10 border-[1px] w-[90%] border-[#292F3F] rounded-3xl lg:w-[30%] bg-[rgb(10,15,22)] py-4 flex flex-col items-center justify-center space-y-4"
+            className="px-6 border-[1px] w-[90%] border-[#292F3F] rounded-3xl lg:w-[30%] bg-[rgb(10,15,22)] py-4 flex flex-col items-center justify-center space-y-6"
           >
-            <div className="flex justify-between w-[100%] items-center">
-              <p className="self-start ml-2">Settings</p>
+            <div className="flex justify-between w-[100%] items-center mb-2">
+              <p className="self-start ml-2 text-lg text-white">Settings</p>
               <AiOutlineClose
                 onClick={() => setIsOpen(false)}
                 className="hover:cursor-pointer"
@@ -69,11 +69,11 @@ const Header: FC = () => {
                 size={24}
               />
             </div>
-            <div className="relative flex items-center w-[100%]">
+            <div className="relative flex items-center w-[90%]">
               <input
                 type="text"
                 placeholder="Username"
-                className="rounded-xl pr-2 outline-1 outline-[#292F3F] text-white w-[100%] bg-[rgba(77,77,77,0.2)] px-4 py-2 opacity-100"
+                className="rounded-3xl pr-2 outline-1 outline-[#292F3F] text-white w-[100%] bg-[rgba(77,77,77,0.2)] px-4 py-2 opacity-100"
                 value={username}
                 onChange={(e) =>
                   setUsername((prev) => {
@@ -87,7 +87,7 @@ const Header: FC = () => {
               />
               <button
                 type="submit"
-                className="text-[#7E90AF] absolute right-0 text-sm mr-2 py-2"
+                className="text-[#7E90AF] absolute right-0 text-sm mr-3 py-2"
                 onClick={(e) => {
                   e.preventDefault();
                   updateUsername();
