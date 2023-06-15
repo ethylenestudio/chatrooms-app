@@ -37,11 +37,9 @@ const Menu: FC = () => {
   }, [rooms]);
   if (!hasHydrated) return null;
   return (
-    <div className="relative pt-[114px]">
+    <div className="relative">
       <div
-        className={`${
-          width <= 760 ? "w-[100%]" : "w-[25%]"
-        } bg-[#090A10] border-r-2 border-slate-900 fixed top-[100px] left-0`}
+        className={`w-full bg-[#090A10] border-r-2 border-slate-900 sticky top-0 left-0`}
       >
         <p className="text-[#CBA1A4] text-xs pt-2 text-center">Rooms</p>
         <GeneralConversation />

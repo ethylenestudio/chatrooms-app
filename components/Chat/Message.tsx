@@ -57,7 +57,7 @@ const Message: FC<MessageType> = ({
         <p className="text-[12px] break-words font-extralight">{content}</p>
       </div>
       <div className="flex space-x-3 justify-end w-[30%] items-center">
-        <div onClick={open} className="relative flex items-center">
+        <div onClick={open} className="flex items-center">
           <BiCommentDetail
             className="hover:cursor-pointer"
             color={Boolean(replyCount) ? "#EEE" : "#4A5875"}

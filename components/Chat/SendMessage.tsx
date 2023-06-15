@@ -25,9 +25,7 @@ const SendMessage: FC<{
 
   return (
     <div
-      className={` h-[75px] fixed bottom-[50px] left-0 flex flex-col space-y-2 justify-center bg-[rgba(8,9,13,1)] ${
-        pathname == "/chat" ? "w-[100%]" : "w-[75%] left-auto right-0"
-      }`}
+      className={`h-[75px] sticky bottom-0 left-0 flex flex-col space-y-2 justify-center bg-[rgba(8,9,13,1)] w-full`}
     >
       <div className={`text-white flex justify-end items-center pl-2 text-xs px-4`}>
         <p>Chars: {renderMessageLimit - message.length}</p>

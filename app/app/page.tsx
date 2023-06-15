@@ -12,20 +12,18 @@ const App = () => {
 
   if (width <= 760) {
     return (
-      <div className="md:hidden w-[100%]">
+      <div className="w-[100%] col-span-2">
         <Menu />
       </div>
     );
   } else {
     return (
-      <div className="hidden md:flex w-[100%]">
-        <div className="w-[25%] border-r-2 border-slate-900">
-          <Menu />
-        </div>
-        <div className="w-[75%]">
-          <Chat context={selectedChat} />
-        </div>
+      <>
+      <div className="border-r-2 border-slate-900">
+        <Menu />
       </div>
+      <Chat context={selectedChat} />
+      </>
     );
   }
 };
