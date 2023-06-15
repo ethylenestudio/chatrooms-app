@@ -6,6 +6,7 @@ import { IoSettingsOutline } from "react-icons/io5";
 import { ORBIS, userNameLimit } from "@/config";
 import { AiOutlineClose } from "react-icons/ai";
 import useHydrated from "@/hooks/useHydrated";
+import { BiLogOut } from "react-icons/bi";
 const Header: FC = () => {
   const pathname = usePathname();
   const router = useRouter();
@@ -43,16 +44,16 @@ const Header: FC = () => {
               onClick={(e) => {
                 setIsOpen(false);
               }}
-              className="fixed z-50 bottom-[20px] top-0 left-0 right-0 flex flex-col justify-center items-center w-full bg-[rgba(10,15,22,0.4)]"
+              className="fixed z-50 bottom-[20px] top-0 left-0 right-0 flex flex-col justify-center items-center w-full bg-[rgba(10,15,22,0.6)]"
             >
               <div
                 onClick={(e) => {
                   e.stopPropagation();
                 }}
-                className="px-10 border-[1px] border-[#292F3F] rounded-3xl lg:w-[30%] bg-[rgb(10,15,22)] py-4 flex flex-col items-center justify-center space-y-4"
+                className="px-10 border-[1px] w-[90%] border-[#292F3F] rounded-3xl lg:w-[30%] bg-[rgb(10,15,22)] py-4 flex flex-col items-center justify-center space-y-4"
               >
                 <div className="flex justify-between w-[100%] items-center">
-                  <p className="self-start ml-2">Username</p>
+                  <p className="self-start ml-2">Settings</p>
                   <AiOutlineClose
                     onClick={() => setIsOpen(false)}
                     className="hover:cursor-pointer"
@@ -60,44 +61,47 @@ const Header: FC = () => {
                     size={24}
                   />
                 </div>
-                <input
-                  type="text"
-                  placeholder="Nickname"
-                  className="rounded-xl outline-1 outline-[#292F3F] text-white w-[100%] bg-[rgba(77,77,77,0.2)] px-4 py-2 opacity-100"
-                  value={username}
-                  onChange={(e) =>
-                    setUsername((prev) => {
-                      if (e.target.value.length <= userNameLimit) {
-                        return e.target.value;
-                      } else {
-                        return prev;
-                      }
-                    })
-                  }
-                />
-                <div className="space-y-1 w-[100%]">
+                <div className="relative flex items-center w-[100%]">
+                  <input
+                    type="text"
+                    placeholder="Nickname"
+                    className="rounded-xl pr-2 outline-1 outline-[#292F3F] text-white w-[100%] bg-[rgba(77,77,77,0.2)] px-4 py-2 opacity-100"
+                    value={username}
+                    onChange={(e) =>
+                      setUsername((prev) => {
+                        if (e.target.value.length <= userNameLimit) {
+                          return e.target.value;
+                        } else {
+                          return prev;
+                        }
+                      })
+                    }
+                  />
                   <button
                     type="submit"
-                    className="text-white bg-[#CBA1A4] rounded-3xl w-[100%] px-2 py-2"
+                    className="text-[#7E90AF] absolute right-0 text-sm mr-2 py-2"
                     onClick={(e) => {
                       e.preventDefault();
                       updateUsername();
                     }}
+                    disabled={!Boolean(username)}
                   >
                     Save
                   </button>
-                  <button
-                    className="text-white bg-red-500 rounded-3xl w-[100%] px-2 py-2"
-                    type="button"
-                    onClick={async (e) => {
-                      e.preventDefault();
-                      await ORBIS.logout();
-                      router.push("/");
-                    }}
-                  >
-                    Logout
-                  </button>
                 </div>
+
+                <button
+                  className="text-[#CBA1A4] mt-2 px-1 py-1 flex items-center space-x-2 justify-center"
+                  type="button"
+                  onClick={async (e) => {
+                    e.preventDefault();
+                    await ORBIS.logout();
+                    router.push("/");
+                  }}
+                >
+                  <BiLogOut className="mr-1" color="#CBA1A4" />
+                  Disconnect
+                </button>
               </div>
             </form>
           )}
