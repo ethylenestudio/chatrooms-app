@@ -18,14 +18,14 @@ const Chat: FC<ContextType & { className?: string }> = ({ context, className }) 
 
   return (
     <>
-      <div className={`${className || ""} overflow-auto`}>
+      <div className={`${className || ""} overflow-auto flex flex-col`}>
         <PopularMessage
           fetchMessages={fetchMessages}
           loading={loading}
           popularMessage={popularMessage}
           setReplyTo={setReplyTo}
         />
-        <div>
+        <div className="flex-1">
           {orbisMessages.map((message, i) => {
             if (message.stream_id != popularMessage?.stream_id) {
               return (
