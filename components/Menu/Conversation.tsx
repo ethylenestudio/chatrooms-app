@@ -32,7 +32,7 @@ const Conversation: FC<RoomPropType> = ({ room, lastMessage }) => {
         }
       }}
       className={`${
-        selectedChat == room.stream_id && "bg-slate-800"
+        selectedChat == room.stream_id && "md:bg-slate-800"
       } hover:cursor-pointer flex justify-center items-center px-8 py-6 border-b-[1px] border-[rgba(126,144,175,0.1)] text-white`}
     >
       <div className="w-[15%]">
