@@ -1,4 +1,3 @@
-import { usePathname } from "next/navigation";
 import React, { FC } from "react";
 import Message from "./Message";
 import { MessageType } from "@/types/MessageType";
@@ -16,8 +15,6 @@ const PopularMessage: FC<{
     }>
   >;
 }> = ({ loading, popularMessage, fetchMessages, setReplyTo }) => {
-  const pathname = usePathname();
-
   return (
     <div
       className="sticky top-0 bg-[#090A10]"
