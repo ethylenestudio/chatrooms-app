@@ -10,68 +10,126 @@ import { useAccount } from "wagmi";
 import logo from "@/public/assets/logo.png";
 import Loader from "../ui/Loader";
 
+type MinimalCredential = {
+  identifier: string
+}
+
+type CredentialRule = {
+  type: "credential"
+  requiredCredentials: Array<MinimalCredential>
+}
+
+const hasCredential = (targetCredential: MinimalCredential, userCredentials: Array<MinimalCredential>) => {
+  return userCredentials.some(credential => credential.identifier === targetCredential.identifier)
+}
+
+const checkCredentialRule = (rule: CredentialRule, userCredentials: Array<MinimalCredential>) => {
+  for(const credential of rule.requiredCredentials){
+    if(hasCredential(credential, userCredentials)) return true
+  }
+
+  return false
+}
+
+const hasContextAccess = (context: any, userCredentials: Array<MinimalCredential>) => {
+  if(!context.content.accessRules || context.content.accessRules.length === 0){
+    return true
+  }
+
+  for(const rule of context.content.accessRules){
+    // Check Credential rules only, for now
+    if(rule.type !== "credential") continue
+    if(checkCredentialRule(rule, userCredentials)) return true
+  }
+
+  return false
+}
+
+const isAlreadyConnected = async (): Promise<{ did?: string }> => {
+  try{
+    const res = await ORBIS.isConnected()
+    if(res.status !== 200) return {}
+
+    return {
+      did: res.did
+    }
+  }catch(e){
+    console.log(e)
+    return {}
+  }
+}
+
 const Login: FC = () => {
   const router = useRouter();
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const account = useAccount();
   const setRooms = useRooms((state) => state.setRooms);
   const setUserDid = useOrbisUser((state) => state.setUserDid);
-  useEffect(() => {
-    async function update() {
-      setLoading(true);
-      let res = await ORBIS.isConnected();
-
-      if (res.status == 200) {
-        const { data: creds } = await ORBIS.getCredentials(res.did);
-        const { data: contexts } = await ORBIS.getContexts(ORBIS_PROJECT_ID);
-        const userContexts: any = [];
-        for (const context of contexts) {
-          for (const cred of creds) {
-            if (
-              cred.identifier == context.content.accessRules[0].requiredCredentials[0].identifier
-            ) {
-              userContexts.push(context);
-            }
-          }
-        }
-        setRooms(userContexts);
-        setUserDid(res.did);
-        router.push("/app");
-        setLoading(false);
-      }
-      setLoading(false);
-    }
-    update();
-  }, [setRooms, router, setUserDid]);
-
-  async function connectToOrbis() {
+  
+  const authenticateOrbis = async () => {
     try {
       const provider = await account?.connector?.getProvider();
       if (!provider) {
         throw "Cannot fetch a provider";
       }
-      setLoading(true);
-      let res = await ORBIS.isConnected();
-      if (res.status != 200) {
-        res = await ORBIS.connect_v2({ lit: false, chain: "ethereum", provider: provider });
+
+      const { status, did } = await ORBIS.connect_v2({ lit: false, chain: "ethereum", provider: provider });
+      if(status !== 200 || !did){
+        return {}
       }
-      const { data: creds } = await ORBIS.getCredentials(res.did);
-      const { data: contexts } = await ORBIS.getContexts(ORBIS_PROJECT_ID);
-      const userContexts: any = [];
-      for (const context of contexts) {
-        for (const cred of creds) {
-          if (cred.identifier == context.content.accessRules[0].requiredCredentials[0].identifier) {
-            userContexts.push(context);
-          }
-        }
-      }
-      setRooms(userContexts);
-      setUserDid(res.did);
-      router.push("/app");
-      setLoading(false);
-    } catch (e) {
-      setLoading(false);
+
+      return { did }
+    }catch(e){
+      console.log("Connection error", e)
+      return {}
     }
+  }
+
+  const updateRoomAccess = async (did: string) => {
+    const { data: userCredentials } = await ORBIS.getCredentials(did);
+    const { data: contexts } = await ORBIS.getContexts(ORBIS_PROJECT_ID);
+
+    const userContexts: any = [];
+    for (const context of contexts) {
+      if(!hasContextAccess(context, userCredentials)) continue
+      userContexts.push(context)
+    }
+
+    setRooms(userContexts);
+  }
+
+  useEffect(() => {
+    async function update() {
+      const { did } = await isAlreadyConnected()
+      if(!did) return setLoading(false)
+
+      await updateRoomAccess(did)
+      
+      router.push("/app");
+    }
+    update();
+  }, [setRooms, router, setUserDid]);
+
+  async function connectToOrbis() {
+    setLoading(true);
+
+    const { did: localSession } = await isAlreadyConnected()
+    if(localSession){
+      setUserDid(localSession)
+      await updateRoomAccess(localSession)
+      router.push("/app");
+      return setLoading(false)
+    }
+
+    const { did } = await authenticateOrbis()
+    if(!did){
+      return setLoading(false)
+    }
+
+    setUserDid(did)
+    await updateRoomAccess(did)
+
+    router.push("/app");
   }
 
   return (

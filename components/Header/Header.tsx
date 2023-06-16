@@ -13,7 +13,10 @@ const Header: FC = () => {
   const hasHydrated = useHydrated();
   const userDid = useOrbisUser((state) => state.userDid);
 
-  if (!hasHydrated) return null;
+  // Show the logo until hydration is complete
+  if (!hasHydrated) return <div className="text-white col-span-2 mimic-bg h-[100px] w-full flex items-center">
+      <h1 className="w-full tracking-widest text-xl text-center">chatrooms.</h1>
+  </div>
 
   return (
     <>
