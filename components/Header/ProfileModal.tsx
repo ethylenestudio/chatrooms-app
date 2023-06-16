@@ -75,6 +75,7 @@ const ProfileModal: FC<{ close: () => any }> = ({ close }) => {
                                     onClick={async (e) => {
                                         e.preventDefault();
                                         await ORBIS.logout();
+                                        close();
                                         router.push("/");
                                     }}
                                     className="text-[#CBA1A4] p-2 mr-auto"
