@@ -19,22 +19,25 @@ const ReplyModal: FC<{
   }, [master, setReplyTo]);
   const { loading, orbisMessages, fetchMessages } = useGetMessages(selectedChat, master.postId);
 
-  const onChange: React.ChangeEventHandler<HTMLInputElement> = e =>
-   setMessage((prev) => {
-    if (prev.length < renderMessageLimit || e.target.value.length <= renderMessageLimit) {
-      return e.target.value;
-    }
-    return prev;
-  })
+  const onChange: React.ChangeEventHandler<HTMLInputElement> = (e) =>
+    setMessage((prev) => {
+      if (prev.length < renderMessageLimit || e.target.value.length <= renderMessageLimit) {
+        return e.target.value;
+      }
+      return prev;
+    });
 
-  const onSend: React.MouseEventHandler<HTMLButtonElement> = async (e) => { e.preventDefault(); await sendMessage(); }
+  const onSend: React.MouseEventHandler<HTMLButtonElement> = async (e) => {
+    e.preventDefault();
+    await sendMessage();
+  };
 
   return (
     <div
       onClick={(e) => {
         close();
       }}
-      className="fixed top-0 z-[55] left-0 w-full h-full bg-[rgba(10,15,22,0.4)] backdrop-blur-md"
+      className="fixed top-0 max-h-[100vh] z-[55] left-0 w-full h-full bg-[rgba(10,15,22,0.4)] backdrop-blur-md"
       style={{ margin: "0" }}
     >
       <div
@@ -83,7 +86,14 @@ const ReplyModal: FC<{
           })}
         </div>
 
-        <MessageForm label="Reply" placeholder="Reply in this thread" onChange={onChange} onSend={onSend} message={message} sending={sending} />
+        <MessageForm
+          label="Reply"
+          placeholder="Reply in this thread"
+          onChange={onChange}
+          onSend={onSend}
+          message={message}
+          sending={sending}
+        />
       </div>
     </div>
   );
