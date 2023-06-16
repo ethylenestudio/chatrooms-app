@@ -12,12 +12,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         <QueryClientProvider client={queryClient}>
           <RainbowProvider>
-            <div style={{
-              display: "grid",
-              gridTemplateColumns: "clamp(300px, 25%, 400px) auto",
-              gridTemplateRows: "100px 1fr 50px",
-              height: "100%"
-            }}>
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "clamp(300px, 25%, 400px) auto",
+                gridTemplateRows: "100px 1fr 50px",
+                height: "100%",
+              }}
+            >
               <Header />
               {children}
               <Footer />
