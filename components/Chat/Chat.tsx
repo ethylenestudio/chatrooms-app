@@ -18,7 +18,7 @@ const Chat: FC<ContextType & { className?: string }> = ({ context, className }) 
 
   return (
     <>
-      <div className={`${className || ""} overflow-auto flex flex-col`}>
+      <div className={`${className || ""} overflow-auto flex flex-col max-h-[100vh]`}>
         <PopularMessage
           fetchMessages={fetchMessages}
           loading={loading}
