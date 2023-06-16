@@ -44,7 +44,7 @@ const ProfileModal: FC<{ close: () => any }> = ({ close }) => {
                     }}
                     className="px-8 border-[1px] border-[#292F3F] rounded-lg w-[min(100%, 450px)] bg-[rgb(10,15,22)] py-4"
                 >
-                    <div className="flex justify-between w-[100%] items-center mb-4">
+                    <div className="flex justify-between w-[100%] items-center mb-6">
                         <p className="self-start ml-2 pr-4 text-lg text-white">
                             {!user && "Loading profile..." || "Profile Settings"}
                         </p>
