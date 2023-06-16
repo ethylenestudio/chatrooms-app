@@ -22,9 +22,11 @@ const Menu: FC = () => {
       const result = await Promise.all(rooms.map((room: any) => fetchLastMessage(room)));
       let lastMessages = [];
       lastMessages = result.map((i) => {
-        if (i.length > 0) {
+        if (i && i.length > 0) {
           return i[0].content.body;
         }
+
+        return "Be the first one to chat!"
       });
 
       setLastMessages(lastMessages);
