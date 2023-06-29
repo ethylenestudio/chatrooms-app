@@ -11,6 +11,7 @@ import { configureChains, createClient, WagmiConfig } from "wagmi";
 import { mainnet } from "wagmi/chains";
 import { publicProvider } from "wagmi/providers/public";
 import { PropsWithChildren } from "react";
+import { WC_PROJECT_ID } from "@/config";
 
 const { chains, provider } = configureChains([mainnet], [publicProvider()]);
 
@@ -18,9 +19,12 @@ const connectors = connectorsForWallets([
   {
     groupName: "Recommended",
     wallets: [
-      injectedWallet({ chains }),
-      metaMaskWallet({ chains }),
-      walletConnectWallet({ chains }),
+      metaMaskWallet({ chains, projectId: WC_PROJECT_ID }),
+      walletConnectWallet({
+        chains,
+        projectId: WC_PROJECT_ID,
+        options: { projectId: WC_PROJECT_ID },
+      }),
     ],
   },
 ]);

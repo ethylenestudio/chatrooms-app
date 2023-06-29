@@ -11,3 +11,4 @@ export const GENERAL_CHAT = "kjzl6cwe1jw145tkycs97cdz9qsgwvuyqwcutaa31fkk4rxns86
 export const POLLING_RATE = 3000; //ms
 export const MESSAGE = "Signing to access chatrooms admin panel";
 export const ORBIS_PROJECT_ID = "kjzl6cwe1jw145nessm47mky8qclcfi0eh4y07892xqy5e1leeoujfd301m259x";
+export const WC_PROJECT_ID = "22349431516e2a2c3e80bf493887648a";

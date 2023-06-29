@@ -6,6 +6,7 @@ const useCheckConnection = () => {
   const router = useRouter();
   const checkConnection = useCallback(async () => {
     let res = await ORBIS.isConnected();
+    console.log(res);
     if (res.status != 200) {
       router.push("/");
     }

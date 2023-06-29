@@ -13,10 +13,7 @@ const Auth = () => {
   const { isConnected } = useAccount();
   const router = useRouter();
   const key = pathname.slice(6);
-  const [account, setAccount] = useState<any>();
   const [signature, setSignature] = useState<any>("");
-  const MMSDK = new MetaMaskSDK({ dappMetadata: { name: "Chatrooms" } });
-  const ethereum = MMSDK.getProvider(); // You can also access via window.ethereum
   const { signMessageAsync } = useSignMessage({ message: MESSAGE });
 
   async function sign(savedSignature?: string) {
