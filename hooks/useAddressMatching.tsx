@@ -12,7 +12,10 @@ const useAddressMatching = () => {
   async function checkMatching() {
     let res = await ORBIS.isConnected();
     if (await checkConnections()) {
-      return account.address?.toLowerCase() == res.did.split(":")[res.did.split(":").length - 1];
+      return (
+        account.address?.toLowerCase() ==
+        res.did.split(":")[res.did.split(":").length - 1].toLowerCase()
+      );
     } else {
       return false;
     }
