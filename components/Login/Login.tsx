@@ -9,63 +9,79 @@ import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useAccount } from "wagmi";
 import logo from "@/public/assets/logo.png";
 import Loader from "../ui/Loader";
+import useAddressMatching from "@/hooks/useAddressMatching";
 
 type MinimalCredential = {
-  identifier: string
-}
+  identifier: string;
+};
 
 type CredentialRule = {
-  type: "credential"
-  requiredCredentials: Array<MinimalCredential>
-}
+  type: "credential";
+  requiredCredentials: Array<MinimalCredential>;
+};
 
-const hasCredential = (targetCredential: MinimalCredential, userCredentials: Array<MinimalCredential>) => {
-  return userCredentials.some(credential => credential.identifier === targetCredential.identifier)
-}
+const hasCredential = (
+  targetCredential: MinimalCredential,
+  userCredentials: Array<MinimalCredential>
+) => {
+  return userCredentials.some(
+    (credential) => credential.identifier === targetCredential.identifier
+  );
+};
 
 const checkCredentialRule = (rule: CredentialRule, userCredentials: Array<MinimalCredential>) => {
-  for(const credential of rule.requiredCredentials){
-    if(hasCredential(credential, userCredentials)) return true
+  for (const credential of rule.requiredCredentials) {
+    if (hasCredential(credential, userCredentials)) return true;
   }
 
-  return false
-}
+  return false;
+};
 
 const hasContextAccess = (context: any, userCredentials: Array<MinimalCredential>) => {
-  if(!context.content.accessRules || context.content.accessRules.length === 0){
-    return true
+  if (!context.content.accessRules || context.content.accessRules.length === 0) {
+    return true;
   }
 
-  for(const rule of context.content.accessRules){
+  for (const rule of context.content.accessRules) {
     // Check Credential rules only, for now
-    if(rule.type !== "credential") continue
-    if(checkCredentialRule(rule, userCredentials)) return true
+    if (rule.type !== "credential") continue;
+    if (checkCredentialRule(rule, userCredentials)) return true;
   }
 
-  return false
-}
+  return false;
+};
 
 const isAlreadyConnected = async (): Promise<{ did?: string }> => {
-  try{
-    const res = await ORBIS.isConnected()
-    if(res.status !== 200) return {}
+  try {
+    const res = await ORBIS.isConnected();
+    if (res.status !== 200) return {};
 
     return {
-      did: res.did
-    }
-  }catch(e){
-    console.log(e)
-    return {}
+      did: res.did,
+    };
+  } catch (e) {
+    console.log(e);
+    return {};
   }
-}
+};
 
 const Login: FC = () => {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
   const account = useAccount();
+  const checkMatching = useAddressMatching();
+
   const setRooms = useRooms((state) => state.setRooms);
   const setUserDid = useOrbisUser((state) => state.setUserDid);
-  
+  async function logoutOnNotMatch() {
+    const res = await ORBIS.isConnected();
+    if (account.isConnected && res.status == 200) {
+      const status = await checkMatching();
+      if (!status) {
+        await ORBIS.logout();
+      }
+    }
+  }
   const authenticateOrbis = async () => {
     try {
       const provider = await account?.connector?.getProvider();
@@ -73,17 +89,21 @@ const Login: FC = () => {
         throw "Cannot fetch a provider";
       }
 
-      const { status, did } = await ORBIS.connect_v2({ lit: false, chain: "ethereum", provider: provider });
-      if(status !== 200 || !did){
-        return {}
+      const { status, did } = await ORBIS.connect_v2({
+        lit: false,
+        chain: "ethereum",
+        provider: provider,
+      });
+      if (status !== 200 || !did) {
+        return {};
       }
 
-      return { did }
-    }catch(e){
-      console.log("Connection error", e)
-      return {}
+      return { did };
+    } catch (e) {
+      console.log("Connection error", e);
+      return {};
     }
-  }
+  };
 
   const updateRoomAccess = async (did: string) => {
     const { data: userCredentials } = await ORBIS.getCredentials(did);
@@ -91,20 +111,20 @@ const Login: FC = () => {
 
     const userContexts: any = [];
     for (const context of contexts) {
-      if(!hasContextAccess(context, userCredentials)) continue
-      userContexts.push(context)
+      if (!hasContextAccess(context, userCredentials)) continue;
+      userContexts.push(context);
     }
 
     setRooms(userContexts);
-  }
+  };
 
   useEffect(() => {
     async function update() {
-      const { did } = await isAlreadyConnected()
-      if(!did) return setLoading(false)
+      await logoutOnNotMatch();
+      const { did } = await isAlreadyConnected();
+      if (!did || !account.isConnected) return setLoading(false);
+      await updateRoomAccess(did);
 
-      await updateRoomAccess(did)
-      
       router.push("/app");
     }
     update();
@@ -113,21 +133,21 @@ const Login: FC = () => {
   async function connectToOrbis() {
     setLoading(true);
 
-    const { did: localSession } = await isAlreadyConnected()
-    if(localSession){
-      setUserDid(localSession)
-      await updateRoomAccess(localSession)
+    const { did: localSession } = await isAlreadyConnected();
+    if (localSession) {
+      setUserDid(localSession);
+      await updateRoomAccess(localSession);
       router.push("/app");
-      return setLoading(false)
+      return setLoading(false);
     }
 
-    const { did } = await authenticateOrbis()
-    if(!did){
-      return setLoading(false)
+    const { did } = await authenticateOrbis();
+    if (!did) {
+      return setLoading(false);
     }
 
-    setUserDid(did)
-    await updateRoomAccess(did)
+    setUserDid(did);
+    await updateRoomAccess(did);
 
     router.push("/app");
   }

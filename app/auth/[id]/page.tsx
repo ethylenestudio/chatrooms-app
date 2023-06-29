@@ -16,13 +16,8 @@ const Auth = () => {
   const [signature, setSignature] = useState<any>("");
   const { signMessageAsync } = useSignMessage({ message: MESSAGE });
 
-  async function sign(savedSignature?: string) {
-    let sign;
-    if (savedSignature) {
-      sign = savedSignature;
-    } else {
-      sign = await signMessageAsync();
-    }
+  async function sign() {
+    const sign = await signMessageAsync();
 
     setSignature(sign);
     const req = await axios.post(
@@ -31,7 +26,6 @@ const Auth = () => {
       { headers: { Authorization: sign as string } }
     );
     if (req.data) {
-      localStorage.setItem("signature", sign as string);
       router.push("/");
     }
   }
@@ -42,12 +36,7 @@ const Auth = () => {
         <button
           className="border-2 border-white p-4 rounded-md"
           onClick={async () => {
-            const storedSignature = localStorage.getItem("signature");
-            if (storedSignature) {
-              await sign(storedSignature);
-            } else {
-              await sign();
-            }
+            await sign();
           }}
         >
           Sign and Submit
