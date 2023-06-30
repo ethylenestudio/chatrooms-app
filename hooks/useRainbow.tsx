@@ -12,14 +12,17 @@ import { mainnet } from "wagmi/chains";
 import { publicProvider } from "wagmi/providers/public";
 import { PropsWithChildren } from "react";
 import { WC_PROJECT_ID } from "@/config";
-import { walletConnectWallet } from "@rainbow-me/rainbowkit/wallets";
+import { metaMaskWallet, walletConnectWallet } from "@rainbow-me/rainbowkit/wallets";
 
 const { chains, publicClient } = configureChains([mainnet], [publicProvider()]);
 
 const connectors = connectorsForWallets([
   {
     groupName: "Recommended",
-    wallets: [walletConnectWallet({ projectId: WC_PROJECT_ID, chains })],
+    wallets: [
+      walletConnectWallet({ projectId: WC_PROJECT_ID, chains }),
+      metaMaskWallet({ projectId: WC_PROJECT_ID, chains }),
+    ],
   },
 ]);
 const wagmiConfig = createConfig({
