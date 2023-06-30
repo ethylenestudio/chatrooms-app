@@ -1,10 +1,11 @@
 /* eslint-disable @next/next/no-img-element */
 import React, { FC } from "react";
-import ethylene from "@/public/assets/ethyleneLogo.svg";
+import ethylene from "@/public/assets/ethyleneLogo.png";
 import orbis from "@/public/assets/orbisLogo.svg";
 import doingud from "@/public/assets/doingudLogo.svg";
 import chatrooms from "@/public/assets/chatroomsLogo.svg";
 import Link from "next/link";
+import Image from "next/image";
 
 const Footer: FC = () => {
   return (
@@ -14,19 +15,19 @@ const Footer: FC = () => {
           <p className="text-[8px] sm:text-[10px]">Created by</p>
           <div className="flex justify-center space-x-2 sm:space-x-3 items-center">
             <Link href={"https://useorbis.com"} target="_blank">
-              <img src={orbis.src} className="sm:w-5" alt="orbis" />
+              <Image src={orbis.src} width={20} height={20} alt="orbis" />
             </Link>
             <Link href={"https://ethylene.io"} target="_blank">
-              <img src={ethylene.src} className="sm:w-6" alt="ethylene" />
+              <Image src={ethylene.src} width={24} height={24} alt="ethylene" />
             </Link>
             <Link href={"https://doingud.com"} target="_blank">
-              <img src={doingud.src} className="sm:w-6" alt="doingud" />
+              <Image src={doingud.src} width={24} height={24} alt="doingud" />
             </Link>
           </div>
         </div>
       </div>
       <div className="flex justify-center items-center">
-        <img src={chatrooms.src} className="w-28 sm:w-32" alt="chatrooms" />
+        <Image src={chatrooms.src} width={134} height={24} alt="chatrooms" />
       </div>
     </div>
   );
