@@ -1,11 +1,33 @@
+/* eslint-disable @next/next/no-img-element */
 import React, { FC } from "react";
+import ethylene from "@/public/assets/ethyleneLogo.svg";
+import orbis from "@/public/assets/orbisLogo.svg";
+import doingud from "@/public/assets/doingudLogo.svg";
+import chatrooms from "@/public/assets/chatroomsLogo.svg";
+import Link from "next/link";
 
 const Footer: FC = () => {
   return (
-    <div className="pb-[env(safe-area-inset-bottom)] w-full bg-[rgba(0,0,0,1)] text-white flex items-center justify-center col-span-2 row-start-3 fixed bottom-0 h-14">
-      <p className="text-sm font-extralight tracking-wide">
-        Powered by Ethylene - Orbis - DoinGud
-      </p>
+    <div className="pb-[env(safe-area-inset-bottom)] w-full bg-[rgba(0,0,0,1)] text-white flex items-center justify-between px-4 lg:px-12 sm:px-8 col-span-2 row-start-3 fixed bottom-0 h-14">
+      <div>
+        <div className="flex flex-col items-start justify-center space-y-1 py-1">
+          <p className="text-[8px] sm:text-[10px]">Created by</p>
+          <div className="flex justify-center space-x-2 sm:space-x-3 items-center">
+            <Link href={"https://useorbis.com"} target="_blank">
+              <img src={orbis.src} className="sm:w-5" alt="orbis" />
+            </Link>
+            <Link href={"https://ethylene.io"} target="_blank">
+              <img src={ethylene.src} className="sm:w-6" alt="ethylene" />
+            </Link>
+            <Link href={"https://doingud.com"} target="_blank">
+              <img src={doingud.src} className="sm:w-6" alt="doingud" />
+            </Link>
+          </div>
+        </div>
+      </div>
+      <div className="flex justify-center items-center">
+        <img src={chatrooms.src} className="w-28 sm:w-32" alt="chatrooms" />
+      </div>
     </div>
   );
 };
