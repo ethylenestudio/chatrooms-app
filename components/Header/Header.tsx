@@ -5,6 +5,8 @@ import { IoIosArrowBack } from "react-icons/io";
 import useHydrated from "@/hooks/useHydrated";
 import ProfileModal from "./ProfileModal";
 import useOrbisUser from "@/hooks/store/useOrbisUser";
+import Image from "next/image";
+import logo from "@/public/assets/chatroomsLogo.svg";
 
 const Header: FC = () => {
   const pathname = usePathname();
@@ -14,9 +16,12 @@ const Header: FC = () => {
   const userDid = useOrbisUser((state) => state.userDid);
 
   // Show the logo until hydration is complete
-  if (!hasHydrated) return <div className="text-white col-span-2 mimic-bg h-[100px] w-full flex items-center">
-      <h1 className="w-full tracking-widest text-xl text-center">chatrooms.</h1>
-  </div>
+  if (!hasHydrated)
+    return (
+      <div className="text-white col-span-2 mimic-bg h-[100px] w-full flex items-center">
+        <h1 className="w-full tracking-widest text-xl text-center">chatrooms.</h1>
+      </div>
+    );
 
   return (
     <>
@@ -28,8 +33,8 @@ const Header: FC = () => {
             </div>
           ) : null}
         </div>
-        <div className="flex-1 text-center">
-          <h1 className="tracking-widest text-xl">chatrooms.</h1>
+        <div className="flex-1 text-center items-center flex justify-center">
+          <Image src={logo.src} alt="logo" width={200} height={30} />
         </div>
         <div className="w-[50px]">
           {pathname == "/chat" || pathname == "/app" ? (
