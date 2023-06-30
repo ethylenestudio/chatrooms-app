@@ -26,6 +26,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             </div>
           </RainbowProvider>
         </QueryClientProvider>
+        <div className="absolute"></div>
       </body>
     </html>
   );
