@@ -1,21 +1,27 @@
 "use client";
 import "@rainbow-me/rainbowkit/styles.css";
 import merge from "lodash.merge";
-import { darkTheme, getDefaultWallets, RainbowKitProvider } from "@rainbow-me/rainbowkit";
+import {
+  connectorsForWallets,
+  darkTheme,
+  getDefaultWallets,
+  RainbowKitProvider,
+} from "@rainbow-me/rainbowkit";
 import { configureChains, createConfig, WagmiConfig } from "wagmi";
 import { mainnet } from "wagmi/chains";
 import { publicProvider } from "wagmi/providers/public";
 import { PropsWithChildren } from "react";
 import { WC_PROJECT_ID } from "@/config";
+import { walletConnectWallet } from "@rainbow-me/rainbowkit/wallets";
 
 const { chains, publicClient } = configureChains([mainnet], [publicProvider()]);
 
-const { connectors } = getDefaultWallets({
-  appName: "Chatrooms",
-  projectId: WC_PROJECT_ID,
-  chains,
-});
-
+const connectors = connectorsForWallets([
+  {
+    groupName: "Recommended",
+    wallets: [walletConnectWallet({ projectId: WC_PROJECT_ID, chains })],
+  },
+]);
 const wagmiConfig = createConfig({
   autoConnect: true,
   connectors,
