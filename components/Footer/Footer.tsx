@@ -14,10 +14,16 @@ const Footer: FC = () => {
           <div className="flex justify-center space-x-1 items-center">
             <p className="text-[8px] sm:text-[10px] text-[#7E90AF]">Created by</p>
             <Link href={"https://ethylene.io"} target="_blank">
-              <Image src={ethyleneBig.src} width={90} height={60} alt="ethylene" />
+              <Image
+                src={ethyleneBig.src}
+                width={90}
+                height={60}
+                alt="ethylene"
+                style={{ transform: "translateY(1px)" }}
+              />
             </Link>
             <Link href={"https://doingud.com"} target="_blank">
-              <Image src={doingudBig.src} width={62} height={10} alt="doingud" />
+              <Image src={doingudBig.src} width={70} height={40} alt="doingud" />
             </Link>
           </div>
         </div>
