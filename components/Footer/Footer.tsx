@@ -23,7 +23,13 @@ const Footer: FC = () => {
               />
             </Link>
             <Link href={"https://doingud.com"} target="_blank">
-              <Image src={doingudBig.src} width={70} height={40} alt="doingud" />
+              <Image
+                src={doingudBig.src}
+                width={64}
+                style={{ marginLeft: 3 }}
+                height={40}
+                alt="doingud"
+              />
             </Link>
           </div>
         </div>
