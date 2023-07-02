@@ -13,25 +13,29 @@ import { publicProvider } from "wagmi/providers/public";
 import { PropsWithChildren } from "react";
 import { WC_PROJECT_ID } from "@/config";
 import { metaMaskWallet, walletConnectWallet } from "@rainbow-me/rainbowkit/wallets";
-
-const { chains, publicClient } = configureChains([mainnet], [publicProvider()]);
-
-const connectors = connectorsForWallets([
-  {
-    groupName: "Recommended",
-    wallets: [
-      walletConnectWallet({ projectId: WC_PROJECT_ID, chains }),
-      metaMaskWallet({ projectId: WC_PROJECT_ID, chains }),
-    ],
-  },
-]);
-const wagmiConfig = createConfig({
-  autoConnect: true,
-  connectors,
-  publicClient,
-});
+import useWindowSize from "./useWindowSize";
 
 export const RainbowProvider = ({ children }: PropsWithChildren) => {
+  const [w, h] = useWindowSize();
+  const { chains, publicClient } = configureChains([mainnet], [publicProvider()]);
+  const walletsList =
+    w > h
+      ? [
+          walletConnectWallet({ projectId: WC_PROJECT_ID, chains }),
+          metaMaskWallet({ projectId: WC_PROJECT_ID, chains }),
+        ]
+      : [walletConnectWallet({ projectId: WC_PROJECT_ID, chains })];
+  const connectors = connectorsForWallets([
+    {
+      groupName: "Recommended",
+      wallets: walletsList,
+    },
+  ]);
+  const wagmiConfig = createConfig({
+    autoConnect: true,
+    connectors,
+    publicClient,
+  });
   return (
     <WagmiConfig config={wagmiConfig}>
       <RainbowKitProvider
