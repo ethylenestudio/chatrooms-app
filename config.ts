@@ -1,4 +1,3 @@
-// @ts-expect-error
 import { Orbis } from "@orbisclub/orbis-sdk";
 export const lastMessageLimit = 34;
 export const replyLimit = 30;
