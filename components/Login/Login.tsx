@@ -123,12 +123,13 @@ const Login: FC = () => {
       await logoutOnNotMatch();
       const { did } = await isAlreadyConnected();
       if (!did || !account.isConnected) return setLoading(false);
-      await updateRoomAccess(did);
-
-      router.push("/app");
+      if (did && account.isConnected) {
+        await updateRoomAccess(did);
+        router.push("/app");
+      }
     }
     update();
-  }, [setRooms, router, setUserDid]);
+  }, [setRooms, router, setUserDid, account]);
 
   async function connectToOrbis() {
     setLoading(true);
