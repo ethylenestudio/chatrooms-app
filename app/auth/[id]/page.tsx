@@ -18,8 +18,9 @@ const Auth = () => {
   const key = pathname.slice(6);
   const [signature, setSignature] = useState<any>("");
   const { signMessageAsync } = useSignMessage({ message: MESSAGE });
-
+  const [loading, setLoading] = useState(false);
   async function sign() {
+    setLoading(true);
     const sign = await signMessageAsync();
 
     setSignature(sign);
@@ -47,6 +48,7 @@ const Auth = () => {
         });
       }
     }
+    setLoading(false);
   }
 
   if (!isHydrated) return null;
@@ -66,12 +68,16 @@ const Auth = () => {
       />
       {isConnected && (
         <button
-          className="border-2 border-white p-4 rounded-lg"
+          className="border-2 border-white p-2 px-4 rounded-3xl"
           onClick={async () => {
-            await sign();
+            try {
+              await sign();
+            } catch (e) {
+              setLoading(false);
+            }
           }}
         >
-          Sign and Submit
+          {loading ? "Authenticating..." : "Sign and Submit"}
         </button>
       )}
       {!isConnected && (

@@ -10,6 +10,7 @@ import { useAccount } from "wagmi";
 import logo from "@/public/assets/logo.png";
 import Loader from "../ui/Loader";
 import useAddressMatching from "@/hooks/useAddressMatching";
+import useHydrated from "@/hooks/useHydrated";
 
 type MinimalCredential = {
   identifier: string;
@@ -67,10 +68,10 @@ const isAlreadyConnected = async (): Promise<{ did?: string }> => {
 
 const Login: FC = () => {
   const router = useRouter();
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const { isConnected, connector } = useAccount();
   const checkMatching = useAddressMatching();
-
+  const isHydrated = useHydrated();
   const setRooms = useRooms((state) => state.setRooms);
   const setUserDid = useOrbisUser((state) => state.setUserDid);
   async function logoutOnNotMatch() {
@@ -108,54 +109,68 @@ const Login: FC = () => {
   const updateRoomAccess = async (did: string) => {
     const { data: userCredentials } = await ORBIS.getCredentials(did);
     const { data: contexts } = await ORBIS.getContexts(ORBIS_PROJECT_ID);
-
     const userContexts: any = [];
     for (const context of contexts) {
       if (!hasContextAccess(context, userCredentials)) continue;
       userContexts.push(context);
     }
-
     setRooms(userContexts);
   };
-  useEffect(() => {
-    console.log(isConnected);
-  }, [isConnected]);
 
   useEffect(() => {
     async function update() {
+      setLoading(true);
       await logoutOnNotMatch();
       const { did } = await isAlreadyConnected();
-      if (!did || isConnected) return setLoading(false);
+      if (!did || !isConnected) {
+        setLoading(false);
+      }
+      if (!did && isConnected) {
+        const { did: localSession } = await isAlreadyConnected();
+        if (localSession) {
+          setLoading(true);
+          setUserDid(localSession);
+          await updateRoomAccess(localSession);
+          router.push("/app");
+          return setLoading(false);
+        }
+        return setLoading(false);
+      }
       if (did && isConnected) {
+        setLoading(true);
         await updateRoomAccess(did);
         router.push("/app");
+        setLoading(false);
       }
     }
     update();
   }, [setRooms, router, setUserDid, isConnected]);
 
   async function connectToOrbis() {
-    setLoading(true);
+    try {
+      const { did: localSession } = await isAlreadyConnected();
+      if (localSession) {
+        setUserDid(localSession);
+        await updateRoomAccess(localSession);
+        router.push("/app");
+        return setLoading(false);
+      }
 
-    const { did: localSession } = await isAlreadyConnected();
-    if (localSession) {
-      setUserDid(localSession);
-      await updateRoomAccess(localSession);
+      const { did } = await authenticateOrbis();
+      setUserDid(did);
+
+      if (!did) {
+        return setLoading(false);
+      }
+      await updateRoomAccess(did);
+
       router.push("/app");
-      return setLoading(false);
+    } catch (e) {
+      setLoading(false);
     }
-
-    const { did } = await authenticateOrbis();
-    if (!did) {
-      return setLoading(false);
-    }
-
-    setUserDid(did);
-    await updateRoomAccess(did);
-
-    router.push("/app");
   }
 
+  if (!isHydrated) return null;
   return (
     <div className="text-white h-[100%] flex justify-center items-center flex-col space-y-6">
       <img src={logo.src} alt="logo" className="w-[120px]" />
@@ -167,7 +182,10 @@ const Login: FC = () => {
       ) : isConnected ? (
         <button
           className="rounded-3xl bg-[#CBA1A4] border-white py-2 text-sm px-4"
-          onClick={connectToOrbis}
+          onClick={() => {
+            setLoading(true);
+            connectToOrbis();
+          }}
         >
           Login to Orbis
         </button>
