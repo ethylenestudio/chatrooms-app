@@ -1,41 +1,37 @@
 "use client";
 import "@rainbow-me/rainbowkit/styles.css";
-import merge from "lodash.merge";
-import {
-  connectorsForWallets,
-  darkTheme,
-  getDefaultWallets,
-  RainbowKitProvider,
-} from "@rainbow-me/rainbowkit";
+
+import { connectorsForWallets, darkTheme, RainbowKitProvider } from "@rainbow-me/rainbowkit";
+import { rainbowWallet, metaMaskWallet, walletConnectWallet } from "@rainbow-me/rainbowkit/wallets";
+
 import { configureChains, createConfig, WagmiConfig } from "wagmi";
-import { mainnet } from "wagmi/chains";
+import { mainnet, goerli } from "wagmi/chains"
 import { publicProvider } from "wagmi/providers/public";
+
+import merge from "lodash.merge";
 import { PropsWithChildren } from "react";
-import { WC_PROJECT_ID } from "@/config";
-import { metaMaskWallet, walletConnectWallet } from "@rainbow-me/rainbowkit/wallets";
-import useWindowSize from "./useWindowSize";
+import { WC_PROJECT_ID as projectId } from "@/config";
 
 export const RainbowProvider = ({ children }: PropsWithChildren) => {
-  const [w, h] = useWindowSize();
-  const { chains, publicClient } = configureChains([mainnet], [publicProvider()]);
-  const walletsList =
-    w > h
-      ? [
-          walletConnectWallet({ projectId: WC_PROJECT_ID, chains }),
-          metaMaskWallet({ projectId: WC_PROJECT_ID, chains, shimDisconnect: true }),
-        ]
-      : [walletConnectWallet({ projectId: WC_PROJECT_ID, chains })];
+  const { chains, publicClient } = configureChains([mainnet, goerli], [publicProvider()])
 
-  const { connectors } = getDefaultWallets({
-    appName: "Barcelona Chatrooms",
-    projectId: WC_PROJECT_ID,
-    chains,
-  });
+  const connectors = connectorsForWallets([
+    {
+      groupName: 'Supported Wallets',
+      wallets: [
+        ...(typeof window !== "undefined" && (window as any)?.ethereum && [metaMaskWallet({ chains, projectId })] || []),
+        rainbowWallet({ projectId, chains }),
+        walletConnectWallet({ projectId, chains }),
+      ],
+    },
+  ]);
+
   const wagmiConfig = createConfig({
     autoConnect: true,
-    connectors,
     publicClient,
-  });
+    connectors
+  })
+
   return (
     <WagmiConfig config={wagmiConfig}>
       <RainbowKitProvider
