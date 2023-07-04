@@ -22,15 +22,15 @@ export const RainbowProvider = ({ children }: PropsWithChildren) => {
     w > h
       ? [
           walletConnectWallet({ projectId: WC_PROJECT_ID, chains }),
-          metaMaskWallet({ projectId: WC_PROJECT_ID, chains }),
+          metaMaskWallet({ projectId: WC_PROJECT_ID, chains, shimDisconnect: true }),
         ]
       : [walletConnectWallet({ projectId: WC_PROJECT_ID, chains })];
-  const connectors = connectorsForWallets([
-    {
-      groupName: "Recommended",
-      wallets: walletsList,
-    },
-  ]);
+
+  const { connectors } = getDefaultWallets({
+    appName: "Barcelona Chatrooms",
+    projectId: WC_PROJECT_ID,
+    chains,
+  });
   const wagmiConfig = createConfig({
     autoConnect: true,
     connectors,

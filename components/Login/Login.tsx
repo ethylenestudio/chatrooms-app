@@ -68,14 +68,14 @@ const isAlreadyConnected = async (): Promise<{ did?: string }> => {
 const Login: FC = () => {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
-  const account = useAccount();
+  const { isConnected, connector } = useAccount();
   const checkMatching = useAddressMatching();
 
   const setRooms = useRooms((state) => state.setRooms);
   const setUserDid = useOrbisUser((state) => state.setUserDid);
   async function logoutOnNotMatch() {
     const res = await ORBIS.isConnected();
-    if (account.isConnected && res.status == 200) {
+    if (isConnected && res.status == 200) {
       const status = await checkMatching();
       if (!status) {
         await ORBIS.logout();
@@ -84,7 +84,7 @@ const Login: FC = () => {
   }
   const authenticateOrbis = async () => {
     try {
-      const provider = await account?.connector?.getProvider();
+      const provider = await connector?.getProvider();
       if (!provider) {
         throw "Cannot fetch a provider";
       }
@@ -117,19 +117,22 @@ const Login: FC = () => {
 
     setRooms(userContexts);
   };
+  useEffect(() => {
+    console.log(isConnected);
+  }, [isConnected]);
 
   useEffect(() => {
     async function update() {
       await logoutOnNotMatch();
       const { did } = await isAlreadyConnected();
-      if (!did || !account.isConnected) return setLoading(false);
-      if (did && account.isConnected) {
+      if (!did || isConnected) return setLoading(false);
+      if (did && isConnected) {
         await updateRoomAccess(did);
         router.push("/app");
       }
     }
     update();
-  }, [setRooms, router, setUserDid, account]);
+  }, [setRooms, router, setUserDid, isConnected]);
 
   async function connectToOrbis() {
     setLoading(true);
@@ -161,7 +164,7 @@ const Login: FC = () => {
       </p>
       {loading ? (
         <Loader width="40" height="40" />
-      ) : account.isConnected ? (
+      ) : isConnected ? (
         <button
           className="rounded-3xl bg-[#CBA1A4] border-white py-2 text-sm px-4"
           onClick={connectToOrbis}
@@ -174,6 +177,7 @@ const Login: FC = () => {
           <ConnectButton showBalance={false} />
         </div>
       )}
+      <div>{isConnected ? "yess" : "nooo"}</div>
     </div>
   );
 };
