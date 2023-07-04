@@ -177,7 +177,6 @@ const Login: FC = () => {
           <ConnectButton showBalance={false} />
         </div>
       )}
-      <div>{isConnected ? "yess" : "nooo"}</div>
     </div>
   );
 };
