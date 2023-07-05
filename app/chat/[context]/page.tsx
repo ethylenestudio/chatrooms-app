@@ -9,6 +9,7 @@ export default function ChatPage() {
   const router = useRouter();
   const [loading, setLoading] = useState<boolean>(true)
   const [title, setTitle] = useState<string>("")
+  const { context } = useParams()
 
   useEffect(() => {
     (async () => {
@@ -17,18 +18,19 @@ export default function ChatPage() {
     })()
   }, [])
 
-  const { context } = useParams()
-  if (!context) {
-    router.push("/")
-    return <h1>Redirecting...</h1>
-  }
-
   useEffect(() => {
     (async () => {
+      if(!context) return
+      
       const { data: info } = await ORBIS.getContext(context)
       if(info.content?.name) setTitle(info.content.name as string)
     })()
   }, [context])
+
+  if (!context) {
+    router.push("/")
+    return <h1>Redirecting...</h1>
+  }
 
   if (loading) return <h1>Loading chat...</h1>
 
