@@ -3,10 +3,13 @@ import { Chat, Menu } from "@/components";
 import useSelectRoom from "@/hooks/store/useSelectRoom";
 import useWindowSize from "@/hooks/useWindowSize";
 import React from "react";
+import useCheckConnection from "@/hooks/useCheckConnection";
 
 const App = () => {
   const [width, height] = useWindowSize();
   const selectedChat = useSelectRoom((state) => state.selectedRoom);
+
+  useCheckConnection();
 
   if (width <= 760) {
     return (
