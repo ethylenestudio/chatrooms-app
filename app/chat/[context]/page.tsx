@@ -35,7 +35,7 @@ export default function ChatPage() {
   if (loading) return <h1>Loading chat...</h1>
 
   return <div className="col-span-2 flex flex-col">
-    {title && <h1 className="text-center text-medium text-white pb-4">
+    {title && <h1 className="capitalize text-center text-[.9rem] text-white pb-4">
       {title}
     </h1>}
     <Chat context={context as string} className="flex-1" />

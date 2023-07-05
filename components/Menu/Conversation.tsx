@@ -39,7 +39,7 @@ const Conversation: FC<RoomPropType> = ({ room, lastMessage }) => {
         <SiHackthebox size={32} color={"rgb(203 213 225)"} />
       </div>
       <div className="w-[85%] pl-2 flex flex-col items-start justify-center">
-        <p className="font-bold text-sm">{room.content.name}</p>
+        <p className="font-bold text-sm capitalize">{room.content.name}</p>
         <p className="text-[12px] font-extralight">
           {displayedMessage.length > lastMessageLimit
             ? displayedMessage.slice(0, lastMessageLimit) + "..."
