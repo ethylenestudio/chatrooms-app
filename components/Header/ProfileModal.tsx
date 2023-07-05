@@ -78,6 +78,7 @@ const ProfileModal: FC<{ close: () => any }> = ({ close }) => {
                                     onClick={async (e) => {
                                         e.preventDefault();
                                         await ORBIS.logout();
+                                        localStorage.removeItem("chatrooms:auth:signature")
                                         setUserDid("")
                                         try{ await disconnect() }catch{}
                                         close();

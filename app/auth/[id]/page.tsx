@@ -52,32 +52,40 @@ const Auth = () => {
   const { isConnected, address } = useAccount();
 
   useEffect(() => {
-    if (!isConnected) return
-    if (!address) return
+    const signature = localStorage.getItem("chatrooms:auth:signature")
+    if(!signature) return
 
-    (async () => {
-      const res = await ORBIS.isConnected()
-      if (res.status !== 200) return
+    signAuthMessage(signature)
+  }, [])
 
-      const orbisAddress = res.did.split(":").pop()
+  // useEffect(() => {
+  //   if (!isConnected) return
+  //   if (!address) return
+
+  //   (async () => {
+  //     const res = await ORBIS.isConnected()
+  //     if (res.status !== 200) return
+
+  //     const orbisAddress = res.did.split(":").pop()
       
-      if (address.toLowerCase() === orbisAddress.toLowerCase()) return
+  //     if (address.toLowerCase() === orbisAddress.toLowerCase()) return
 
-      showToast("New wallet detected. You will be prompted to log in again.", "info")
-      await ORBIS.logout()
-      setUserDid("")
-    })()
+  //     showToast("New wallet detected. You will be prompted to log in again.", "info")
+  //     await ORBIS.logout()
+  //     setUserDid("")
+  //   })()
 
-  }, [isConnected, address])
+  // }, [isConnected, address])
 
 
   const { signMessageAsync } = useSignMessage({ message: MESSAGE });
   const [loading, setLoading] = useState(false);
 
-  async function signAuthMessage() {
+  async function signAuthMessage(_signature?: string) {
     setLoading(true);
 
-    const signature = await signMessageAsync();
+    const signature = _signature || await signMessageAsync();
+    localStorage.setItem("chatrooms:auth:signature", signature)
 
     try {
       const req = await axios.post(

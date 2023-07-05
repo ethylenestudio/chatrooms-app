@@ -14,6 +14,7 @@ export const ChangeWallet: FC<{ text?: string, redirect?: boolean }> = ({ text, 
         setLoading(true)
 
         try { await ORBIS.logout() } catch { }
+        localStorage.removeItem("chatrooms:auth:signature")
         try { setUserDid("") } catch { }
         try { await disconnect() } catch { }
 
