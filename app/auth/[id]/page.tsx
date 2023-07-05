@@ -49,27 +49,26 @@ const Auth = () => {
   const setUserDid = useOrbisUser((state) => state.setUserDid);
 
   const { id: key } = useParams();
-  const account = useAccount();
+  const { isConnected, address } = useAccount();
 
   useEffect(() => {
-    if (!account.isConnected) return
-    if (!account.address) return
+    if (!isConnected) return
+    if (!address) return
 
     (async () => {
       const res = await ORBIS.isConnected()
       if (res.status !== 200) return
 
-      const address = res.did.split(":").pop()
-      const currentWallet = account.address
-
-      if (address.toLowerCase() === currentWallet.toLowerCase()) return
+      const orbisAddress = res.did.split(":").pop()
+      
+      if (address.toLowerCase() === orbisAddress.toLowerCase()) return
 
       showToast("New wallet detected. You will be prompted to log in again.", "info")
       await ORBIS.logout()
       setUserDid("")
     })()
 
-  }, [account.isConnected])
+  }, [isConnected, address])
 
 
   const { signMessageAsync } = useSignMessage({ message: MESSAGE });
@@ -117,7 +116,7 @@ const Auth = () => {
       <h1 className="text-lg text-center p-2 text-medium mb-8">
         Claim your Panel credential and join the discussion!
       </h1>
-      {account.isConnected && (
+      {isConnected && (
         <div className="flex flex-col items-center center">
           <button
             className="rounded-3xl bg-[#CBA1A4] border-white py-3 text-sm px-4 mb-4"
@@ -134,7 +133,7 @@ const Auth = () => {
           {!loading && <ChangeWallet />}
         </div>
       )}
-      {!account.isConnected && (
+      {!isConnected && (
         <div>
           <ConnectButton showBalance={false} />
         </div>
