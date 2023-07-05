@@ -24,20 +24,21 @@ const Menu: FC = () => {
   useEffect(() => {
     if (rooms == null) return;
     const polling = async () => {
-      const result = await Promise.all(rooms.map((room: any) => fetchLastMessage(room)));
+      // ! DISABLE LAST MESSAGE
+      // const result = await Promise.all(rooms.map((room: any) => fetchLastMessage(room)));
       let lastMessages = [];
-      lastMessages = result.map((i) => {
-        if (i && i.length > 0) {
-          return i[0].content.body;
-        }
+      // lastMessages = result.map((i) => {
+      //   if (i && i.length > 0) {
+      //     return i[0].content.body;
+      //   }
 
-        return "Be the first one to chat!"
-      });
+      //   return "Be the first one to chat!"
+      // });
 
-      setLastMessages(lastMessages);
+      setLastMessages(rooms.map(() => []));
     };
     polling();
-    const pollingInterval = setInterval(polling, POLLING_RATE);
+    const pollingInterval = setInterval(polling, 15 * 1000);
     return () => {
       clearInterval(pollingInterval);
     };
