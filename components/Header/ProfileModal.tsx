@@ -1,14 +1,17 @@
 "use client";
 import React, { FC, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { ORBIS, userNameLimit } from "@/config";
+import { ORBIS } from "@/config";
+import { disconnect } from '@wagmi/core'
 import { AiOutlineClose } from "react-icons/ai";
+import useOrbisUser from "@/hooks/store/useOrbisUser";
 
 const ProfileModal: FC<{ close: () => any }> = ({ close }) => {
     const router = useRouter()
     const [user, setUser] = useState<any>(false)
     const [username, setUsername] = useState<string>("");
     const [note, setNote] = useState<string>("")
+    const setUserDid = useOrbisUser((state) => state.setUserDid);
 
     async function updateUsername() {
         if(!username || username.replace(/\s{1,}/g, "").length === 0 || username === user.username) return
@@ -75,6 +78,8 @@ const ProfileModal: FC<{ close: () => any }> = ({ close }) => {
                                     onClick={async (e) => {
                                         e.preventDefault();
                                         await ORBIS.logout();
+                                        setUserDid("")
+                                        try{ await disconnect() }catch{}
                                         close();
                                         router.push("/");
                                     }}
