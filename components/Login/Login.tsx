@@ -10,7 +10,7 @@ import { useAccount } from "wagmi";
 import logo from "@/public/assets/logo.png";
 import Loader from "../ui/Loader";
 import useHydrated from "@/hooks/useHydrated";
-import { ChangeWallet } from "../ui/ChangeWallet";
+import { ChangeWallet } from "@/components/ui/ChangeWallet";
 
 type MinimalCredential = {
   identifier: string;
