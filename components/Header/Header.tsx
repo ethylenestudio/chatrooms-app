@@ -18,8 +18,8 @@ const Header: FC = () => {
   // Show the logo until hydration is complete
   if (!hasHydrated)
     return (
-      <div className="text-white col-span-2 mimic-bg h-[100px] w-full flex items-center">
-        <h1 className="w-full tracking-widest text-xl text-center">chatrooms.</h1>
+      <div className="text-white col-span-2 mimic-bg h-[100px] w-full flex justify-center">
+        <Image src={logo.src} alt="logo" width={200} height={30} />
       </div>
     );
 
