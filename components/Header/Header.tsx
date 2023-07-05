@@ -41,7 +41,7 @@ const Header: FC = () => {
             <div onClick={() => setIsOpen(true)} className="hover:cursor-pointer pr-3">
               <img
                 className="ml-auto h-[30px] w-[30px] border-[2px] border-white rounded-[50%]"
-                src={`https://api.dicebear.com/6.x/pixel-art/svg?seed=${userDid}`}
+                src={`https://api.dicebear.com/6.x/bottts-neutral/svg?seed=${userDid}`}
               />
             </div>
           ) : null}
