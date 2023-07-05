@@ -101,7 +101,7 @@ const Auth = () => {
 
   if (!isHydrated) return null;
   return (
-    <div className="flex h-[70%] w-[100vw] overflow-hidden justify-center items-center text-white">
+    <div className="flex flex-col h-[70%] w-[100vw] overflow-hidden justify-center items-center text-white">
       <ToastContainer
         position="top-right"
         autoClose={5000}
@@ -114,10 +114,13 @@ const Auth = () => {
         pauseOnHover
         theme="dark"
       />
+      <h1 className="text-lg text-center p-2 text-medium mb-8">
+        Claim your Panel credential and join the discussion!
+      </h1>
       {account.isConnected && (
-        <div className="flex flex-col align-items center">
+        <div className="flex flex-col items-center center">
           <button
-            className="border-2 border-white p-2 px-4 rounded-3xl mb-4"
+            className="rounded-3xl bg-[#CBA1A4] border-white py-3 text-sm px-4 mb-4"
             onClick={async () => {
               try {
                 await signAuthMessage();
