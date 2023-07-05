@@ -1,5 +1,4 @@
 import { GENERAL_CHAT, ORBIS, POLLING_RATE, lastMessageLimit } from "@/config";
-import useOrbisUser from "@/hooks/store/useOrbisUser";
 import useSelectRoom from "@/hooks/store/useSelectRoom";
 import useWindowSize from "@/hooks/useWindowSize";
 import { useRouter } from "next/navigation";

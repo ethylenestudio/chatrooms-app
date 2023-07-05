@@ -5,8 +5,7 @@ import { useCallback, useEffect } from "react";
 const useCheckConnection = () => {
   const router = useRouter();
   const checkConnection = useCallback(async () => {
-    let res = await ORBIS.isConnected();
-    console.log(res);
+    const res = await ORBIS.isConnected();
     if (res.status != 200) {
       router.push("/");
     }
