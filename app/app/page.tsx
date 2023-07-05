@@ -10,14 +10,14 @@ const App = () => {
 
   if (width <= 760) {
     return (
-      <div className="w-[100%] col-span-2">
+      <div className="overflow-auto w-[100%] col-span-2">
         <Menu />
       </div>
     );
   } else {
     return (
       <>
-        <div className="border-r-2 border-slate-900">
+        <div className="overflow-auto border-r-2 border-slate-900">
           <Menu />
         </div>
         <Chat context={selectedChat} />
