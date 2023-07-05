@@ -1,12 +1,14 @@
 import { renderMessageLimit } from "@/config";
 import useSelectRoom from "@/hooks/store/useSelectRoom";
 import useSendMessage from "@/hooks/useSendMessage";
-import React, { FC, Fragment, useEffect } from "react";
+import React, { FC, Fragment, useEffect, useState } from "react";
 import { AiOutlineClose } from "react-icons/ai";
 import ReplyMessage from "./ReplyMesage";
 import Loader from "../ui/Loader";
 import useGetMessages from "@/hooks/useGetMessages";
 import MessageForm from "./MessageForm";
+
+import { ORBIS } from "@/config";
 
 const ReplyModal: FC<{
   master: MessageType;
@@ -18,6 +20,13 @@ const ReplyModal: FC<{
     setReplyTo({ content: master.content, postId: master.postId });
   }, [master, setReplyTo]);
   const { loading, orbisMessages, fetchMessages } = useGetMessages(selectedChat, master.postId);
+  const [orbisSession, setOrbisSession] = useState<boolean>(false)
+
+  useEffect(() => {
+    (async () => {
+      setOrbisSession(((await ORBIS.isConnected()) || {}).status === 200)
+    })()
+  }, [])
 
   const onChange: React.ChangeEventHandler<HTMLInputElement> = (e) =>
     setMessage((prev) => {
@@ -86,14 +95,18 @@ const ReplyModal: FC<{
           })}
         </div>
 
-        <MessageForm
-          label="Reply"
-          placeholder="Reply in this thread"
-          onChange={onChange}
-          onSend={onSend}
-          message={message}
-          sending={sending}
-        />
+        {
+          orbisSession &&
+          <MessageForm
+            label="Reply"
+            placeholder="Reply in this thread"
+            onChange={onChange}
+            onSend={onSend}
+            message={message}
+            sending={sending}
+          />
+        }
+
       </div>
     </div>
   );
