@@ -6,6 +6,14 @@ const useMessageReaction = (
   userDid: string,
   refetchAllMessages?: () => Promise<void>
 ) => {
+  if(!userDid){
+    return {
+      loading: false,
+      reactToPost: () => {},
+      isReacted: false
+    }
+  }
+
   const [loading, setLoading] = useState(false);
   const [isReacted, setIsReacted] = useState(false);
 
