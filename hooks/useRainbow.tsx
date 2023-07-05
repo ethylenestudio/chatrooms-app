@@ -12,6 +12,16 @@ import merge from "lodash.merge";
 import { PropsWithChildren } from "react";
 import { WC_PROJECT_ID as projectId } from "@/config";
 
+const walletConnectOptions = {
+  projectId,
+  metadata: {
+    name: "Chatrooms.social",
+    description: "Decentralized Discussion board @ ETHBCN.",
+    url: "https://chatrooms.social",
+    icons: ["https://chatrooms.social/icon.png"]
+  }
+}
+
 export const RainbowProvider = ({ children }: PropsWithChildren) => {
   const { chains, publicClient } = configureChains([mainnet, goerli], [publicProvider()])
 
@@ -20,8 +30,16 @@ export const RainbowProvider = ({ children }: PropsWithChildren) => {
       groupName: 'Supported Wallets',
       wallets: [
         ...(typeof window !== "undefined" && (window as any)?.ethereum && [metaMaskWallet({ chains, projectId })] || []),
-        rainbowWallet({ projectId, chains }),
-        walletConnectWallet({ projectId, chains }),
+        rainbowWallet({
+          projectId,
+          chains,
+          walletConnectOptions
+        }),
+        walletConnectWallet({
+          projectId,
+          chains,
+          options: walletConnectOptions
+        }),
       ],
     },
   ]);
