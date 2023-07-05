@@ -20,13 +20,7 @@ const ReplyModal: FC<{
     setReplyTo({ content: master.content, postId: master.postId });
   }, [master, setReplyTo]);
   const { loading, orbisMessages, fetchMessages } = useGetMessages(selectedChat, master.postId);
-  const [orbisSession, setOrbisSession] = useState<boolean>(false)
-
-  useEffect(() => {
-    (async () => {
-      setOrbisSession(((await ORBIS.isConnected()) || {}).status === 200)
-    })()
-  }, [])
+  const orbisSession = (ORBIS.session && ORBIS.session.hasSession) || false
 
   const onChange: React.ChangeEventHandler<HTMLInputElement> = (e) =>
     setMessage((prev) => {

@@ -19,13 +19,7 @@ const SendMessage: FC<{
   sending: boolean;
   message: string;
 }> = ({ replyTo, setReplyTo, message, setMessage, sendMessage, sending }) => {
-  const [orbisSession, setOrbisSession] = useState<boolean>(false)
-
-  useEffect(() => {
-    (async () => {
-      setOrbisSession(((await ORBIS.isConnected()) || {}).status === 200)
-    })()
-  }, [])
+  const orbisSession = (ORBIS.session && ORBIS.session.hasSession) || false
 
   const onChange: React.ChangeEventHandler<HTMLInputElement> = e =>
     setMessage((prev) => {
