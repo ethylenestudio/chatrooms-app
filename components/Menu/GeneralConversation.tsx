@@ -11,8 +11,8 @@ const GeneralConversation: FC = () => {
   const selectThisChat = useSelectRoom((state) => state.setSelectedRoom);
   const [lastMessage, setLastMessage] = useState("");
   const fetchLastMessage = useCallback(async () => {
-    // ! DISABLE LAST MESSAGE
-    return setLastMessage("")
+    // // ! DISABLE LAST MESSAGE
+    // return setLastMessage("")
     const { data, error } = await ORBIS.getPosts({ context: GENERAL_CHAT, only_master: true }, 0, 1);
     if (data.length > 0) {
       setLastMessage(data[0].content.body);
@@ -23,7 +23,7 @@ const GeneralConversation: FC = () => {
     fetchLastMessage();
   }, [fetchLastMessage]);
   useEffect(() => {
-    const polling = setInterval(fetchLastMessage, 15 * 1000);
+    const polling = setInterval(fetchLastMessage, POLLING_RATE);
     return () => {
       clearInterval(polling);
     };
