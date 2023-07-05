@@ -21,7 +21,7 @@ export default function ChatPage() {
   useEffect(() => {
     (async () => {
       if(!context) return
-      
+
       const { data: info } = await ORBIS.getContext(context)
       if(info.content?.name) setTitle(info.content.name as string)
     })()
@@ -34,11 +34,11 @@ export default function ChatPage() {
 
   if (loading) return <h1>Loading chat...</h1>
 
-  return <div className="col-span-2">
+  return <div className="col-span-2 flex flex-col">
     {title && <h1 className="text-center text-medium text-white pb-4">
       {title}
     </h1>}
-    <Chat context={context as string} className="col-span-2 h-full" />
+    <Chat context={context as string} className="flex-1" />
   </div>
 
 }
