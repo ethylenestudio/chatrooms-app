@@ -24,6 +24,6 @@ export default function ChatPage() {
   }
 
   if(loading) return <h1>Loading chat...</h1>
-  
+
   return <Chat context={context as string} className="col-span-2" />;
 }

@@ -64,7 +64,7 @@ const Auth = () => {
 
       if (address.toLowerCase() === currentWallet.toLowerCase()) return
 
-      showToast("You will be prompted to log in again.", "info")
+      showToast("New wallet detected. You will be prompted to log in again.", "info")
       await ORBIS.logout()
       setUserDid("")
     })()
@@ -128,7 +128,7 @@ const Auth = () => {
           >
             {loading ? "Authenticating..." : "Sign and Join the room"}
           </button>
-          <ChangeWallet />
+          {!loading && <ChangeWallet />}
         </div>
       )}
       {!account.isConnected && (
