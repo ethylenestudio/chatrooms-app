@@ -8,7 +8,7 @@ import Image from "next/image";
 
 const Footer: FC = () => {
   return (
-    <div className="pb-[env(safe-area-inset-bottom)] w-full bg-[rgba(0,0,0,1)] text-white flex items-center justify-between px-4 lg:px-12 sm:px-8 col-span-2 row-start-3 fixed bottom-0 h-14">
+    <div className="pb-[env(safe-area-inset-bottom)] w-full bg-[rgba(0,0,0,1)] text-white flex items-center justify-between px-4 lg:px-12 sm:px-8 col-span-2 row-start-3 h-full">
       <div>
         <div className="flex flex-col items-start justify-center">
           <div className="flex justify-center space-x-1 items-center">

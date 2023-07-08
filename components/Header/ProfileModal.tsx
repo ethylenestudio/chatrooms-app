@@ -1,14 +1,17 @@
 "use client";
 import React, { FC, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { ORBIS, userNameLimit } from "@/config";
+import { ORBIS } from "@/config";
+import { disconnect } from '@wagmi/core'
 import { AiOutlineClose } from "react-icons/ai";
+import useOrbisUser from "@/hooks/store/useOrbisUser";
 
 const ProfileModal: FC<{ close: () => any }> = ({ close }) => {
     const router = useRouter()
     const [user, setUser] = useState<any>(false)
     const [username, setUsername] = useState<string>("");
     const [note, setNote] = useState<string>("")
+    const setUserDid = useOrbisUser((state) => state.setUserDid);
 
     async function updateUsername() {
         if(!username || username.replace(/\s{1,}/g, "").length === 0 || username === user.username) return
@@ -57,9 +60,9 @@ const ProfileModal: FC<{ close: () => any }> = ({ close }) => {
                     </div>
                     {user && 
                         <form className="flex flex-col items-center" onSubmit={e => (e.preventDefault(), updateUsername())} action="submit">
-                            <img className="mb-4 border-4 border-white block h-[120px] w-[120px] rounded-[50%]" src={`https://api.dicebear.com/6.x/pixel-art/svg?seed=${user.did}`} alt="Your generated profile picture" />
+                            <img className="mb-4 border-4 border-white block h-[120px] w-[120px] rounded-[50%]" src={`https://api.dicebear.com/6.x/bottts-neutral/svg?seed=${user.did}`} alt="Your generated profile picture" />
                             <div className="text-sm text-slate-400">
-                                {user.address.slice(0, 8)}...{user.address.slice(-6)}
+                                { user.address && (user.address.slice(0, 8) + "..." + user.address.slice(-6)) || ""}
                             </div>
                             <label>
                                 <span className="text-white text-xs">Username</span>
@@ -75,6 +78,9 @@ const ProfileModal: FC<{ close: () => any }> = ({ close }) => {
                                     onClick={async (e) => {
                                         e.preventDefault();
                                         await ORBIS.logout();
+                                        localStorage.removeItem("chatrooms:auth:signature")
+                                        setUserDid("")
+                                        try{ await disconnect() }catch{}
                                         close();
                                         router.push("/");
                                     }}

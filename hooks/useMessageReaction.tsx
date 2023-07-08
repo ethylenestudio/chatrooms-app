@@ -37,6 +37,14 @@ const useMessageReaction = (
     fetchUserReaction();
   }, [fetchUserReaction]);
 
+  if(!userDid){
+    return {
+      loading: false,
+      reactToPost: () => {},
+      isReacted: false
+    }
+  }
+
   return { reactToPost, isReacted, loading };
 };
 

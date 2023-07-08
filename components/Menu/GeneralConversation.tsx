@@ -1,5 +1,4 @@
 import { GENERAL_CHAT, ORBIS, POLLING_RATE, lastMessageLimit } from "@/config";
-import useOrbisUser from "@/hooks/store/useOrbisUser";
 import useSelectRoom from "@/hooks/store/useSelectRoom";
 import useWindowSize from "@/hooks/useWindowSize";
 import { useRouter } from "next/navigation";
@@ -12,6 +11,8 @@ const GeneralConversation: FC = () => {
   const selectThisChat = useSelectRoom((state) => state.setSelectedRoom);
   const [lastMessage, setLastMessage] = useState("");
   const fetchLastMessage = useCallback(async () => {
+    // // ! DISABLE LAST MESSAGE
+    // return setLastMessage("")
     const { data, error } = await ORBIS.getPosts({ context: GENERAL_CHAT, only_master: true }, 0, 1);
     if (data.length > 0) {
       setLastMessage(data[0].content.body);
